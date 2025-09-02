@@ -56,6 +56,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Views\ViewHarvest\ViewHarvest.resx">
       <DependentUpon>ViewHarvest.cs</DependentUpon>
+    </EmbeddedResource>
     <Compile Include="Views\ViewCollector\ViewCollector.cs">
       <SubType>Form</SubType>
     </Compile>
