@@ -46,6 +46,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Views\ViewHarvest\ViewHarvest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ViewHarvest\ViewHarvest.Designer.cs">
+      <DependentUpon>ViewHarvest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Views\ViewHarvest\ViewHarvest.resx">
+      <DependentUpon>ViewHarvest.cs</DependentUpon>
     <Compile Include="Views\ViewCollector\ViewCollector.cs">
       <SubType>Form</SubType>
     </Compile>
