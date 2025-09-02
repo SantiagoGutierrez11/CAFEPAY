@@ -8,16 +8,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace CAFEPAY
+namespace CAFEPAY.Views.ViewMain
 {
-    public partial class frmGestionRecolectores : Form
+    public partial class ViewMain : Form
     {
-        public frmGestionRecolectores()
+        public ViewMain()
         {
             InitializeComponent();
         }
 
-        private void btnDarBaja_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnCollect_Click(object sender, EventArgs e)
         {
 
         }

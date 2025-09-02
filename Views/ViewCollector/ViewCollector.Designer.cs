@@ -32,7 +32,6 @@
             this.tpRegistrarRecolector = new System.Windows.Forms.TabPage();
             this.gbListaRecolectores = new System.Windows.Forms.GroupBox();
             this.btnActualizarLista = new System.Windows.Forms.Button();
-            this.btnReactivar = new System.Windows.Forms.Button();
             this.btnDarBaja = new System.Windows.Forms.Button();
             this.dgvRecolectores = new System.Windows.Forms.DataGridView();
             this.gbRegistrarRecolector = new System.Windows.Forms.GroupBox();
@@ -56,20 +55,22 @@
             // 
             this.tcGestionRecolectores.Controls.Add(this.tpRegistrarRecolector);
             this.tcGestionRecolectores.Controls.Add(this.tabPage2);
-            this.tcGestionRecolectores.Location = new System.Drawing.Point(103, 69);
+            this.tcGestionRecolectores.Location = new System.Drawing.Point(77, 56);
+            this.tcGestionRecolectores.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tcGestionRecolectores.Name = "tcGestionRecolectores";
             this.tcGestionRecolectores.SelectedIndex = 0;
-            this.tcGestionRecolectores.Size = new System.Drawing.Size(887, 360);
+            this.tcGestionRecolectores.Size = new System.Drawing.Size(665, 292);
             this.tcGestionRecolectores.TabIndex = 0;
             // 
             // tpRegistrarRecolector
             // 
             this.tpRegistrarRecolector.Controls.Add(this.gbListaRecolectores);
             this.tpRegistrarRecolector.Controls.Add(this.gbRegistrarRecolector);
-            this.tpRegistrarRecolector.Location = new System.Drawing.Point(4, 25);
+            this.tpRegistrarRecolector.Location = new System.Drawing.Point(4, 22);
+            this.tpRegistrarRecolector.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tpRegistrarRecolector.Name = "tpRegistrarRecolector";
-            this.tpRegistrarRecolector.Padding = new System.Windows.Forms.Padding(3);
-            this.tpRegistrarRecolector.Size = new System.Drawing.Size(879, 331);
+            this.tpRegistrarRecolector.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tpRegistrarRecolector.Size = new System.Drawing.Size(657, 266);
             this.tpRegistrarRecolector.TabIndex = 0;
             this.tpRegistrarRecolector.Text = "Gestión Recolector";
             this.tpRegistrarRecolector.UseVisualStyleBackColor = true;
@@ -77,51 +78,47 @@
             // gbListaRecolectores
             // 
             this.gbListaRecolectores.Controls.Add(this.btnActualizarLista);
-            this.gbListaRecolectores.Controls.Add(this.btnReactivar);
             this.gbListaRecolectores.Controls.Add(this.btnDarBaja);
             this.gbListaRecolectores.Controls.Add(this.dgvRecolectores);
-            this.gbListaRecolectores.Location = new System.Drawing.Point(448, 41);
+            this.gbListaRecolectores.Location = new System.Drawing.Point(336, 33);
+            this.gbListaRecolectores.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.gbListaRecolectores.Name = "gbListaRecolectores";
-            this.gbListaRecolectores.Size = new System.Drawing.Size(389, 247);
+            this.gbListaRecolectores.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gbListaRecolectores.Size = new System.Drawing.Size(292, 201);
             this.gbListaRecolectores.TabIndex = 1;
             this.gbListaRecolectores.TabStop = false;
             this.gbListaRecolectores.Text = "Lista de Recolectores Registrados";
             // 
             // btnActualizarLista
             // 
-            this.btnActualizarLista.Location = new System.Drawing.Point(251, 161);
+            this.btnActualizarLista.Location = new System.Drawing.Point(188, 131);
+            this.btnActualizarLista.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnActualizarLista.Name = "btnActualizarLista";
-            this.btnActualizarLista.Size = new System.Drawing.Size(115, 35);
+            this.btnActualizarLista.Size = new System.Drawing.Size(86, 28);
             this.btnActualizarLista.TabIndex = 3;
             this.btnActualizarLista.Text = "Actualizar Lista";
             this.btnActualizarLista.UseVisualStyleBackColor = true;
             // 
-            // btnReactivar
-            // 
-            this.btnReactivar.Location = new System.Drawing.Point(149, 162);
-            this.btnReactivar.Name = "btnReactivar";
-            this.btnReactivar.Size = new System.Drawing.Size(85, 34);
-            this.btnReactivar.TabIndex = 2;
-            this.btnReactivar.Text = "Reactivar";
-            this.btnReactivar.UseVisualStyleBackColor = true;
-            // 
             // btnDarBaja
             // 
-            this.btnDarBaja.Location = new System.Drawing.Point(22, 163);
+            this.btnDarBaja.Location = new System.Drawing.Point(16, 132);
+            this.btnDarBaja.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnDarBaja.Name = "btnDarBaja";
-            this.btnDarBaja.Size = new System.Drawing.Size(111, 33);
+            this.btnDarBaja.Size = new System.Drawing.Size(83, 27);
             this.btnDarBaja.TabIndex = 1;
             this.btnDarBaja.Text = "Dar de Baja";
             this.btnDarBaja.UseVisualStyleBackColor = true;
+            this.btnDarBaja.Click += new System.EventHandler(this.btnDarBaja_Click);
             // 
             // dgvRecolectores
             // 
             this.dgvRecolectores.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvRecolectores.Location = new System.Drawing.Point(37, 42);
+            this.dgvRecolectores.Location = new System.Drawing.Point(28, 34);
+            this.dgvRecolectores.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.dgvRecolectores.Name = "dgvRecolectores";
             this.dgvRecolectores.RowHeadersWidth = 51;
             this.dgvRecolectores.RowTemplate.Height = 24;
-            this.dgvRecolectores.Size = new System.Drawing.Size(314, 88);
+            this.dgvRecolectores.Size = new System.Drawing.Size(236, 72);
             this.dgvRecolectores.TabIndex = 0;
             // 
             // gbRegistrarRecolector
@@ -134,95 +131,107 @@
             this.gbRegistrarRecolector.Controls.Add(this.lblTelefono);
             this.gbRegistrarRecolector.Controls.Add(this.lblNombre);
             this.gbRegistrarRecolector.Controls.Add(this.lblCedula);
-            this.gbRegistrarRecolector.Location = new System.Drawing.Point(37, 41);
+            this.gbRegistrarRecolector.Location = new System.Drawing.Point(28, 33);
+            this.gbRegistrarRecolector.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.gbRegistrarRecolector.Name = "gbRegistrarRecolector";
-            this.gbRegistrarRecolector.Size = new System.Drawing.Size(361, 247);
+            this.gbRegistrarRecolector.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gbRegistrarRecolector.Size = new System.Drawing.Size(271, 201);
             this.gbRegistrarRecolector.TabIndex = 0;
             this.gbRegistrarRecolector.TabStop = false;
             this.gbRegistrarRecolector.Text = "Registrar Nuevo Recolector";
             // 
             // btnLimpiarCampos
             // 
-            this.btnLimpiarCampos.Location = new System.Drawing.Point(191, 189);
+            this.btnLimpiarCampos.Location = new System.Drawing.Point(143, 154);
+            this.btnLimpiarCampos.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnLimpiarCampos.Name = "btnLimpiarCampos";
-            this.btnLimpiarCampos.Size = new System.Drawing.Size(128, 33);
+            this.btnLimpiarCampos.Size = new System.Drawing.Size(96, 27);
             this.btnLimpiarCampos.TabIndex = 7;
             this.btnLimpiarCampos.Text = "Limpiar Campos";
             this.btnLimpiarCampos.UseVisualStyleBackColor = true;
             // 
             // btnRegistrar
             // 
-            this.btnRegistrar.Location = new System.Drawing.Point(45, 189);
+            this.btnRegistrar.Location = new System.Drawing.Point(34, 154);
+            this.btnRegistrar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnRegistrar.Name = "btnRegistrar";
-            this.btnRegistrar.Size = new System.Drawing.Size(116, 33);
+            this.btnRegistrar.Size = new System.Drawing.Size(87, 27);
             this.btnRegistrar.TabIndex = 6;
             this.btnRegistrar.Text = "Registrar";
             this.btnRegistrar.UseVisualStyleBackColor = true;
             // 
             // txtTelefono
             // 
-            this.txtTelefono.Location = new System.Drawing.Point(112, 127);
+            this.txtTelefono.Location = new System.Drawing.Point(84, 103);
+            this.txtTelefono.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtTelefono.Name = "txtTelefono";
-            this.txtTelefono.Size = new System.Drawing.Size(100, 22);
+            this.txtTelefono.Size = new System.Drawing.Size(76, 20);
             this.txtTelefono.TabIndex = 5;
             // 
             // txtNombre
             // 
-            this.txtNombre.Location = new System.Drawing.Point(107, 86);
+            this.txtNombre.Location = new System.Drawing.Point(80, 70);
+            this.txtNombre.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtNombre.Name = "txtNombre";
-            this.txtNombre.Size = new System.Drawing.Size(138, 22);
+            this.txtNombre.Size = new System.Drawing.Size(104, 20);
             this.txtNombre.TabIndex = 4;
             // 
             // txtCedula
             // 
-            this.txtCedula.Location = new System.Drawing.Point(101, 46);
+            this.txtCedula.Location = new System.Drawing.Point(76, 37);
+            this.txtCedula.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtCedula.Name = "txtCedula";
-            this.txtCedula.Size = new System.Drawing.Size(100, 22);
+            this.txtCedula.Size = new System.Drawing.Size(76, 20);
             this.txtCedula.TabIndex = 3;
             // 
             // lblTelefono
             // 
             this.lblTelefono.AutoSize = true;
-            this.lblTelefono.Location = new System.Drawing.Point(42, 130);
+            this.lblTelefono.Location = new System.Drawing.Point(32, 106);
+            this.lblTelefono.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblTelefono.Name = "lblTelefono";
-            this.lblTelefono.Size = new System.Drawing.Size(64, 16);
+            this.lblTelefono.Size = new System.Drawing.Size(52, 13);
             this.lblTelefono.TabIndex = 2;
             this.lblTelefono.Text = "Teléfono:";
             // 
             // lblNombre
             // 
             this.lblNombre.AutoSize = true;
-            this.lblNombre.Location = new System.Drawing.Point(42, 89);
+            this.lblNombre.Location = new System.Drawing.Point(32, 72);
+            this.lblNombre.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblNombre.Name = "lblNombre";
-            this.lblNombre.Size = new System.Drawing.Size(59, 16);
+            this.lblNombre.Size = new System.Drawing.Size(47, 13);
             this.lblNombre.TabIndex = 1;
             this.lblNombre.Text = "Nombre:";
             // 
             // lblCedula
             // 
             this.lblCedula.AutoSize = true;
-            this.lblCedula.Location = new System.Drawing.Point(42, 49);
+            this.lblCedula.Location = new System.Drawing.Point(32, 40);
+            this.lblCedula.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblCedula.Name = "lblCedula";
-            this.lblCedula.Size = new System.Drawing.Size(53, 16);
+            this.lblCedula.Size = new System.Drawing.Size(43, 13);
             this.lblCedula.TabIndex = 0;
             this.lblCedula.Text = "Cédula:";
             // 
             // tabPage2
             // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 25);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(879, 331);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage2.Size = new System.Drawing.Size(657, 266);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // frmGestionRecolectores
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1093, 499);
+            this.ClientSize = new System.Drawing.Size(820, 405);
             this.Controls.Add(this.tcGestionRecolectores);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "frmGestionRecolectores";
             this.Text = "Sistema de Gestión de Pagos - Caficultora";
             this.tcGestionRecolectores.ResumeLayout(false);
@@ -251,7 +260,6 @@
         private System.Windows.Forms.Button btnRegistrar;
         private System.Windows.Forms.GroupBox gbListaRecolectores;
         private System.Windows.Forms.Button btnActualizarLista;
-        private System.Windows.Forms.Button btnReactivar;
         private System.Windows.Forms.Button btnDarBaja;
         private System.Windows.Forms.DataGridView dgvRecolectores;
     }
