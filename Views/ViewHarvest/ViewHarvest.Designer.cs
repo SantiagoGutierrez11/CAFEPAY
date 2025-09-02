@@ -30,7 +30,9 @@
         {
             this.lblTitulo = new System.Windows.Forms.Label();
             this.groupBoxDatos = new System.Windows.Forms.GroupBox();
+            this.txtId = new System.Windows.Forms.TextBox();
             this.dtpStartDate = new System.Windows.Forms.DateTimePicker();
+            this.lblId = new System.Windows.Forms.Label();
             this.dtpEndDate = new System.Windows.Forms.DateTimePicker();
             this.lblStartDate = new System.Windows.Forms.Label();
             this.lblPrice = new System.Windows.Forms.Label();
@@ -46,8 +48,7 @@
             this.btnEliminar = new System.Windows.Forms.Button();
             this.btnExportar = new System.Windows.Forms.Button();
             this.btnCerrar = new System.Windows.Forms.Button();
-            this.lblId = new System.Windows.Forms.Label();
-            this.txtId = new System.Windows.Forms.TextBox();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.groupBoxDatos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCosechas)).BeginInit();
             this.SuspendLayout();
@@ -79,6 +80,14 @@
             this.groupBoxDatos.TabIndex = 2;
             this.groupBoxDatos.TabStop = false;
             this.groupBoxDatos.Text = "DATOS DE LA COSECHA";
+            this.groupBoxDatos.Enter += new System.EventHandler(this.groupBoxDatos_Enter);
+            // 
+            // txtId
+            // 
+            this.txtId.Location = new System.Drawing.Point(133, 40);
+            this.txtId.Name = "txtId";
+            this.txtId.Size = new System.Drawing.Size(111, 20);
+            this.txtId.TabIndex = 13;
             // 
             // dtpStartDate
             // 
@@ -86,6 +95,16 @@
             this.dtpStartDate.Name = "dtpStartDate";
             this.dtpStartDate.Size = new System.Drawing.Size(150, 20);
             this.dtpStartDate.TabIndex = 15;
+            this.dtpStartDate.ValueChanged += new System.EventHandler(this.dtpStartDate_ValueChanged);
+            // 
+            // lblId
+            // 
+            this.lblId.AutoSize = true;
+            this.lblId.Location = new System.Drawing.Point(25, 47);
+            this.lblId.Name = "lblId";
+            this.lblId.Size = new System.Drawing.Size(66, 13);
+            this.lblId.TabIndex = 12;
+            this.lblId.Text = "ID Cosecha:";
             // 
             // dtpEndDate
             // 
@@ -215,23 +234,7 @@
             this.btnCerrar.Text = "X";
             this.btnCerrar.UseVisualStyleBackColor = true;
             // 
-            // lblId
-            // 
-            this.lblId.AutoSize = true;
-            this.lblId.Location = new System.Drawing.Point(25, 47);
-            this.lblId.Name = "lblId";
-            this.lblId.Size = new System.Drawing.Size(66, 13);
-            this.lblId.TabIndex = 12;
-            this.lblId.Text = "ID Cosecha:";
-            // 
-            // txtId
-            // 
-            this.txtId.Location = new System.Drawing.Point(133, 40);
-            this.txtId.Name = "txtId";
-            this.txtId.Size = new System.Drawing.Size(111, 20);
-            this.txtId.TabIndex = 13;
-            // 
-            // Form1
+            // ViewHarvest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -247,7 +250,7 @@
             this.Controls.Add(this.groupBoxDatos);
             this.Controls.Add(this.lblTitulo);
             this.Margin = new System.Windows.Forms.Padding(2);
-            this.Name = "Form1";
+            this.Name = "ViewHarvest";
             this.Text = "Sistema de Gestión de Cosechas";
             this.groupBoxDatos.ResumeLayout(false);
             this.groupBoxDatos.PerformLayout();
@@ -279,6 +282,7 @@
         private System.Windows.Forms.TextBox txtPrice;
         private System.Windows.Forms.Label lblLocation;
         private System.Windows.Forms.TextBox txtLocation;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }
 

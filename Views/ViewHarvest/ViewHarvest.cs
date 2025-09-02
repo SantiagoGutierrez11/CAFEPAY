@@ -137,6 +137,16 @@ namespace CAFEPAY
                 dgvCosechas.Columns["attLocation"].HeaderText = "Ubicación";
             }
         }
+
+        private void groupBoxDatos_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dtpStartDate_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 
     // CLASES (fuera de la clase Form1)

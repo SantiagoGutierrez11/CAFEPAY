@@ -46,6 +46,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Views\ViewCollect\ViewCollect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ViewCollect\ViewCollect.Designer.cs">
+      <DependentUpon>ViewCollect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewCollect\ViewCollectDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ViewCollect\ViewCollectDetail.Designer.cs">
+      <DependentUpon>ViewCollectDetail.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\ViewHarvest\ViewHarvest.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -60,6 +72,12 @@
     <Compile Include="Views\ViewMain\ViewMain.Designer.cs">
       <DependentUpon>ViewMain.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Views\ViewCollect\ViewCollect.resx">
+      <DependentUpon>ViewCollect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ViewCollect\ViewCollectDetail.resx">
+      <DependentUpon>ViewCollectDetail.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\ViewHarvest\ViewHarvest.resx">
       <DependentUpon>ViewHarvest.cs</DependentUpon>
     </EmbeddedResource>
