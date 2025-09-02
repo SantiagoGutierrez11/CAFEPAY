@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace CAFEPAY
 {
-    public partial class Form1 : Form
+    public partial class frmGestionRecolectores : Form
     {
-        public Form1()
+        public frmGestionRecolectores()
         {
             InitializeComponent();
         }
