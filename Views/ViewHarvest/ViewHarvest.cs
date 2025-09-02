@@ -10,12 +10,12 @@ using System.Windows.Forms;
 
 namespace CAFEPAY
 {
-    public partial class Form1 : Form
+    public partial class ViewHarvest : Form
     {
         private List<Harvest> cosechas = new List<Harvest>();
         private int currentId = 1;
 
-        public Form1()
+        public ViewHarvest()
         {
             InitializeComponent();
             // Configuración inicial

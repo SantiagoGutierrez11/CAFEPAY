@@ -1,6 +1,6 @@
 ﻿namespace CAFEPAY
 {
-    partial class Form1
+    partial class ViewHarvest
     {
         /// <summary>
         /// Variable del diseñador necesaria.
