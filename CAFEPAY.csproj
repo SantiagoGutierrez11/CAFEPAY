@@ -87,8 +87,6 @@
     <Compile Include="Views\ViewCollector\ViewCollector.Designer.cs">
       <DependentUpon>ViewCollector.cs</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Views\ViewCollector\ViewCollector.resx">
       <DependentUpon>ViewCollector.cs</DependentUpon>
     </EmbeddedResource>
