@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArqHex\Collector\domain\Collector.cs" />
+    <Compile Include="ArqHex\Collector\domain\CollectorId.cs" />
+    <Compile Include="ArqHex\Collector\domain\CollectorName.cs" />
+    <Compile Include="ArqHex\Collector\domain\CollectorPhone.cs" />
+    <Compile Include="ArqHex\Collector\domain\CollectorStatus.cs" />
+    <Compile Include="ArqHex\Collector\domain\UserRepository.cs" />
     <Compile Include="Views\ViewCollect\ViewCollect.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -114,6 +120,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ArqHex\Collector\application\" />
+    <Folder Include="ArqHex\Collector\infrastructure\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
