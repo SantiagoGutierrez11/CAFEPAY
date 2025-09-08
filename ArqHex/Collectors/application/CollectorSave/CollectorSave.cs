@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CAFEPAY.ArqHex.Collectors.application.CollectorSave
 {
-    internal class CollectorSave
+    public class CollectorSave
     {
         private readonly CollectorRepository collectorRepository;
         public CollectorSave(CollectorRepository _collectorRepository) { 

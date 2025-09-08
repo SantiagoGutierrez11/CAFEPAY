@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CAFEPAY.ArqHex.Collectors.domain
 {
-    internal class CollectorStatus
+    public class CollectorStatus
     {
         private Boolean collectorStatusValue;
         public CollectorStatus(Boolean _collectorStatusValue) { 

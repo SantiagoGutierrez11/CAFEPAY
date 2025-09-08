@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CAFEPAY.ArqHex.Collectors.domain
 {
-    internal class CollectorPhone
+    public class CollectorPhone
     {
         private decimal collectorPhoneValue;
         public CollectorPhone(decimal _collectorPhoneValue) { 

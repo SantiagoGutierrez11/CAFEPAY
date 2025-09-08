@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CAFEPAY.ArqHex.Collectors.infrastructure
 {
-    internal class OracleCollectorRepository : CollectorRepository
+    public class OracleCollectorRepository : CollectorRepository
     {
         private readonly String connectionString;
         public OracleCollectorRepository(String _connectionString)
