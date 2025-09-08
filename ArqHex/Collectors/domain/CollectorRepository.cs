@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CAFEPAY.ArqHex.Collector.domain
+namespace CAFEPAY.ArqHex.Collectors.domain
 {
-    internal interface UserRepository
+    internal interface CollectorRepository
     {
         void save(Collector collector); // Save a new collector , update or insert if not exists
     }
