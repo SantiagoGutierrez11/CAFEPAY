@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CAFEPAY.ArqHex.Share
 {
-    internal class ServiceContainer
+    public class ServiceContainer
     {
         private static readonly String connectionString = "User Id=your_user;Password=your_password;Data Source=your_data_source";
         private static readonly CollectorRepository collectorRepository = new OracleCollectorRepository(connectionString);
