@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CAFEPAY.ArqHex.Collector.domain
+namespace CAFEPAY.ArqHex.Collectors.domain
 {
     internal class CollectorId
     {
@@ -27,6 +27,9 @@ namespace CAFEPAY.ArqHex.Collector.domain
             {
                 throw new ArgumentException("CollectorId must be a positive integer");
             }
+        }
+        public Decimal getValue() { 
+            return this.collectorIdValue;
         }
 
     }

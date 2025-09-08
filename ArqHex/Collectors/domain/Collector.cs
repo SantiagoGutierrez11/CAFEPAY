@@ -4,21 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CAFEPAY.ArqHex.Collector.domain
+namespace CAFEPAY.ArqHex.Collectors.domain
 {
     internal class Collector
     {
-        private CollectorId collectorId;
-        private CollectorName collectorName;
-        private CollectorPhone collectorPhone;
-        private CollectorStatus collectorStatus;
+        public CollectorId Id;
+        public CollectorName Name;
+        public CollectorPhone Phone;
+        public CollectorStatus Status;
         public Collector(CollectorId _collectorId, CollectorName _collectorName, 
                         CollectorPhone _collectorPhone, CollectorStatus _collectorStatus)
         {
-            this.collectorId = _collectorId;
-            this.collectorName = _collectorName;
-            this.collectorPhone = _collectorPhone;
-            this.collectorStatus = _collectorStatus;
+            this.Id = _collectorId;
+            this.Name = _collectorName;
+            this.Phone = _collectorPhone;
+            this.Status = _collectorStatus;
         }
 
         public void calculatePayment()
