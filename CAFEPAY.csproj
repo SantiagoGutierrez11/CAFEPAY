@@ -92,6 +92,15 @@
     <Compile Include="ArqHex\Collectors\domain\CollectorRepository.cs" />
     <Compile Include="ArqHex\Collectors\infrastructure\CollectorController.cs" />
     <Compile Include="ArqHex\Collectors\infrastructure\OracleCollectorRepository.cs" />
+    <Compile Include="ArqHex\Harvests\Application\HarvestSave\HarvestSave.cs" />
+    <Compile Include="ArqHex\Harvests\Domain\Harvest.cs" />
+    <Compile Include="ArqHex\Harvests\Domain\HarvestEndDate.cs" />
+    <Compile Include="ArqHex\Harvests\Domain\HarvestId.cs" />
+    <Compile Include="ArqHex\Harvests\Domain\HarvestLocation.cs" />
+    <Compile Include="ArqHex\Harvests\Domain\HarvestPricePerKilo.cs" />
+    <Compile Include="ArqHex\Harvests\Domain\HarvestRepository.cs" />
+    <Compile Include="ArqHex\Harvests\Domain\HarvestStartDate.cs" />
+    <Compile Include="ArqHex\Harvests\Infrastucture\HarvestController.cs" />
     <Compile Include="ArqHex\Share\ServiceContainer.cs" />
     <Compile Include="Views\ViewCollect\ViewCollect.cs">
       <SubType>Form</SubType>
