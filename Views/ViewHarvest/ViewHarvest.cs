@@ -147,6 +147,16 @@ namespace CAFEPAY
         {
 
         }
+
+        private void txtId_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblId_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 
     // CLASES (fuera de la clase Form1)

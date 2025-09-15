@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CAFEPAY.ArqHex.Collectors.application.CollectorQueryAll;
 
 namespace CAFEPAY.ArqHex.Share
 {
@@ -16,6 +17,7 @@ namespace CAFEPAY.ArqHex.Share
         public static class Collector
         {
             public static CollectorSave save = new CollectorSave(collectorRepository);
+            public static CollectorQueryAll query = new CollectorQueryAll(collectorRepository);
         }
     }
 }
