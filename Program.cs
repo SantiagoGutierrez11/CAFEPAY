@@ -1,4 +1,5 @@
 ﻿
+using CAFEPAY.Views.ViewCollector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,8 +18,13 @@ namespace CAFEPAY
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ViewHarvest());
-            Application.Run(new frmGestionRecolectores());
+            Application.Run(new ViewCollector());
+            /*
+                        ViewCollector viewCollector = new ViewCollector();
+            viewCollector.Show();
+            */
+
+            //)FJnTmGvIIkti?L]
         }
     }
 }

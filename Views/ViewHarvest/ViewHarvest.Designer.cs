@@ -88,6 +88,7 @@
             this.txtId.Name = "txtId";
             this.txtId.Size = new System.Drawing.Size(111, 20);
             this.txtId.TabIndex = 13;
+            this.txtId.TextChanged += new System.EventHandler(this.txtId_TextChanged);
             // 
             // dtpStartDate
             // 
@@ -100,11 +101,12 @@
             // lblId
             // 
             this.lblId.AutoSize = true;
-            this.lblId.Location = new System.Drawing.Point(25, 47);
+            this.lblId.Location = new System.Drawing.Point(23, 47);
             this.lblId.Name = "lblId";
             this.lblId.Size = new System.Drawing.Size(66, 13);
             this.lblId.TabIndex = 12;
             this.lblId.Text = "ID Cosecha:";
+            this.lblId.Click += new System.EventHandler(this.lblId_Click);
             // 
             // dtpEndDate
             // 
