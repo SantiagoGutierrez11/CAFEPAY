@@ -93,8 +93,6 @@
     <Compile Include="ArqHex\Collectors\domain\CollectorRepository.cs" />
     <Compile Include="ArqHex\Collectors\infrastructure\CollectorController.cs" />
     <Compile Include="ArqHex\Collectors\infrastructure\OracleCollectorRepository.cs" />
-    <Compile Include="ArqHex\Share\DTO\CollectorDTO.cs" />
-    <Compile Include="ArqHex\Share\Serializers\CollectorMaper.cs" />
     <Compile Include="ArqHex\Share\ServiceContainer.cs" />
     <Compile Include="Views\ViewCollector\ViewCollector.cs">
       <SubType>Form</SubType>
