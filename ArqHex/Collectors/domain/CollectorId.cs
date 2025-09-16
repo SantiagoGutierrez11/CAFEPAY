@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CAFEPAY.ArqHex.Collectors.domain
 {
-    internal class CollectorId
+    public class CollectorId
     {
         private Decimal collectorIdValue;
         public CollectorId(Decimal _collectorIdValue) { 
@@ -31,6 +31,5 @@ namespace CAFEPAY.ArqHex.Collectors.domain
         public Decimal getValue() { 
             return this.collectorIdValue;
         }
-
     }
 }

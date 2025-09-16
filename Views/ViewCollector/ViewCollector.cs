@@ -8,16 +8,34 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace CAFEPAY
+namespace CAFEPAY.Views.ViewCollector
 {
-    public partial class frmGestionRecolectores : Form
+    public partial class ViewCollector : Form
     {
-        public frmGestionRecolectores()
+        public ViewCollector()
         {
             InitializeComponent();
         }
 
-        private void btnDarBaja_Click(object sender, EventArgs e)
+        private void btnDelet_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            ViewCollectorDetail viewCollectorDetail = new ViewCollectorDetail();
+            viewCollectorDetail.Owner = this;
+            viewCollectorDetail.Show();
+            this.Hide();
+        }
+
+        private void dgCollector_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void ViewCollector_Load(object sender, EventArgs e)
         {
 
         }

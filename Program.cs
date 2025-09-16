@@ -1,4 +1,5 @@
 ﻿
+using CAFEPAY.Views.ViewCollector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Windows.Forms;
 
 namespace CAFEPAY
 {
-    internal static class Program
+    public static class Program
     {
         /// <summary>
         /// Punto de entrada principal para la aplicación.
@@ -17,8 +18,13 @@ namespace CAFEPAY
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ViewHarvest());
-            Application.Run(new frmGestionRecolectores());
+            Application.Run(new ViewCollector());
+            /*
+                        ViewCollector viewCollector = new ViewCollector();
+            viewCollector.Show();
+            */
+
+            //)FJnTmGvIIkti?L]
         }
     }
 }

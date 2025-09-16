@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CAFEPAY.ArqHex.Collectors.domain
 {
-    internal class CollectorName
+    public class CollectorName
     {
         private String collectorNameValue;
         public CollectorName(String _collectorNameValue) { 

@@ -6,16 +6,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CAFEPAY.ArqHex.Collectors.application.CollectorQueryAll;
 
 namespace CAFEPAY.ArqHex.Share
 {
-    internal class ServiceContainer
+    public class ServiceContainer
     {
         private static readonly String connectionString = "User Id=your_user;Password=your_password;Data Source=your_data_source";
         private static readonly CollectorRepository collectorRepository = new OracleCollectorRepository(connectionString);
         public static class Collector
         {
             public static CollectorSave save = new CollectorSave(collectorRepository);
+            public static CollectorQueryAll query = new CollectorQueryAll(collectorRepository);
         }
     }
 }
