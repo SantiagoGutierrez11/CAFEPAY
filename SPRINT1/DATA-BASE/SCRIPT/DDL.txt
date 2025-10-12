@@ -1,0 +1,54 @@
+--------------------------------------------------------
+--  Eliminación previa
+--------------------------------------------------------
+DROP TABLE COLLECTOR CASCADE CONSTRAINTS;
+DROP TABLE STATUS_DOMAIN CASCADE CONSTRAINTS;
+
+--------------------------------------------------------
+--  Tabla de dominio estático para el estado del recolector
+--------------------------------------------------------
+CREATE TABLE STATUS_DOMAIN (
+    STATUS_ID NUMBER NOT NULL,
+    STATUS_NAME VARCHAR2(20) NOT NULL
+);
+
+--------------------------------------------------------
+--  Datos estáticos del dominio de estado
+--------------------------------------------------------
+INSERT INTO STATUS_DOMAIN (STATUS_ID, STATUS_NAME) VALUES (1, 'ACTIVE');
+INSERT INTO STATUS_DOMAIN (STATUS_ID, STATUS_NAME) VALUES (2, 'INACTIVE');
+
+--------------------------------------------------------
+--  Creación de tabla COLLECTOR
+--------------------------------------------------------
+CREATE TABLE COLLECTOR (
+    WORKER_CODE       NUMBER NOT NULL,  -- código único de trabajador, clave primaria
+    ID                NUMBER NOT NULL,        -- FK a PERSON (si existe)
+    FIRST_NAME        VARCHAR2(50) NOT NULL,
+    LAST_NAME         VARCHAR2(50) NOT NULL,
+    STATUS_ID         NUMBER NOT NULL         -- FK a STATUS_DOMAIN
+);
+
+--------------------------------------------------------
+--  Definición de restricciones (Constraints)
+--------------------------------------------------------
+
+--------------------------------------------------------
+--  Collector
+--------------------------------------------------------
+-- Clave primaria
+ALTER TABLE COLLECTOR 
+    ADD CONSTRAINT COLLECTOR_PK PRIMARY KEY (WORKER_CODE) ENABLE;
+ALTER TABLE STATUS_DOMAIN 
+    ADD CONSTRAINT STATUS_PK PRIMARY KEY (STATUS_ID) ENABLE;
+
+-- Clave única (para el id personal)
+ALTER TABLE COLLECTOR 
+    ADD CONSTRAINT COLLECTOR_UQ_ID UNIQUE (ID) ENABLE;
+
+-- Llave foránea a la tabla de dominio STATUS_DOMAIN
+ALTER TABLE COLLECTOR 
+    ADD CONSTRAINT COLLECTOR_FK_STATUS 
+    FOREIGN KEY (STATUS_ID) 
+    REFERENCES STATUS_DOMAIN (STATUS_ID) ENABLE;
+--------------------------------------------------------
