@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CAFEPAY.ArqHex.Harvests.Domain
 {
-    internal class HarvestLocation
+    public class HarvestLocation
     {
         public string harvestLocationValue;
 
@@ -29,7 +29,7 @@ namespace CAFEPAY.ArqHex.Harvests.Domain
             }
         }
 
-        public string GetValue()
+        public string getValue()
         {
             return this.harvestLocationValue;
         }

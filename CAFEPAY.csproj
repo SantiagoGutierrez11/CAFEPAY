@@ -93,7 +93,24 @@
     <Compile Include="ArqHex\Collectors\domain\CollectorRepository.cs" />
     <Compile Include="ArqHex\Collectors\infrastructure\CollectorController.cs" />
     <Compile Include="ArqHex\Collectors\infrastructure\OracleCollectorRepository.cs" />
+    <Compile Include="ArqHex\Harvests\Application\HarvestQueryAll\HarvestQueryAll.cs" />
+    <Compile Include="ArqHex\Harvests\Application\HarvestSave\HarvestSave.cs" />
+    <Compile Include="ArqHex\Harvests\Domain\HarvestEndDate.cs" />
+    <Compile Include="ArqHex\Harvests\Domain\HarvestId.cs" />
+    <Compile Include="ArqHex\Harvests\Domain\HarvestLocation.cs" />
+    <Compile Include="ArqHex\Harvests\Domain\HarvestPricePerKilo.cs" />
+    <Compile Include="ArqHex\Harvests\Domain\HarvestRepository.cs" />
+    <Compile Include="ArqHex\Harvests\Domain\Harvest.cs" />
+    <Compile Include="ArqHex\Harvests\Domain\HarvestStartDate.cs" />
+    <Compile Include="ArqHex\Harvests\Infrastructure\HarvestController.cs" />
+    <Compile Include="ArqHex\Harvests\Infrastructure\OracleHarvestRepository.cs" />
+    <Compile Include="ArqHex\Share\DTO\CollectorDTO.cs" />
+    <Compile Include="ArqHex\Share\DTO\HarvestDTO.cs" />
+    <Compile Include="ArqHex\Share\Serializers\CollectorMaper.cs" />
+    <Compile Include="ArqHex\Share\Serializers\HarvestMapper.cs" />
     <Compile Include="ArqHex\Share\ServiceContainer.cs" />
+    <Compile Include="obj\Debug\.NETFramework,Version=v4.8.AssemblyAttributes.cs" />
+    <Compile Include="obj\Release\.NETFramework,Version=v4.8.AssemblyAttributes.cs" />
     <Compile Include="Views\ViewCollector\ViewCollector.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -168,6 +185,11 @@
     <EmbeddedResource Include="Views\ViewPayment\ViewPayment.resx">
       <DependentUpon>ViewPayment.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include=".gitattributes" />
+    <None Include=".gitignore" />
+    <None Include="obj\Debug\CAFEPAY.csproj.AssemblyReference.cache" />
+    <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
+    <None Include="obj\Release\CAFEPAY.csproj.AssemblyReference.cache" />
     <None Include="Oracle.DataAccess.Common.Configuration.Section.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -188,6 +210,10 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="bin\Debug\" />
+    <Folder Include="bin\Release\" />
+    <Folder Include="obj\Debug\TempPE\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace CAFEPAY.ArqHex.Harvests.Domain
 {
-    internal class HarvestEndDate
+    public class HarvestEndDate
     {
-        public DateTime Value { get; private set; }
+        private DateTime HarvestEndDateValue { get; }
 
         public HarvestEndDate(DateTime value)
         {
@@ -18,7 +18,12 @@ namespace CAFEPAY.ArqHex.Harvests.Domain
             if (value > DateTime.Now)
                 throw new ArgumentException("Harvest end date cannot be in the future");
 
-            Value = value;
+            HarvestEndDateValue = value;
+        }
+
+        public DateTime getValue()
+        {
+            return this.HarvestEndDateValue;
         }
     }
 }
