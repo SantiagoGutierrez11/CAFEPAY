@@ -53,7 +53,7 @@ namespace CAFEPAY.ArqHex.Collectors.infrastructure
                         while (reader.Read())
                         {
                             CollectorId id = new CollectorId(reader.GetDecimal(0));
-                            CollectorName name = new CollectorName(reader.GetString(1));
+                            CollectorFirstName name = new CollectorName(reader.GetString(1));
                             CollectorPhone phone = new CollectorPhone(reader.GetDecimal(2));
                             CollectorStatus status = new CollectorStatus(reader.GetBoolean(3));
                             Collector collector = new Collector(id, name, phone, status);

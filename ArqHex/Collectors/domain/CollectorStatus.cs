@@ -8,11 +8,13 @@ namespace CAFEPAY.ArqHex.Collectors.domain
 {
     public class CollectorStatus
     {
-        private Boolean collectorStatusValue;
-        public CollectorStatus(Boolean _collectorStatusValue) { 
+        private decimal collectorStatusValue;
+        public CollectorStatus(decimal _collectorStatusValue)
+        {
             this.collectorStatusValue = _collectorStatusValue;
         }
-        public Boolean getValue() { 
+        public decimal getValue()
+        {
             return this.collectorStatusValue;
         }
     }

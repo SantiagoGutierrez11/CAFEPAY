@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,8 @@ namespace CAFEPAY.ArqHex.Collectors.domain
     public class CollectorId
     {
         private Decimal collectorIdValue;
-        public CollectorId(Decimal _collectorIdValue) { 
+        public CollectorId(Decimal _collectorIdValue)
+        {
             this.collectorIdValue = _collectorIdValue;
             validateFormat();
         }
@@ -28,7 +30,8 @@ namespace CAFEPAY.ArqHex.Collectors.domain
                 throw new ArgumentException("CollectorId must be a positive integer");
             }
         }
-        public Decimal getValue() { 
+        public Decimal getValue()
+        {
             return this.collectorIdValue;
         }
     }

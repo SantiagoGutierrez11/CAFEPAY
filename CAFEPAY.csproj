@@ -87,10 +87,12 @@
     <Compile Include="ArqHex\Collectors\application\CollectorSave\CollectorSave.cs" />
     <Compile Include="ArqHex\Collectors\domain\Collector.cs" />
     <Compile Include="ArqHex\Collectors\domain\CollectorId.cs" />
-    <Compile Include="ArqHex\Collectors\domain\CollectorName.cs" />
+    <Compile Include="ArqHex\Collectors\domain\CollectorFirstName.cs" />
+    <Compile Include="ArqHex\Collectors\domain\CollectorLastName.cs" />
     <Compile Include="ArqHex\Collectors\domain\CollectorPhone.cs" />
     <Compile Include="ArqHex\Collectors\domain\CollectorStatus.cs" />
     <Compile Include="ArqHex\Collectors\domain\CollectorRepository.cs" />
+    <Compile Include="ArqHex\Collectors\domain\CollectorWorkerId.cs" />
     <Compile Include="ArqHex\Collectors\infrastructure\CollectorController.cs" />
     <Compile Include="ArqHex\Collectors\infrastructure\OracleCollectorRepository.cs" />
     <Compile Include="ArqHex\Share\DTO\CollectorDTO.cs" />

@@ -15,7 +15,7 @@ namespace CAFEPAY.ArqHex.Collectors.application.CollectorSave
         }
         public void execute(decimal collectorId, string collectorName, Decimal collectorPhone, Boolean collectorStatus) { 
             CollectorId id = new CollectorId(collectorId);
-            CollectorName name = new CollectorName(collectorName);
+            CollectorFirstName name = new CollectorFirstName(collectorName);
             CollectorPhone phone = new CollectorPhone(collectorPhone);
             CollectorStatus status = new CollectorStatus(collectorStatus);
             Collector collector = new Collector(id, name, phone, status);

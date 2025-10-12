@@ -9,7 +9,8 @@ namespace CAFEPAY.ArqHex.Collectors.domain
     public class CollectorPhone
     {
         private decimal collectorPhoneValue;
-        public CollectorPhone(decimal _collectorPhoneValue) { 
+        public CollectorPhone(decimal _collectorPhoneValue)
+        {
             this.collectorPhoneValue = _collectorPhoneValue;
             validateFormat();
         }
@@ -28,7 +29,8 @@ namespace CAFEPAY.ArqHex.Collectors.domain
                 throw new ArgumentException("CollectorId must be a positive integer");
             }
         }
-        public decimal getValue() { 
+        public decimal getValue()
+        {
             return this.collectorPhoneValue;
         }
     }

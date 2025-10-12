@@ -8,22 +8,22 @@ namespace CAFEPAY.ArqHex.Collectors.domain
 {
     public class Collector
     {
-        public CollectorId Id;
-        public CollectorName Name;
-        public CollectorPhone Phone;
-        public CollectorStatus Status;
-        public Collector(CollectorId _collectorId, CollectorName _collectorName, 
-                        CollectorPhone _collectorPhone, CollectorStatus _collectorStatus)
+        private CollectorWorkerId workerId;
+        private CollectorId id;
+        private CollectorFirstName firstName;
+        private CollectorLastName lastName;
+        private CollectorPhone phone;
+        private CollectorStatus status;
+        public Collector(CollectorWorkerId _collectorWorkerId, CollectorId _collectorId, CollectorFirstName _collectorFirstName,
+                        CollectorLastName _collectorLastName, CollectorPhone _collectorPhone, CollectorStatus _collectorStatus)
         {
-            this.Id = _collectorId;
-            this.Name = _collectorName;
-            this.Phone = _collectorPhone;
-            this.Status = _collectorStatus;
+            this.workerId = _collectorWorkerId; // atributos
+            this.id = _collectorId;
+            this.firstName = _collectorFirstName;
+            this.lastName = _collectorLastName;
+            this.phone = _collectorPhone;
+            this.status = _collectorStatus;
         }
 
-        public void calculatePayment()
-        {
-            
-        }
     }
 }
