@@ -6,16 +6,18 @@ using System.Threading.Tasks;
 
 namespace CAFEPAY.ArqHex.Collectors.domain
 {
-    public class CollectorPhone
+    public class CollectorFirstName
     {
-        public string collectorPhone { get; }
-        public CollectorPhone(string _collectorPhoneValue)
+        public string collectorFirstName;
+        public CollectorFirstName(string _collectorFirstName)
         {
-            this.collectorPhone = _collectorPhoneValue;
+            this.collectorFirstName = _collectorFirstName;
             validateFormat();
         }
         public void validateFormat()
         {
         }
+
     }
 }
+

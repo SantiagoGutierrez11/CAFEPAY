@@ -41,18 +41,18 @@
             this.dgCollector.AllowUserToResizeColumns = false;
             this.dgCollector.AllowUserToResizeRows = false;
             this.dgCollector.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgCollector.Location = new System.Drawing.Point(49, 88);
+            this.dgCollector.Location = new System.Drawing.Point(61, 103);
             this.dgCollector.MultiSelect = false;
             this.dgCollector.Name = "dgCollector";
             this.dgCollector.ReadOnly = true;
             this.dgCollector.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgCollector.Size = new System.Drawing.Size(690, 235);
+            this.dgCollector.Size = new System.Drawing.Size(646, 235);
             this.dgCollector.TabIndex = 0;
             this.dgCollector.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgCollector_CellContentClick);
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(49, 26);
+            this.btnAdd.Location = new System.Drawing.Point(61, 58);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(168, 39);
             this.btnAdd.TabIndex = 1;
@@ -62,7 +62,7 @@
             // 
             // btnDelet
             // 
-            this.btnDelet.Location = new System.Drawing.Point(571, 26);
+            this.btnDelet.Location = new System.Drawing.Point(539, 58);
             this.btnDelet.Name = "btnDelet";
             this.btnDelet.Size = new System.Drawing.Size(168, 39);
             this.btnDelet.TabIndex = 2;

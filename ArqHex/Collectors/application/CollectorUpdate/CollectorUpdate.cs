@@ -5,16 +5,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CAFEPAY.ArqHex.Collectors.application.CollectorSave
+namespace CAFEPAY.ArqHex.Collectors.application.CollectorUpdate
 {
-    public class CollectorSave
+    public class CollectorUpdate
     {
         private readonly CollectorRepository collectorRepository;
-        public CollectorSave(CollectorRepository _collectorRepository) { 
+        public CollectorUpdate(CollectorRepository _collectorRepository)
+        {
             this.collectorRepository = _collectorRepository;
         }
-        public void execute(string _collectorWorkerCode, string _collectorId, string _collectorFirstName,
-                            string _collectorLastName, string _collectorPhone, int _collectorStatus) {
+        public void execute(string _oldId, string _collectorWorkerCode, string _collectorId, string _collectorFirstName,
+                            string _collectorLastName, string _collectorPhone, int _collectorStatus)
+        {
             CollectorWorkerCode collectorWorkerCode = new CollectorWorkerCode(_collectorWorkerCode);
             CollectorId id = new CollectorId(_collectorId);
             CollectorFirstName firstName = new CollectorFirstName(_collectorFirstName);
@@ -22,8 +24,8 @@ namespace CAFEPAY.ArqHex.Collectors.application.CollectorSave
             CollectorPhone phone = new CollectorPhone(_collectorPhone);
             CollectorStatus status = new CollectorStatus(_collectorStatus);
             Collector collector = new Collector(collectorWorkerCode, id, firstName, lastName, phone, status);
-            collectorRepository.save(collector);
+            collectorRepository.update(collector,_oldId);
         }
-        
+
     }
 }

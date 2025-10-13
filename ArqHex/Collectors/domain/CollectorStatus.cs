@@ -3,17 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace CAFEPAY.ArqHex.Collectors.domain
 {
     public class CollectorStatus
     {
-        private Boolean collectorStatusValue;
-        public CollectorStatus(Boolean _collectorStatusValue) { 
-            this.collectorStatusValue = _collectorStatusValue;
+        public int collectorStatus { get; } // Hace que el atributo sea de solo lectura y no se pueda modificar
+        public CollectorStatus(int _collectorStatusValue)
+        {
+            this.collectorStatus = _collectorStatusValue;
+            validateFormat();
         }
-        public Boolean getValue() { 
-            return this.collectorStatusValue;
+        private void validateFormat()
+        {
         }
     }
 }

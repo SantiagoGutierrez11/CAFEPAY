@@ -8,9 +8,12 @@ namespace CAFEPAY.ArqHex.Share.DTO
 {
     public class CollectorDTO
     {
-        public decimal Id { get; set; }
-        public string Name { get; set; }
-        public decimal Phone { get; set; }
-        public bool Status { get; set; }
+        public string workerCode { get; set; }   
+        public string id { get; set; }
+        public string firstName { get; set; }
+        public string lastName { get; set; }
+        public string phone { get; set; }
+        public string status { get; set; }         // 1 = activo , 2 = inactivo
+
     }
 }

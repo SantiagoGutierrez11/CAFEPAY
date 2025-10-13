@@ -10,6 +10,7 @@ namespace CAFEPAY.ArqHex.Collectors.domain
     public interface CollectorRepository
     {
         void save(Collector collector); // Save a new collector , update or insert if not exists
-        Dictionary<CollectorId,Collector> queryAll(); // List all collectors
+        void update(Collector collector, string oldId); // Update an existing collector
+        List<Collector> queryAll(); // List all collectors
     }
 }
