@@ -5,16 +5,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace CAFEPAY.ArqHex.Collectors.infrastructure
 {
     public class CollectorController
     {
-       public void saveCollector(Decimal collectorId, String collectorName, Decimal collectorPhone, Boolean collectorStatus) { 
-            ServiceContainer.Collector.save.execute(collectorId, collectorName, collectorPhone, collectorStatus);
+       public void saveCollector(string _collectorWorkerCode, string _collectorId, string _collectorFirstName,
+                            string _collectorLastName, string _collectorPhone, int _collectorStatus) { 
+            AppServices.Collector.save.execute(_collectorWorkerCode, _collectorId, _collectorFirstName, _collectorLastName,
+                                                    _collectorPhone, _collectorStatus);
         }
-        public Dictionary<CollectorId,Collector> listCollectors() { 
-            return ServiceContainer.Collector.query.execute();
+        public void updateCollector(string _oldId, string _collectorWorkerCode, string _collectorId, string _collectorFirstName,
+                            string _collectorLastName, string _collectorPhone, int _collectorStatus)
+        {
+            AppServices.Collector.update.execute(_oldId, _collectorWorkerCode, _collectorId, _collectorFirstName, _collectorLastName,
+                                                    _collectorPhone, _collectorStatus);
+        }
+        public List<Collector> listCollectors() { 
+            return AppServices.Collector.query.execute();
         }
     }
 }

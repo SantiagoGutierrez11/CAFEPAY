@@ -25,6 +25,8 @@ namespace CAFEPAY
             */
 
             //)FJnTmGvIIkti?L]
+            ViewCollector viewCollector = new ViewCollector();
+            viewCollector.Show();
         }
     }
 }

@@ -8,7 +8,7 @@
       <xs:enumeration value="Implicit"/>
     </xs:restriction>
   </xs:simpleType>
-  <xs:simpleType name="customBoolean">
+  <xs:simpleType name="customstring">
     <xs:restriction base="xs:string">
       <xs:enumeration value="true"/>
       <xs:enumeration value="false"/>
@@ -31,13 +31,13 @@
   <xs:simpleType name="datatype">
     <xs:restriction base="xs:string">
       <xs:enumeration value="System.Binary"/>
-      <xs:enumeration value="System.Boolean"/>
+      <xs:enumeration value="System.string"/>
       <xs:enumeration value="System.Byte"/>
       <xs:enumeration value="System.Byte[]"/>
       <xs:enumeration value="System.Char"/>
       <xs:enumeration value="System.DateTime"/>
       <xs:enumeration value="System.DateTimeOffset"/>
-      <xs:enumeration value="System.Decimal"/>
+      <xs:enumeration value="System.string"/>
       <xs:enumeration value="System.Double"/>
       <xs:enumeration value="System.Guid"/>
       <xs:enumeration value="System.Int16"/>
@@ -45,7 +45,7 @@
       <xs:enumeration value="System.Int64"/>
       <xs:enumeration value="System.SByte"/>
       <xs:enumeration value="System.Single"/>
-      <xs:enumeration value="System.String"/>
+      <xs:enumeration value="System.string"/>
       <xs:enumeration value="System.TimeSpan"/>
       <xs:enumeration value="System.UInt16"/>
       <xs:enumeration value="System.UInt32"/>
@@ -63,7 +63,7 @@
       <xs:enumeration value="Char"/>
       <xs:enumeration value="Clob"/>
       <xs:enumeration value="Date"/>
-      <xs:enumeration value="Decimal"/>
+      <xs:enumeration value="string"/>
       <xs:enumeration value="Double"/>
       <xs:enumeration value="Int16"/>
       <xs:enumeration value="Int32"/>
@@ -116,22 +116,22 @@
 
   <xs:simpleType name="providerDBType">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="AnsiString"/>
-      <xs:enumeration value="AnsiStringFixedLength"/>
+      <xs:enumeration value="Ansistring"/>
+      <xs:enumeration value="AnsistringFixedLength"/>
       <xs:enumeration value="Binary"/>
       <xs:enumeration value="Byte"/>
       <xs:enumeration value="Date"/>
       <xs:enumeration value="DateTime"/>
       <xs:enumeration value="DateTimeOffset"/>
-      <xs:enumeration value="Decimal"/>
+      <xs:enumeration value="string"/>
       <xs:enumeration value="Double"/>
       <xs:enumeration value="Int16"/>
       <xs:enumeration value="Int32"/>
       <xs:enumeration value="Int64"/>
       <xs:enumeration value="Object"/>
       <xs:enumeration value="Single"/>
-      <xs:enumeration value="String"/>
-      <xs:enumeration value="StringFixedLength"/>
+      <xs:enumeration value="string"/>
+      <xs:enumeration value="stringFixedLength"/>
       <xs:enumeration value="Time"/>
     </xs:restriction>
   </xs:simpleType>

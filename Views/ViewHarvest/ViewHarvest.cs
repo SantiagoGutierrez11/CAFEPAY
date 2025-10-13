@@ -178,7 +178,7 @@ namespace CAFEPAY
     public class Collects
     {
         public int CollectId { get; set; }
-        public decimal Weight { get; set; }
+        public string Weight { get; set; }
         public DateTime CollectDate { get; set; }
         public string CollectorName { get; set; }
     }

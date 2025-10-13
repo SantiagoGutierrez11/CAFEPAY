@@ -8,14 +8,14 @@ namespace CAFEPAY.ArqHex.Collectors.domain
 {
     public class CollectorLastName
     {
-        private String collectorLastName;
-        public CollectorLastName(String _collectorLastName)
+        public string collectorLastName { get;}
+        public CollectorLastName(string _collectorLastName)
         {
             this.collectorLastName = _collectorLastName;
+            validateFormat();
         }
-        public String getValue()
+        public void validateFormat()
         {
-            return this.collectorLastName;
         }
     }
 }
