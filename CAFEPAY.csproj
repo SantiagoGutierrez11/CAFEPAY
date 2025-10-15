@@ -106,17 +106,23 @@
     <Compile Include="Views\ViewCollector\ViewCollector.Designer.cs">
       <DependentUpon>ViewCollector.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\ViewCollector\ViewCollectorDetail.cs">
+    <Compile Include="Views\ViewCollector\ViewCollectorModify.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\ViewCollector\ViewCollectorDetail.Designer.cs">
-      <DependentUpon>ViewCollectorDetail.cs</DependentUpon>
+    <Compile Include="Views\ViewCollector\ViewCollectorModify.Designer.cs">
+      <DependentUpon>ViewCollectorModify.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\ViewCollector\ViewCollectorDetailConfirm.cs">
+    <Compile Include="Views\ViewCollector\ViewCollectorRegister.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\ViewCollector\ViewCollectorDetailConfirm.Designer.cs">
-      <DependentUpon>ViewCollectorDetailConfirm.cs</DependentUpon>
+    <Compile Include="Views\ViewCollector\ViewCollectorRegister.Designer.cs">
+      <DependentUpon>ViewCollectorRegister.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewCollector\ViewCollectorRegisterConfirm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ViewCollector\ViewCollectorRegisterConfirm.Designer.cs">
+      <DependentUpon>ViewCollectorRegisterConfirm.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\ViewCollect\ViewCollect.cs">
       <SubType>Form</SubType>
@@ -153,11 +159,14 @@
     <EmbeddedResource Include="Views\ViewCollector\ViewCollector.resx">
       <DependentUpon>ViewCollector.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\ViewCollector\ViewCollectorDetail.resx">
-      <DependentUpon>ViewCollectorDetail.cs</DependentUpon>
+    <EmbeddedResource Include="Views\ViewCollector\ViewCollectorModify.resx">
+      <DependentUpon>ViewCollectorModify.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\ViewCollector\ViewCollectorDetailConfirm.resx">
-      <DependentUpon>ViewCollectorDetailConfirm.cs</DependentUpon>
+    <EmbeddedResource Include="Views\ViewCollector\ViewCollectorRegister.resx">
+      <DependentUpon>ViewCollectorRegister.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ViewCollector\ViewCollectorRegisterConfirm.resx">
+      <DependentUpon>ViewCollectorRegisterConfirm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\ViewCollect\ViewCollect.resx">
       <DependentUpon>ViewCollect.cs</DependentUpon>
