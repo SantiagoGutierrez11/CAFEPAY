@@ -1,6 +1,6 @@
 ﻿namespace CAFEPAY.Views.ViewCollector
 {
-    partial class ViewCollectorDetail
+    partial class ViewCollectorRegister
     {
         /// <summary>
         /// Required designer variable.

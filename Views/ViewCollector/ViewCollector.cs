@@ -70,7 +70,7 @@ namespace CAFEPAY.Views.ViewCollector
         }
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            ViewCollectorDetail viewCollectorDetail = new ViewCollectorDetail();
+            ViewCollectorRegister viewCollectorDetail = new ViewCollectorRegister();
             viewCollectorDetail.Owner = this;
             viewCollectorDetail.Show();
             this.Hide();

@@ -11,10 +11,10 @@ using System.Windows.Forms;
 
 namespace CAFEPAY.Views.ViewCollector
 {
-    public partial class ViewCollectorDetailConfirm : Form
+    public partial class ViewCollectorRegisterConfirm : Form
     {
         private CollectorDTO collectorDTO;
-        public ViewCollectorDetailConfirm(CollectorDTO _collectorDTO)
+        public ViewCollectorRegisterConfirm(CollectorDTO _collectorDTO)
         {
             collectorDTO = _collectorDTO;
             InitializeComponent();
