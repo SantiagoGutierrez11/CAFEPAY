@@ -8,14 +8,15 @@ namespace CAFEPAY.ArqHex.Collectors.domain
 {
     public class CollectorPhone
     {
-        public string collectorPhone { get; }
-        public CollectorPhone(string _collectorPhoneValue)
+        public long collectorPhone { get; }
+        public CollectorPhone(long _collectorPhoneValue)
         {
             this.collectorPhone = _collectorPhoneValue;
             validateFormat();
         }
         public void validateFormat()
         {
+
         }
     }
 }

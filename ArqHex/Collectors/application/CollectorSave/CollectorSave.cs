@@ -13,8 +13,8 @@ namespace CAFEPAY.ArqHex.Collectors.application.CollectorSave
         public CollectorSave(CollectorRepository _collectorRepository) { 
             this.collectorRepository = _collectorRepository;
         }
-        public void execute(string _collectorWorkerCode, string _collectorId, string _collectorFirstName,
-                            string _collectorLastName, string _collectorPhone, int _collectorStatus) {
+        public void execute(string _collectorWorkerCode, long _collectorId, string _collectorFirstName,
+                            string _collectorLastName, long _collectorPhone, int _collectorStatus) {
             CollectorWorkerCode collectorWorkerCode = new CollectorWorkerCode(_collectorWorkerCode);
             CollectorId id = new CollectorId(_collectorId);
             CollectorFirstName firstName = new CollectorFirstName(_collectorFirstName);

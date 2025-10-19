@@ -1,7 +1,7 @@
 ﻿using CAFEPAY.ArqHex.Collectors.domain;
 using CAFEPAY.ArqHex.Share;
 using CAFEPAY.ArqHex.Share.DTO;
-using Oracle.ManagedDataAccess.Client;
+using CAFEPAY.Views.ViewCollect;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,23 +11,37 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace CAFEPAY.Views.ViewCollector
 {
-    public partial class ViewCollectorDetail : Form
+    public partial class ViewCollectorModify : Form
     {
-        public ViewCollectorDetail()
+        private System.Windows.Forms.Form viewCollector;
+        private CollectorDTO oldCollectorDTO;
+        public ViewCollectorModify(CollectorDTO _oldCollectorDTO, Form _viewCollector)
         {
+            this.viewCollector = _viewCollector;
+            this.oldCollectorDTO = _oldCollectorDTO;
             InitializeComponent();
-            LoadComboStatus();
+            loadCollector();
+            loadComboBox();
+        }
+        private void loadCollector()
+        {
+            textBoxFirstName.Text = oldCollectorDTO.firstName;
+            textBoxLastName.Text = oldCollectorDTO.lastName;
+            textBoxId.Text = oldCollectorDTO.id.ToString();
+            textBoxPhone.Text = oldCollectorDTO.phone.ToString();
+            cmbStatus.SelectedValue = oldCollectorDTO.status;
+            lbWorkerCode.Text = oldCollectorDTO.workerCode;
         }
         private class StatusItem
         {
             public int value { get; set; }
             public string text { get; set; }
         }
-        private void LoadComboStatus()
+   
+        private void loadComboBox()
         {
             var items = new List<StatusItem>
             {
@@ -43,127 +57,63 @@ namespace CAFEPAY.Views.ViewCollector
             cmbStatus.SelectedValue = 1; // Activo
         }
 
-        //Componentes de eventos
-        #region
-        private void ViewCollectorDetail_Load(object sender, EventArgs e)
+        private void ViewCollectorModify__Load(object sender, EventArgs e)
         {
 
         }
 
-        private void txtBoxLastName_TextChanged(object sender, EventArgs e)
+        private void label1_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void grupBoxCollectorRegister_Enter(object sender, EventArgs e)
+        private void txtBoxWorkerId_TextChanged(object sender, EventArgs e)
         {
 
-        }
-
-
-        private void lbCollectorId_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lbCollecorName_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lbCollectorPhone_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnDecline_Click(object sender, EventArgs e)
-        {
-            Owner?.Show();
-            this.Close();
         }
 
         private void btnAccept_Click(object sender, EventArgs e)
         {
-            var _workerCode = txtBoxWorkerCode.Text?.Trim();
-            var _id = txtBoxId.Text?.Trim();
-            var _firstName = txtBoxFirstName.Text?.Trim();
-            var _lastName = txtBoxLastName.Text?.Trim();
-            var _phone = txtBoxPhone.Text?.Trim();
+            var _workerCode = oldCollectorDTO.workerCode;
+            var _id = textBoxId.Text?.Trim();
+            var _firstName = textBoxFirstName.Text?.Trim();
+            var _lastName = textBoxLastName.Text?.Trim();
+            var _phone = textBoxPhone.Text?.Trim();
             var _status = (int)cmbStatus.SelectedValue; // Estado activo por defecto
-            
+
             // 1) Validaciones mínimas de UI
-            if (string.IsNullOrWhiteSpace(_workerCode)) { MessageBox.Show("Worker Code es requerido."); txtBoxWorkerCode.Focus(); return; }
-            if (string.IsNullOrWhiteSpace(_id)) { MessageBox.Show("Cédula/ID es requerida."); txtBoxId.Focus(); return; }
-            if (string.IsNullOrWhiteSpace(_firstName)) { MessageBox.Show("Nombres es requerido."); txtBoxFirstName.Focus(); return; }
-            if (string.IsNullOrWhiteSpace(_lastName)) { MessageBox.Show("Apellidos es requerido."); txtBoxLastName.Focus(); return; }
-            if (string.IsNullOrWhiteSpace(_phone)) { MessageBox.Show("Teléfono es requerido."); txtBoxPhone.Focus(); return; }
-      
-            try
-            {
-                // Llamada a tu caso de uso (INSERT)
-                AppServices.Collector.save.execute(_workerCode, _id, _firstName, _lastName, _phone, _status);
-                var collectorDTO = new CollectorDTO
+           
+            if (string.IsNullOrWhiteSpace(_id)) { MessageBox.Show("Cédula/ID es requerida."); textBoxId.Focus(); return; }
+            if (string.IsNullOrWhiteSpace(_firstName)) { MessageBox.Show("Nombres es requerido."); textBoxFirstName.Focus(); return; }
+            if (string.IsNullOrWhiteSpace(_lastName)) { MessageBox.Show("Apellidos es requerido."); textBoxLastName.Focus(); return; }
+            if (string.IsNullOrWhiteSpace(_phone)) { MessageBox.Show("Teléfono es requerido."); textBoxPhone.Focus(); return; }
+
+                var newCollectorDTO = new CollectorDTO
                 {
                     workerCode = _workerCode,
-                    id = _id,
+                    id = long.Parse(_id),
                     firstName = _firstName,
                     lastName = _lastName,
-                    phone = _phone,
-                    status = cmbStatus.Text
-                }
-                ;
-                ViewCollectorDetailConfirm viewCollectorDetailConfirm = new ViewCollectorDetailConfirm(collectorDTO);
-                viewCollectorDetailConfirm.Owner = this.Owner;
-                this.Close();
-                viewCollectorDetailConfirm.Show();
-            }
-            catch (InvalidOperationException ex)
+                    phone = long.Parse(_phone),
+                    status = _status
+                };
+        
+            if (newCollectorDTO.id != oldCollectorDTO.id)
             {
-                // Viene del repositorio cuando ORA-00001 (duplicado PK/UNIQUE)
-                MessageBox.Show(ex.Message, "Duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtBoxWorkerCode.Focus(); // o txtBoxId.Focus() según el caso
+                var ownerViewCollector = this.Owner;
+                ViewCollectorModifyId viewCollectorModifyId = new ViewCollectorModifyId(newCollectorDTO,oldCollectorDTO, viewCollector);
+                viewCollectorModifyId.Owner = this;
+                this.Hide();
+                viewCollectorModifyId.Show();
             }
-            catch (OracleException ex) when (ex.Number == 1400) // ORA-01400: cannot insert NULL
+            else
             {
-                MessageBox.Show("Hay campos obligatorios vacíos.", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ViewCollectorModifyConfirm_ viewCollectorModifyConfirm = new ViewCollectorModifyConfirm_(newCollectorDTO,oldCollectorDTO, viewCollector);
+                viewCollectorModifyConfirm.Owner = this;
+                viewCollectorModifyConfirm.Show();
+                this.Hide();
+              
             }
-            catch (OracleException ex) when (ex.Number == 12899) // ORA-12899: value too large for column
-            {
-                MessageBox.Show("Algún campo supera el tamaño permitido por la columna.", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch (OracleException ex)
-            {
-                // Otros errores de Oracle
-                MessageBox.Show($"Error de base de datos ORA-{ex.Number}: {ex.Message}", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch (Exception ex)
-            {
-                // Errores inesperados
-                MessageBox.Show("Error al guardar el collector: " + ex.Message, "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void txtBoxLastName_TextChanged_1(object sender, EventArgs e)
-        {
-
-        }
-        private void txtBoxPhone_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtBoxLastName_TextChanged_2(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBoxId_TextChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void textBoxFirstName_TextChanged(object sender, EventArgs e)
@@ -171,14 +121,10 @@ namespace CAFEPAY.Views.ViewCollector
 
         }
 
-        private void textBoxWorkerCode_TextChanged(object sender, EventArgs e)
+        private void btnDecline_Click(object sender, EventArgs e)
         {
-
-        }
-        #endregion
-
-        private void cmbStatus_SelectedIndexChanged(object sender, EventArgs e)
-        {
+            this.Owner?.Show();
+            this.Close();
 
         }
     }

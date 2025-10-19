@@ -45,7 +45,7 @@ namespace CAFEPAY.Views.ViewCollector
 
         //Componentes de eventos
         #region
-        private void ViewCollectorDetail_Load(object sender, EventArgs e)
+        private void ViewCollectorModify_Load(object sender, EventArgs e)
         {
 
         }
@@ -82,71 +82,6 @@ namespace CAFEPAY.Views.ViewCollector
             this.Close();
         }
 
-        private void btnAccept_Click(object sender, EventArgs e)
-        {
-            var _workerCode = txtBoxWorkerCode.Text?.Trim();
-            var _id = txtBoxId.Text?.Trim();
-            var _firstName = txtBoxFirstName.Text?.Trim();
-            var _lastName = txtBoxLastName.Text?.Trim();
-            var _phone = txtBoxPhone.Text?.Trim();
-            var _status = (int)cmbStatus.SelectedValue; // Estado activo por defecto
-            
-            // 1) Validaciones mínimas de UI
-            if (string.IsNullOrWhiteSpace(_workerCode)) { MessageBox.Show("Worker Code es requerido."); txtBoxWorkerCode.Focus(); return; }
-            if (string.IsNullOrWhiteSpace(_id)) { MessageBox.Show("Cédula/ID es requerida."); txtBoxId.Focus(); return; }
-            if (string.IsNullOrWhiteSpace(_firstName)) { MessageBox.Show("Nombres es requerido."); txtBoxFirstName.Focus(); return; }
-            if (string.IsNullOrWhiteSpace(_lastName)) { MessageBox.Show("Apellidos es requerido."); txtBoxLastName.Focus(); return; }
-            if (string.IsNullOrWhiteSpace(_phone)) { MessageBox.Show("Teléfono es requerido."); txtBoxPhone.Focus(); return; }
-      
-            try
-            {
-                // Llamada a tu caso de uso (INSERT)
-                AppServices.Collector.save.execute(_workerCode, _id, _firstName, _lastName, _phone, _status);
-                var collectorDTO = new CollectorDTO
-                {
-                    workerCode = _workerCode,
-                    id = _id,
-                    firstName = _firstName,
-                    lastName = _lastName,
-                    phone = _phone,
-                    status = cmbStatus.Text
-                }
-                ;
-                ViewCollectorRegisterConfirm viewCollectorDetailConfirm = new ViewCollectorRegisterConfirm(collectorDTO);
-                viewCollectorDetailConfirm.Owner = this.Owner;
-                this.Close();
-                viewCollectorDetailConfirm.Show();
-            }
-            catch (InvalidOperationException ex)
-            {
-                // Viene del repositorio cuando ORA-00001 (duplicado PK/UNIQUE)
-                MessageBox.Show(ex.Message, "Duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtBoxWorkerCode.Focus(); // o txtBoxId.Focus() según el caso
-            }
-            catch (OracleException ex) when (ex.Number == 1400) // ORA-01400: cannot insert NULL
-            {
-                MessageBox.Show("Hay campos obligatorios vacíos.", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch (OracleException ex) when (ex.Number == 12899) // ORA-12899: value too large for column
-            {
-                MessageBox.Show("Algún campo supera el tamaño permitido por la columna.", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch (OracleException ex)
-            {
-                // Otros errores de Oracle
-                MessageBox.Show($"Error de base de datos ORA-{ex.Number}: {ex.Message}", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch (Exception ex)
-            {
-                // Errores inesperados
-                MessageBox.Show("Error al guardar el collector: " + ex.Message, "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
         private void txtBoxLastName_TextChanged_1(object sender, EventArgs e)
         {
 
@@ -178,6 +113,81 @@ namespace CAFEPAY.Views.ViewCollector
         #endregion
 
         private void cmbStatus_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnAccept_Click_1(object sender, EventArgs e)
+        {
+            var _workerCode = txtBoxWorkerCode.Text?.Trim();
+            var _id = txtBoxId.Text?.Trim();
+            var _firstName = txtBoxFirstName.Text?.Trim();
+            var _lastName = txtBoxLastName.Text?.Trim();
+            var _phone = txtBoxPhone.Text?.Trim();
+            var _status = (int)cmbStatus.SelectedValue; // Estado activo por defecto
+
+            // 1) Validaciones mínimas de UI
+            if (string.IsNullOrWhiteSpace(_workerCode)) { MessageBox.Show("Worker Code es requerido."); txtBoxWorkerCode.Focus(); return; }
+            if (string.IsNullOrWhiteSpace(_id)) { MessageBox.Show("Cédula/ID es requerida."); txtBoxId.Focus(); return; }
+            if (string.IsNullOrWhiteSpace(_firstName)) { MessageBox.Show("Nombres es requerido."); txtBoxFirstName.Focus(); return; }
+            if (string.IsNullOrWhiteSpace(_lastName)) { MessageBox.Show("Apellidos es requerido."); txtBoxLastName.Focus(); return; }
+            if (string.IsNullOrWhiteSpace(_phone)) { MessageBox.Show("Teléfono es requerido."); txtBoxPhone.Focus(); return; }
+
+            try
+            {
+                // Llamada a tu caso de uso (INSERT)
+                AppServices.Collector.save.execute(_workerCode, long.Parse(_id), _firstName, _lastName, long.Parse(_phone), _status);
+                var collectorDTO = new CollectorDTO
+                {
+                    workerCode = _workerCode,
+                    id = long.Parse(_id),
+                    firstName = _firstName,
+                    lastName = _lastName,
+                    phone = long.Parse(_phone),
+                    status = _status
+                };
+                ViewCollectorRegisterConfirm viewCollectorRegisterConfirm = new ViewCollectorRegisterConfirm(collectorDTO);
+                viewCollectorRegisterConfirm.Owner = this.Owner;
+                this.Close();
+                viewCollectorRegisterConfirm.Show();
+            }
+            catch (InvalidOperationException ex)
+            {
+                // Viene del repositorio cuando ORA-00001 (duplicado PK/UNIQUE)
+                MessageBox.Show(ex.Message, "Duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtBoxWorkerCode.Focus(); // o txtBoxId.Focus() según el caso
+            }
+            catch (OracleException ex) when (ex.Number == 1400) // ORA-01400: cannot insert NULL
+            {
+                MessageBox.Show("Hay campos obligatorios vacíos.", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (OracleException ex) when (ex.Number == 12899) // ORA-12899: value too large for column
+            {
+                MessageBox.Show("Algún campo supera el tamaño permitido por la columna.", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (OracleException ex)
+            {
+                // Otros errores de Oracle
+                MessageBox.Show($"Error de base de datos ORA-{ex.Number}: {ex.Message}", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                // Errores inesperados
+                MessageBox.Show("Error al guardar el collector: " + ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnDecline_Click_1(object sender, EventArgs e)
+        {
+            this.Owner?.Show();
+            this.Close();
+        }
+
+        private void cmbStatus_SelectedIndexChanged_1(object sender, EventArgs e)
         {
 
         }

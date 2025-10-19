@@ -124,6 +124,7 @@
             this.lbId.Size = new System.Drawing.Size(37, 13);
             this.lbId.TabIndex = 8;
             this.lbId.Text = "----------";
+            this.lbId.Click += new System.EventHandler(this.lbId_Click);
             // 
             // lbFirstName
             // 
@@ -171,7 +172,7 @@
             this.btnAccept.UseVisualStyleBackColor = true;
             this.btnAccept.Click += new System.EventHandler(this.btnAccept_Click);
             // 
-            // ViewCollectorDetailConfirm
+            // ViewCollectorRegisterConfirm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -190,9 +191,9 @@
             this.Controls.Add(this.lblTrabajadorId);
             this.Controls.Add(this.lblCedula);
             this.Controls.Add(this.lblText);
-            this.Name = "ViewCollectorDetailConfirm";
-            this.Text = "ViewCollectorDetailConfirm";
-            this.Load += new System.EventHandler(this.ViewCollectorDetailConfirm_Load);
+            this.Name = "ViewCollectorRegisterConfirm";
+            this.Text = "Registro De Recolector Confirmación";
+            this.Load += new System.EventHandler(this.ViewCollectorModifyConfirm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

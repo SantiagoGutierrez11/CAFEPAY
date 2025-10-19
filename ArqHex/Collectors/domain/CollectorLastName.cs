@@ -14,7 +14,7 @@ namespace CAFEPAY.ArqHex.Collectors.domain
             this.collectorLastName = _collectorLastName;
             validateFormat();
         }
-        public void validateFormat()
+        private void validateFormat()
         {
         }
     }
