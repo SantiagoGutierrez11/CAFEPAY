@@ -9,8 +9,8 @@ namespace CAFEPAY.ArqHex.Collectors.domain
 {
     public class CollectorId
     {
-        public string collectorId { get; } // Hace que el atributo sea de solo lectura y no se pueda modificar
-        public CollectorId(string _collectorIdValue)
+        public long collectorId { get; } // Hace que el atributo sea de solo lectura y no se pueda modificar
+        public CollectorId(long _collectorIdValue)
         {
             this.collectorId = _collectorIdValue;
             validateFormat();

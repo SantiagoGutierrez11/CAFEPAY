@@ -1,10 +1,12 @@
-﻿using CAFEPAY.ArqHex.Share.DTO;
+﻿using CAFEPAY.ArqHex.Collectors.domain;
+using CAFEPAY.ArqHex.Share.DTO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -16,7 +18,7 @@ namespace CAFEPAY.Views.ViewCollector
         private CollectorDTO collectorDTO;
         public ViewCollectorRegisterConfirm(CollectorDTO _collectorDTO)
         {
-            collectorDTO = _collectorDTO;
+            this.collectorDTO = _collectorDTO;
             InitializeComponent();
             loadLabel();
         }
@@ -24,13 +26,20 @@ namespace CAFEPAY.Views.ViewCollector
         public void loadLabel()
         {
             lbWorkerCode.Text = collectorDTO.workerCode;
-            lbId.Text = collectorDTO.id;
+            lbId.Text = collectorDTO.id.ToString();
             lbFirstName.Text = collectorDTO.firstName;
             lbLastName.Text = collectorDTO.lastName;
-            lbPhone.Text = collectorDTO.phone;
-            lbStatus.Text = collectorDTO.status;
+            lbPhone.Text = collectorDTO.phone.ToString();
+            if(collectorDTO.status == 1)
+            {
+                lbStatus.Text = "Activo";
+            }
+            else
+            {
+                lbStatus.Text = "Inactivo";
+            }
         }
-        private void ViewCollectorDetailConfirm_Load(object sender, EventArgs e)
+        private void ViewCollectorModifyConfirm_Load(object sender, EventArgs e)
         {
 
         }
@@ -44,7 +53,7 @@ namespace CAFEPAY.Views.ViewCollector
         {
             if (this.Owner is ViewCollector parent)
             {
-                parent.loadCustomers();
+                parent.loadCollectors();
                 this.Owner?.Show();
                 this.Close();
             }
@@ -53,6 +62,11 @@ namespace CAFEPAY.Views.ViewCollector
                 this.Owner?.Show();
             }
             
+        }
+
+        private void lbId_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

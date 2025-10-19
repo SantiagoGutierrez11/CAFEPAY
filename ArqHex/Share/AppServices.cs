@@ -21,5 +21,9 @@ namespace CAFEPAY.ArqHex.Share
             public static CollectorSave save = new CollectorSave(collectorRepository);
             public static CollectorQueryAll query = new CollectorQueryAll(collectorRepository);
         }
+        public class Harvest
+        {
+            // Similar structure for Harvest related services can be added here
+        }
     }
 }

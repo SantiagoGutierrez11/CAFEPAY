@@ -112,6 +112,18 @@
     <Compile Include="Views\ViewCollector\ViewCollectorModify.Designer.cs">
       <DependentUpon>ViewCollectorModify.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\ViewCollector\ViewCollectorModifyId.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ViewCollector\ViewCollectorModifyId.Designer.cs">
+      <DependentUpon>ViewCollectorModifyId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewCollector\ViewCollectorModifyConfirm_.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ViewCollector\ViewCollectorModifyConfirm_.Designer.cs">
+      <DependentUpon>ViewCollectorModifyConfirm_.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\ViewCollector\ViewCollectorRegister.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -161,6 +173,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\ViewCollector\ViewCollectorModify.resx">
       <DependentUpon>ViewCollectorModify.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ViewCollector\ViewCollectorModifyId.resx">
+      <DependentUpon>ViewCollectorModifyId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ViewCollector\ViewCollectorModifyConfirm_.resx">
+      <DependentUpon>ViewCollectorModifyConfirm_.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\ViewCollector\ViewCollectorRegister.resx">
       <DependentUpon>ViewCollectorRegister.cs</DependentUpon>

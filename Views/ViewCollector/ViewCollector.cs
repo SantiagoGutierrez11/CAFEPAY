@@ -17,19 +17,19 @@ namespace CAFEPAY.Views.ViewCollector
 {
     public partial class ViewCollector : Form
     {
-        List<Collector> listCollector;
-        List<CollectorDTO> listDTOCollector;
+        private List<Collector> listCollector;
+        private List<CollectorDTO> listDTOCollector;
         public ViewCollector()
         {
             InitializeComponent();
-            loadCustomers();
+            loadCollectors();
         }
 
         private void btnDelet_Click(object sender, EventArgs e)
         {
 
         }
-        public void loadCustomers()
+        public void loadCollectors()
         {
             listCollector = AppServices.Collector.query.execute();
             listDTOCollector = CollectorMaper.ToDTOList(listCollector);
@@ -60,19 +60,34 @@ namespace CAFEPAY.Views.ViewCollector
                 DataPropertyName = "phone",
                 HeaderText = "Telefono"
             });
-            dgCollector.Columns.Add(new DataGridViewTextBoxColumn
+            // Mapeo status numérico -> texto visible
+            var statusItems = new[]
             {
-                DataPropertyName = "status",
-                HeaderText = "Estado"
-            });
+                 new { Value = 1, Text = "Activo" },
+                new { Value = 2, Text = "Inactivo" }
+             };
+
+            var colStatus = new DataGridViewComboBoxColumn
+            {
+                DataPropertyName = "status",      // sigue bindeando al int
+                HeaderText = "Estado",
+                DataSource = statusItems,
+                DisplayMember = "Text",
+                ValueMember = "Value",
+                DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing, // que se vea como texto
+                FlatStyle = FlatStyle.Flat
+            };
+            dgCollector.Columns.Add(colStatus);
+
+            dgCollector.DataSource = listDTOCollector;
             dgCollector.DataSource = listDTOCollector;
 
         }
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            ViewCollectorRegister viewCollectorDetail = new ViewCollectorRegister();
-            viewCollectorDetail.Owner = this;
-            viewCollectorDetail.Show();
+            ViewCollectorRegister viewCollectorRegister = new ViewCollectorRegister();
+            viewCollectorRegister.Owner = this;
+            viewCollectorRegister.Show();
             this.Hide();
         }
 
@@ -84,6 +99,15 @@ namespace CAFEPAY.Views.ViewCollector
         private void ViewCollector_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnModify_Click(object sender, EventArgs e)
+        {
+            int rowSelected = dgCollector.CurrentCell.RowIndex;
+            ViewCollectorModify viewCollectorModify = new ViewCollectorModify(listDTOCollector[rowSelected], this);
+            viewCollectorModify.Owner = this;
+            viewCollectorModify.Show();
+            this.Hide();
         }
     }
 }

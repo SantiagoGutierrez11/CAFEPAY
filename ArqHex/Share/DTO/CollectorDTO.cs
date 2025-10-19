@@ -9,11 +9,13 @@ namespace CAFEPAY.ArqHex.Share.DTO
     public class CollectorDTO
     {
         public string workerCode { get; set; }   
-        public string id { get; set; }
+        public long id { get; set; }
         public string firstName { get; set; }
         public string lastName { get; set; }
-        public string phone { get; set; }
-        public string status { get; set; }         // 1 = activo , 2 = inactivo
+        public long phone { get; set; }
+        public int status { get; set; }         // 1 = activo , 2 = inactivo
+
+        public string statusText { get; set; }
 
     }
 }

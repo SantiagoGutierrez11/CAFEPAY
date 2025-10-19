@@ -16,6 +16,7 @@ namespace CAFEPAY.ArqHex.Collectors.domain
         }
         public void validateFormat()
         {
+
         }
 
     }

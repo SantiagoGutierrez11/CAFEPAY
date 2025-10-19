@@ -14,8 +14,8 @@ namespace CAFEPAY.ArqHex.Collectors.application.CollectorUpdate
         {
             this.collectorRepository = _collectorRepository;
         }
-        public void execute(string _oldId, string _collectorWorkerCode, string _collectorId, string _collectorFirstName,
-                            string _collectorLastName, string _collectorPhone, int _collectorStatus)
+        public void execute(long _oldId, string _collectorWorkerCode, long _collectorId, string _collectorFirstName,
+                            string _collectorLastName, long _collectorPhone, int _collectorStatus)
         {
             CollectorWorkerCode collectorWorkerCode = new CollectorWorkerCode(_collectorWorkerCode);
             CollectorId id = new CollectorId(_collectorId);
