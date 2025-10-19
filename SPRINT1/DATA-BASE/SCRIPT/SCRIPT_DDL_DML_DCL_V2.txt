@@ -1,0 +1,103 @@
+
+ALTER SESSION SET "_ORACLE_SCRIPT"=TRUE;
+DROP USER adminCAFEPAY;
+CREATE USER adminCAFEPAY IDENTIFIED BY adminCAFEPAY;
+GRANT DBA, CONNECT TO adminCAFEPAY;
+
+
+
+--------------------------------------------------------
+--  Eliminación previa (si existe)
+--------------------------------------------------------
+DROP TABLE COLLECTOR CASCADE CONSTRAINTS;
+DROP TABLE STATUS_DOMAIN CASCADE CONSTRAINTS;
+
+--------------------------------------------------------
+--  Tabla de dominio estático para el estado del recolector
+--------------------------------------------------------
+CREATE TABLE STATUS_DOMAIN (
+    STATUS_ID NUMBER NOT NULL,
+    STATUS_NAME VARCHAR2(20) NOT NULL
+);
+
+--------------------------------------------------------
+--  Datos estáticos del dominio de estado
+--------------------------------------------------------
+INSERT INTO STATUS_DOMAIN (STATUS_ID, STATUS_NAME) VALUES (1, 'ACTIVE');
+INSERT INTO STATUS_DOMAIN (STATUS_ID, STATUS_NAME) VALUES (2, 'INACTIVE');
+
+--------------------------------------------------------
+--  Creación de tabla COLLECTOR
+--------------------------------------------------------
+CREATE TABLE COLLECTOR (
+    WORKER_CODE       VARCHAR2(30) NOT NULL,  -- código único de trabajador, clave primaria
+    ID                NUMBER(12,0) NOT NULL,        -- FK a PERSON (si existe)
+    FIRST_NAME        VARCHAR2(50) NOT NULL,
+    LAST_NAME         VARCHAR2(50) NOT NULL,
+    PHONE             NUMBER(13,0) NOT NULL,
+    STATUS_ID         NUMBER NOT NULL         -- FK a STATUS_DOMAIN
+);
+
+--------------------------------------------------------
+--  Definición de restricciones (Constraints)
+--------------------------------------------------------
+
+--------------------------------------------------------
+--  Collector
+--------------------------------------------------------
+-- Clave primaria
+ALTER TABLE COLLECTOR 
+    ADD CONSTRAINT COLLECTOR_PK PRIMARY KEY (WORKER_CODE) ENABLE;
+ALTER TABLE STATUS_DOMAIN 
+    ADD CONSTRAINT STATUS_PK PRIMARY KEY (STATUS_ID) ENABLE;
+
+-- Clave única (para el id personal)
+ALTER TABLE COLLECTOR 
+    ADD CONSTRAINT COLLECTOR_UQ_ID UNIQUE (ID) ENABLE;
+
+-- Llave foránea a la tabla de dominio STATUS_DOMAIN
+ALTER TABLE COLLECTOR 
+    ADD CONSTRAINT COLLECTOR_FK_STATUS 
+    FOREIGN KEY (STATUS_ID) 
+    REFERENCES STATUS_DOMAIN (STATUS_ID) ENABLE;
+-- Check de status
+ALTER TABLE COLLECTOR 
+  ADD CONSTRAINT COLLECTOR_CHK_STATUS CHECK (STATUS_ID IN (1,2)) ENABLE;
+--------------------------------------------------------
+
+
+/*
+INSERT
+*/
+-- 10 INSERTS DE EJEMPLO
+INSERT INTO COLLECTOR (WORKER_CODE, ID, FIRST_NAME, LAST_NAME, PHONE, STATUS_ID)
+VALUES ('W00001', 100000000001, 'Juan',   'Pérez',     3001234567001, 1);
+
+INSERT INTO COLLECTOR (WORKER_CODE, ID, FIRST_NAME, LAST_NAME, PHONE, STATUS_ID)
+VALUES ('W00002', 100000000002, 'María',  'Gómez',     3001234567002, 2);
+
+INSERT INTO COLLECTOR (WORKER_CODE, ID, FIRST_NAME, LAST_NAME, PHONE, STATUS_ID)
+VALUES ('W00003', 100000000003, 'Andrés', 'López',     3001234567003, 1);
+
+INSERT INTO COLLECTOR (WORKER_CODE, ID, FIRST_NAME, LAST_NAME, PHONE, STATUS_ID)
+VALUES ('W00004', 100000000004, 'Luisa',  'Martínez',  3001234567004, 1);
+
+INSERT INTO COLLECTOR (WORKER_CODE, ID, FIRST_NAME, LAST_NAME, PHONE, STATUS_ID)
+VALUES ('W00005', 100000000005, 'Carlos', 'Rojas',     3001234567005, 2);
+
+INSERT INTO COLLECTOR (WORKER_CODE, ID, FIRST_NAME, LAST_NAME, PHONE, STATUS_ID)
+VALUES ('W00006', 100000000006, 'Sofía',  'Ramírez',   3001234567006, 1);
+
+INSERT INTO COLLECTOR (WORKER_CODE, ID, FIRST_NAME, LAST_NAME, PHONE, STATUS_ID)
+VALUES ('W00007', 100000000007, 'David',  'Torres',    3001234567007, 1);
+
+INSERT INTO COLLECTOR (WORKER_CODE, ID, FIRST_NAME, LAST_NAME, PHONE, STATUS_ID)
+VALUES ('W00008', 100000000008, 'Paula',  'Castro',    3001234567008, 2);
+
+INSERT INTO COLLECTOR (WORKER_CODE, ID, FIRST_NAME, LAST_NAME, PHONE, STATUS_ID)
+VALUES ('W00009', 100000000009, 'Felipe', 'Mejía',     3001234567009, 1);
+
+INSERT INTO COLLECTOR (WORKER_CODE, ID, FIRST_NAME, LAST_NAME, PHONE, STATUS_ID)
+VALUES ('W00010', 100000000010, 'Natalia','Hernández', 3001234567010, 1);
+
+COMMIT;
