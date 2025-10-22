@@ -31,7 +31,7 @@ namespace CAFEPAY.Views.ViewCollector
             textBoxFirstName.Text = oldCollectorDTO.firstName;
             textBoxLastName.Text = oldCollectorDTO.lastName;
             textBoxId.Text = oldCollectorDTO.id.ToString();
-            textBoxPhone.Text = oldCollectorDTO.phone.ToString();
+            textBoxPhone.Text = oldCollectorDTO.phone;
             cmbStatus.SelectedValue = oldCollectorDTO.status;
             lbWorkerCode.Text = oldCollectorDTO.workerCode;
         }
@@ -79,40 +79,105 @@ namespace CAFEPAY.Views.ViewCollector
             var _firstName = textBoxFirstName.Text?.Trim();
             var _lastName = textBoxLastName.Text?.Trim();
             var _phone = textBoxPhone.Text?.Trim();
-            var _status = (int)cmbStatus.SelectedValue; // Estado activo por defecto
+            var _status = (int)cmbStatus.SelectedValue;
 
             // 1) Validaciones mínimas de UI
-           
             if (string.IsNullOrWhiteSpace(_id)) { MessageBox.Show("Cédula/ID es requerida."); textBoxId.Focus(); return; }
             if (string.IsNullOrWhiteSpace(_firstName)) { MessageBox.Show("Nombres es requerido."); textBoxFirstName.Focus(); return; }
             if (string.IsNullOrWhiteSpace(_lastName)) { MessageBox.Show("Apellidos es requerido."); textBoxLastName.Focus(); return; }
             if (string.IsNullOrWhiteSpace(_phone)) { MessageBox.Show("Teléfono es requerido."); textBoxPhone.Focus(); return; }
 
-                var newCollectorDTO = new CollectorDTO
-                {
-                    workerCode = _workerCode,
-                    id = long.Parse(_id),
-                    firstName = _firstName,
-                    lastName = _lastName,
-                    phone = long.Parse(_phone),
-                    status = _status
-                };
-        
+            //ALIDACIONES ESPECÍFICAS PARA ID (CÉDULA)
+            if (!long.TryParse(_id, out long idValue))
+            {
+                MessageBox.Show("La cédula debe contener solo números.");
+                textBoxId.Focus();
+                return;
+            }
+
+            if (_id.Length < 8 || _id.Length > 10)
+            {
+                MessageBox.Show("La cédula debe tener entre 8 y 10 dígitos.");
+                textBoxId.Focus();
+                return;
+            }
+
+            if (_id.StartsWith("0"))
+            {
+                MessageBox.Show("La cédula no puede empezar con 0.");
+                textBoxId.Focus();
+                return;
+            }
+
+            //VALIDACIONES ESPECÍFICAS PARA TELÉFONO
+            if (_phone.Length != 10)
+            {
+                MessageBox.Show("El teléfono debe tener exactamente 10 dígitos.");
+                textBoxPhone.Focus();
+                return;
+            }
+
+            if (!_phone.All(char.IsDigit))
+            {
+                MessageBox.Show("El teléfono solo puede contener números.");
+                textBoxPhone.Focus();
+                return;
+            }
+
+            //VALIDACIONES ESPECÍFICAS PARA NOMBRES/APELLIDOS
+            if (_firstName.Length < 3 || _firstName.Length > 30)
+            {
+                MessageBox.Show("El nombre debe tener entre 3 y 30 caracteres.");
+                textBoxFirstName.Focus();
+                return;
+            }
+
+            if (_lastName.Length < 3 || _lastName.Length > 30)
+            {
+                MessageBox.Show("El apellido debe tener entre 3 y 30 caracteres.");
+                textBoxLastName.Focus();
+                return;
+            }
+
+            //VALIDACIÓN ADICIONAL: No todos los dígitos iguales
+            if (_id.All(c => c == _id[0]))
+            {
+                MessageBox.Show("La cédula no puede tener todos los dígitos iguales.");
+                textBoxId.Focus();
+                return;
+            }
+
+            if (_phone.All(c => c == _phone[0]))
+            {
+                MessageBox.Show("El teléfono no puede tener todos los dígitos iguales.");
+                textBoxPhone.Focus();
+                return;
+            }
+
+            var newCollectorDTO = new CollectorDTO
+            {
+                workerCode = _workerCode,
+                id = idValue,
+                firstName = _firstName,
+                lastName = _lastName,
+                phone = _phone,
+                status = _status
+            };
+
             if (newCollectorDTO.id != oldCollectorDTO.id)
             {
                 var ownerViewCollector = this.Owner;
-                ViewCollectorModifyId viewCollectorModifyId = new ViewCollectorModifyId(newCollectorDTO,oldCollectorDTO, viewCollector);
+                ViewCollectorModifyId viewCollectorModifyId = new ViewCollectorModifyId(newCollectorDTO, oldCollectorDTO, viewCollector);
                 viewCollectorModifyId.Owner = this;
                 this.Hide();
                 viewCollectorModifyId.Show();
             }
             else
             {
-                ViewCollectorModifyConfirm_ viewCollectorModifyConfirm = new ViewCollectorModifyConfirm_(newCollectorDTO,oldCollectorDTO, viewCollector);
+                ViewCollectorModifyConfirm_ viewCollectorModifyConfirm = new ViewCollectorModifyConfirm_(newCollectorDTO, oldCollectorDTO, viewCollector);
                 viewCollectorModifyConfirm.Owner = this;
                 viewCollectorModifyConfirm.Show();
                 this.Hide();
-              
             }
         }
 

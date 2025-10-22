@@ -9,61 +9,81 @@ namespace CAFEPAY.ArqHex.Collectors.domain
 {
     public class CollectorPhone
     {
-        public long collectorPhone { get; }
+        public string collectorPhone { get; }
 
-        public CollectorPhone(long _collectorPhoneValue)
+        // Constructor para string
+        public CollectorPhone(string _collectorPhoneValue)
         {
+            if (string.IsNullOrWhiteSpace(_collectorPhoneValue))
+            {
+                throw new ArgumentException("El número de teléfono no puede estar vacío");
+            }
+
             ValidateFormat(_collectorPhoneValue);
-            this.collectorPhone = _collectorPhoneValue;
+            this.collectorPhone = _collectorPhoneValue.Trim();
         }
 
-        private void ValidateFormat(long phoneValue)
+        // Constructor sobrecargado para long
+        public CollectorPhone(long _collectorPhoneValue)
         {
-            // Convertir a string para validaciones de formato
-            string phoneString = phoneValue.ToString();
+            string phoneString = _collectorPhoneValue.ToString();
+            ValidateFormat(phoneString);
+            this.collectorPhone = phoneString;
+        }
 
-            // Longitud exacta de 10 dígitos
-            if (phoneString.Length != 10)
+        private void ValidateFormat(string phoneValue)
+        {
+            string cleanPhone = phoneValue.Trim();
+
+            // Validar longitud exacta de 10 dígitos
+            if (cleanPhone.Length != 10)
             {
-                throw new ArgumentException("El número de teléfono debe tener exactamente 10 dígitos");
+                 throw new ArgumentException("El número de teléfono debe tener exactamente 10 dígitos");
+            }
+
+            // Validar que solo contenga dígitos
+            if (!cleanPhone.All(char.IsDigit))
+            {
+                throw new ArgumentException("El número de teléfono solo puede contener dígitos");
             }
 
             // Validar que no empiece con 0
-            if (phoneString.StartsWith("0"))
+            if (cleanPhone.StartsWith("0"))
             {
                 throw new ArgumentException("El número de teléfono no puede empezar con 0");
             }
 
-            // Validar que el primer dígito sea válido (2-9 para códigos de área típicos)
-            if (!Regex.IsMatch(phoneString.Substring(0, 1), @"[2-9]"))
-            {
-                throw new ArgumentException("El primer dígito del teléfono debe ser entre 2 y 9");
-            }
-
-            // Validar formato general (solo dígitos, ya está garantizado por ser long)
-            // Validación adicional: no todos los dígitos iguales (evitar 1111111111, 2222222222, etc.)
-            if (phoneString.Distinct().Count() == 1)
+            // Validar que no sean todos los números iguales
+            if (AreAllDigitsSame(cleanPhone))
             {
                 throw new ArgumentException("El número de teléfono no puede tener todos los dígitos iguales");
             }
+
+            //NUEVA VALIDACIÓN: Debe empezar con 3
+            if (!cleanPhone.StartsWith("3"))
+            {
+                throw new ArgumentException("Teléfono con formato inválido");
+            }
+
+            //NUEVA VALIDACIÓN: Segundo dígito debe ser 0, 1 o 2
+            char secondDigit = cleanPhone[1];
+            if (secondDigit != '0' && secondDigit != '1' && secondDigit != '2')
+            {
+                throw new ArgumentException("Teléfono con formato inválido");
+            }
+
         }
 
-        // Método para formatear el teléfono
-        public string GetFormattedPhone()
+        private bool AreAllDigitsSame(string phone)
         {
-            string phoneString = collectorPhone.ToString();
-            // Formato: (XXX) XXX-XXXX
-            return $"({phoneString.Substring(0, 3)}) {phoneString.Substring(3, 3)}-{phoneString.Substring(6)}";
+            // Verificar si todos los dígitos son iguales
+            return phone.Length > 0 && phone.All(c => c == phone[0]);
         }
 
         // Sobrescribir métodos para comparación
         public override bool Equals(object obj)
         {
-            if (obj is CollectorPhone other)
-            {
-                return collectorPhone == other.collectorPhone;
-            }
-            return false;
+            return obj is CollectorPhone other && collectorPhone == other.collectorPhone;
         }
 
         public override int GetHashCode()
@@ -73,19 +93,13 @@ namespace CAFEPAY.ArqHex.Collectors.domain
 
         public override string ToString()
         {
-            return GetFormattedPhone();
-        }
-
-        // Método para acceder al valor
-        public long GetValue()
-        {
             return collectorPhone;
         }
 
-        // Método para obtener como string
-        public string GetValueAsString()
+        // Método para acceder al valor
+        public string GetValue()
         {
-            return collectorPhone.ToString();
+            return collectorPhone;
         }
     }
 }

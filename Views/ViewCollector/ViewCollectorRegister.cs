@@ -41,6 +41,8 @@ namespace CAFEPAY.Views.ViewCollector
             cmbStatus.DataSource = items;
             // Selección por defecto (opcional)
             cmbStatus.SelectedValue = 1; // Activo
+
+            cmbStatus.Enabled = false;
         }
 
         //Componentes de eventos
@@ -124,7 +126,7 @@ namespace CAFEPAY.Views.ViewCollector
             var _firstName = txtBoxFirstName.Text?.Trim();
             var _lastName = txtBoxLastName.Text?.Trim();
             var _phone = txtBoxPhone.Text?.Trim();
-            var _status = (int)cmbStatus.SelectedValue; // Estado activo por defecto
+            var _status = (int)cmbStatus.SelectedValue;
 
             // 1) Validaciones mínimas de UI
             if (string.IsNullOrWhiteSpace(_workerCode)) { MessageBox.Show("Worker Code es requerido."); txtBoxWorkerCode.Focus(); return; }
@@ -133,19 +135,88 @@ namespace CAFEPAY.Views.ViewCollector
             if (string.IsNullOrWhiteSpace(_lastName)) { MessageBox.Show("Apellidos es requerido."); txtBoxLastName.Focus(); return; }
             if (string.IsNullOrWhiteSpace(_phone)) { MessageBox.Show("Teléfono es requerido."); txtBoxPhone.Focus(); return; }
 
+            //NUEVAS VALIDACIONES PARA WORKER CODE
+            if (_workerCode.Length != 6)
+            {
+                MessageBox.Show("El Worker Code debe tener exactamente 6 caracteres (ej: W00001)");
+                txtBoxWorkerCode.Focus();
+                return;
+            }
+
+            if (!_workerCode.ToUpper().StartsWith("W"))
+            {
+                MessageBox.Show("El Worker Code debe empezar con 'W'");
+                txtBoxWorkerCode.Focus();
+                return;
+            }
+
+            //NUEVAS VALIDACIONES PARA ID (CÉDULA)
+            if (!long.TryParse(_id, out long idValue))
+            {
+                MessageBox.Show("La cédula debe contener solo números.");
+                txtBoxId.Focus();
+                return;
+            }
+
+            if (_id.Length < 8 || _id.Length > 10)
+            {
+                MessageBox.Show("La cédula debe tener entre 8 y 10 dígitos.");
+                txtBoxId.Focus();
+                return;
+            }
+
+            if (_id.StartsWith("0"))
+            {
+                MessageBox.Show("La cédula no puede empezar con 0.");
+                txtBoxId.Focus();
+                return;
+            }
+
+            //VALIDACIONES PARA TELÉFONO
+            if (_phone.Length != 10)
+            {
+                MessageBox.Show("El teléfono debe tener exactamente 10 dígitos.");
+                txtBoxPhone.Focus();
+                return;
+            }
+
+            if (!_phone.All(char.IsDigit))
+            {
+                MessageBox.Show("El teléfono solo puede contener números.");
+                txtBoxPhone.Focus();
+                return;
+            }
+
+            //VALIDACIONES PARA NOMBRES/APELLIDOS
+            if (_firstName.Length < 3 || _firstName.Length > 30)
+            {
+                MessageBox.Show("El nombre debe tener entre 3 y 30 caracteres.");
+                txtBoxFirstName.Focus();
+                return;
+            }
+
+            if (_lastName.Length < 3 || _lastName.Length > 30)
+            {
+                MessageBox.Show("El apellido debe tener entre 3 y 30 caracteres.");
+                txtBoxLastName.Focus();
+                return;
+            }
+
             try
             {
-                // Llamada a tu caso de uso (INSERT)
-                AppServices.Collector.save.execute(_workerCode, long.Parse(_id), _firstName, _lastName, long.Parse(_phone), _status);
+                // Solo si pasa TODAS las validaciones, proceder
+                AppServices.Collector.save.execute(_workerCode, idValue, _firstName, _lastName, _phone, _status);
+
                 var collectorDTO = new CollectorDTO
                 {
                     workerCode = _workerCode,
-                    id = long.Parse(_id),
+                    id = idValue,
                     firstName = _firstName,
                     lastName = _lastName,
-                    phone = long.Parse(_phone),
+                    phone = _phone,
                     status = _status
                 };
+
                 ViewCollectorRegisterConfirm viewCollectorRegisterConfirm = new ViewCollectorRegisterConfirm(collectorDTO);
                 viewCollectorRegisterConfirm.Owner = this.Owner;
                 this.Close();
@@ -155,30 +226,30 @@ namespace CAFEPAY.Views.ViewCollector
             {
                 // Viene del repositorio cuando ORA-00001 (duplicado PK/UNIQUE)
                 MessageBox.Show(ex.Message, "Duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtBoxWorkerCode.Focus(); // o txtBoxId.Focus() según el caso
+                txtBoxWorkerCode.Focus();
             }
-            catch (OracleException ex) when (ex.Number == 1400) // ORA-01400: cannot insert NULL
+            catch (ArgumentException ex)
             {
-                MessageBox.Show("Hay campos obligatorios vacíos.", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // Errores de validación del dominio
+                MessageBox.Show(ex.Message, "Error de validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-            catch (OracleException ex) when (ex.Number == 12899) // ORA-12899: value too large for column
+            catch (OracleException ex) when (ex.Number == 1400)
             {
-                MessageBox.Show("Algún campo supera el tamaño permitido por la columna.", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Hay campos obligatorios vacíos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (OracleException ex) when (ex.Number == 12899)
+            {
+                MessageBox.Show("Algún campo supera el tamaño permitido por la columna.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (OracleException ex)
             {
-                // Otros errores de Oracle
-                MessageBox.Show($"Error de base de datos ORA-{ex.Number}: {ex.Message}", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error de base de datos ORA-{ex.Number}: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (Exception ex)
             {
-                // Errores inesperados
-                MessageBox.Show("Error al guardar el collector: " + ex.Message, "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error al guardar el collector: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
         }
 
         private void btnDecline_Click_1(object sender, EventArgs e)
