@@ -127,5 +127,10 @@ namespace CAFEPAY.Views.ViewCollector
             this.Close();
 
         }
+
+        private void lbWorkerCode_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -50,5 +50,10 @@ namespace CAFEPAY.Views.ViewCollector
                 MessageBox.Show("El ID ingresado no coincide con el nuevo ID del colector a modificar.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void textBoxId_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+
+        }
     }
 }

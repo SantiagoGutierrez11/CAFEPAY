@@ -164,6 +164,7 @@
             this.lbWorkerCode.Size = new System.Drawing.Size(52, 13);
             this.lbWorkerCode.TabIndex = 14;
             this.lbWorkerCode.Text = "---------------";
+            this.lbWorkerCode.Click += new System.EventHandler(this.lbWorkerCode_Click);
             // 
             // ViewCollectorModify
             // 
