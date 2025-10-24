@@ -1,1 +1,31 @@
-versioned
+// A través de la herramienta dbdiagram.io se generó el modelo relacional de la Entidad Collector 
+//Visualmente parece un ER , sin embargo es un modelo relacional traducido visualmente
+//
+
+
+
+/////////////////////////////////////////////////////////
+// MODELO RELACIONAL - CAFEPAY
+// Tablas: STATUS_DOMAIN, COLLECTOR
+/////////////////////////////////////////////////////////
+
+Table STATUS_DOMAIN {
+  STATUS_ID int [pk, not null] // Clave primaria
+  STATUS_NAME varchar(10) [not null] // Nombre del estado (ACTIVE / INACTIVE)
+}
+
+Table COLLECTOR {
+  WORKER_CODE varchar(6) [pk, not null] // Código único del trabajador
+  ID int [unique, not null]             // Identificador personal único
+  FIRST_NAME varchar(30) [not null]     // Nombre
+  LAST_NAME varchar(30) [not null]      // Apellido
+  PHONE int [not null]                  // Teléfono
+  STATUS_ID int [not null] // Estado (FK)
+}
+
+Ref: COLLECTOR.STATUS_ID > STATUS_DOMAIN.STATUS_ID
+
+//Es en esta ultima linea que referenciamos entre tablas para definir una relación física entre columnas de dos tablas.
+
+
+
