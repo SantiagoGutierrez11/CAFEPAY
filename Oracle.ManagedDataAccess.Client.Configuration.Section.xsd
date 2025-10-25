@@ -86,7 +86,7 @@
           <xs:sequence>
             <xs:element maxOccurs="unbounded" minOccurs="0" name="connectionPool">
               <xs:complexType>
-                <xs:attribute name="connectionString" type="xs:string" use="required" />
+                <xs:attribute name="connectionstring" type="xs:string" use="required" />
                 <xs:attribute name="poolName" type="xs:string" use="required" />
               </xs:complexType>
             </xs:element>
@@ -153,17 +153,17 @@
                             <xs:attribute name="columnSize" type="xs:int" use="optional" />
                             <xs:attribute name="numericPrecision" type="xs:int" use="optional" />
                             <xs:attribute name="numericScale" type="xs:int" use="optional" />
-                            <xs:attribute name="isUnique" type="customBoolean" use="optional" />
-                            <xs:attribute name="isKey" type="customBoolean" use="optional" />
-                            <xs:attribute name="isRowID" type="customBoolean" use="optional" />
+                            <xs:attribute name="isUnique" type="customstring" use="optional" />
+                            <xs:attribute name="isKey" type="customstring" use="optional" />
+                            <xs:attribute name="isRowID" type="customstring" use="optional" />
                             <xs:attribute name="dataType" type="datatype" use="optional" />
-                            <xs:attribute name="allowDBNull" type="customBoolean" use="optional" />
-                            <xs:attribute name="isAliased" type="customBoolean" use="optional" />
-                            <xs:attribute name="isByteSemantic" type="customBoolean" use="optional" />
-                            <xs:attribute name="isExpression" type="customBoolean" use="optional" />
-                            <xs:attribute name="isHidden" type="customBoolean" use="optional" />
-                            <xs:attribute name="isReadOnly" type="customBoolean" use="optional" />
-                            <xs:attribute name="isLong" type="customBoolean" use="optional" />
+                            <xs:attribute name="allowDBNull" type="customstring" use="optional" />
+                            <xs:attribute name="isAliased" type="customstring" use="optional" />
+                            <xs:attribute name="isByteSemantic" type="customstring" use="optional" />
+                            <xs:attribute name="isExpression" type="customstring" use="optional" />
+                            <xs:attribute name="isHidden" type="customstring" use="optional" />
+                            <xs:attribute name="isReadOnly" type="customstring" use="optional" />
+                            <xs:attribute name="isLong" type="customstring" use="optional" />
                             <xs:attribute name="udtTypeName" type="xs:string" use="optional" />
                             <xs:attribute name="nativeDataType" type="nativeDataType" use="optional" />
                             <xs:attribute name="providerDBType" type="providerDBType" use="optional" />

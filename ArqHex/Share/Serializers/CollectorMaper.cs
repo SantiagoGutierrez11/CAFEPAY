@@ -10,15 +10,18 @@ namespace CAFEPAY.ArqHex.Share.Serializers
 {
     public class CollectorMaper
     {
-        public static List<CollectorDTO> ToDTOList(Dictionary<CollectorId, Collector> collectors)
+        public static List<CollectorDTO> ToDTOList(List<Collector> collectors)
         {
             if (collectors == null) return new List<CollectorDTO>();
-            return collectors.Values.Select(c => new CollectorDTO
+
+            return collectors.Select(c => new CollectorDTO
             {
-                Id = c.Id.getValue(),
-                Name = c.Name.getValue(),
-                Phone = c.Phone.getValue(),
-                Status = c.Status.getValue()
+                workerCode = c.workerCode.collectorWorkerCode,                  
+                id = c.id.collectorId,
+                firstName = c.firstName.collectorFirstName,
+                lastName = c.lastName.collectorLastName,
+                phone = c.phone.collectorPhone,
+                status = c.status.collectorStatus
             }).ToList();
         }
     }

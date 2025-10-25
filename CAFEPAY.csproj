@@ -44,6 +44,7 @@
       <HintPath>packages\System.Buffers.4.6.0\lib\net462\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.OracleClient" />
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=6.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Diagnostics.DiagnosticSource.6.0.2\lib\net461\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
@@ -85,14 +86,20 @@
   <ItemGroup>
     <Compile Include="ArqHex\Collectors\application\CollectorQueryAll\CollectorQueryAll.cs" />
     <Compile Include="ArqHex\Collectors\application\CollectorSave\CollectorSave.cs" />
+    <Compile Include="ArqHex\Collectors\application\CollectorUpdate\CollectorUpdate.cs" />
     <Compile Include="ArqHex\Collectors\domain\Collector.cs" />
     <Compile Include="ArqHex\Collectors\domain\CollectorId.cs" />
-    <Compile Include="ArqHex\Collectors\domain\CollectorName.cs" />
+    <Compile Include="ArqHex\Collectors\domain\CollectorFirstName.cs" />
+    <Compile Include="ArqHex\Collectors\domain\CollectorLastName.cs" />
     <Compile Include="ArqHex\Collectors\domain\CollectorPhone.cs" />
     <Compile Include="ArqHex\Collectors\domain\CollectorStatus.cs" />
     <Compile Include="ArqHex\Collectors\domain\CollectorRepository.cs" />
+    <Compile Include="ArqHex\Collectors\domain\CollectorWorkerCode.cs" />
     <Compile Include="ArqHex\Collectors\infrastructure\CollectorController.cs" />
     <Compile Include="ArqHex\Collectors\infrastructure\OracleCollectorRepository.cs" />
+    <Compile Include="ArqHex\Share\DTO\CollectorDTO.cs" />
+    <Compile Include="ArqHex\Share\Serializers\CollectorMaper.cs" />
+    <Compile Include="ArqHex\Share\AppServices.cs" />
     <Compile Include="ArqHex\Harvests\Application\HarvestQueryAll\HarvestQueryAll.cs" />
     <Compile Include="ArqHex\Harvests\Application\HarvestSave\HarvestSave.cs" />
     <Compile Include="ArqHex\Harvests\Domain\HarvestEndDate.cs" />
@@ -117,11 +124,35 @@
     <Compile Include="Views\ViewCollector\ViewCollector.Designer.cs">
       <DependentUpon>ViewCollector.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\ViewCollector\ViewCollectorDetail.cs">
+    <Compile Include="Views\ViewCollector\ViewCollectorModify.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\ViewCollector\ViewCollectorDetail.Designer.cs">
-      <DependentUpon>ViewCollectorDetail.cs</DependentUpon>
+    <Compile Include="Views\ViewCollector\ViewCollectorModify.Designer.cs">
+      <DependentUpon>ViewCollectorModify.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewCollector\ViewCollectorModifyId.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ViewCollector\ViewCollectorModifyId.Designer.cs">
+      <DependentUpon>ViewCollectorModifyId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewCollector\ViewCollectorModifyConfirm_.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ViewCollector\ViewCollectorModifyConfirm_.Designer.cs">
+      <DependentUpon>ViewCollectorModifyConfirm_.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewCollector\ViewCollectorRegister.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ViewCollector\ViewCollectorRegister.Designer.cs">
+      <DependentUpon>ViewCollectorRegister.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewCollector\ViewCollectorRegisterConfirm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ViewCollector\ViewCollectorRegisterConfirm.Designer.cs">
+      <DependentUpon>ViewCollectorRegisterConfirm.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\ViewCollect\ViewCollect.cs">
       <SubType>Form</SubType>
@@ -158,8 +189,20 @@
     <EmbeddedResource Include="Views\ViewCollector\ViewCollector.resx">
       <DependentUpon>ViewCollector.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\ViewCollector\ViewCollectorDetail.resx">
-      <DependentUpon>ViewCollectorDetail.cs</DependentUpon>
+    <EmbeddedResource Include="Views\ViewCollector\ViewCollectorModify.resx">
+      <DependentUpon>ViewCollectorModify.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ViewCollector\ViewCollectorModifyId.resx">
+      <DependentUpon>ViewCollectorModifyId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ViewCollector\ViewCollectorModifyConfirm_.resx">
+      <DependentUpon>ViewCollectorModifyConfirm_.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ViewCollector\ViewCollectorRegister.resx">
+      <DependentUpon>ViewCollectorRegister.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ViewCollector\ViewCollectorRegisterConfirm.resx">
+      <DependentUpon>ViewCollectorRegisterConfirm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\ViewCollect\ViewCollect.resx">
       <DependentUpon>ViewCollect.cs</DependentUpon>
@@ -179,9 +222,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Views\ViewMain\ViewMain.resx">
-      <DependentUpon>ViewMain.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Views\ViewPayment\ViewPayment.resx">
       <DependentUpon>ViewPayment.cs</DependentUpon>
     </EmbeddedResource>

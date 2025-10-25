@@ -13,7 +13,7 @@ namespace CAFEPAY.ArqHex.Collectors.application.CollectorQueryAll
         public CollectorQueryAll(CollectorRepository _collectorRepository) { 
             this.collectorRepository = _collectorRepository;
         }
-        public Dictionary<CollectorId, Collector> execute() { 
+        public List<Collector> execute() { 
             return this.collectorRepository.queryAll();
         }
     }

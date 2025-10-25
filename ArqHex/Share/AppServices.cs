@@ -11,28 +11,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CAFEPAY.ArqHex.Collectors.application.CollectorQueryAll;
+using CAFEPAY.ArqHex.Collectors.application.CollectorUpdate;
 
 namespace CAFEPAY.ArqHex.Share
 {
-    public class ServiceContainer
+    public class AppServices
     {
-        private static readonly String connectionString = "User Id=your_user;Password=your_password;Data Source=your_data_source";
-        private static readonly CollectorRepository collectorRepository = new OracleCollectorRepository(connectionString);
-
-        private static readonly String harvestConnectionString = "User Id=your_user;Password=your_password;Data Source=your_data_source";
-        private static readonly HarvestRepository harvestRepository = new OracleHarvestRepository(harvestConnectionString);
-
-
+        private static readonly string connectionstring = "User Id=adminCAFEPAY;Password=adminCAFEPAY;Data Source=localhost:1521/xe;";
+        private static readonly CollectorRepository collectorRepository = new OracleCollectorRepository(connectionstring);
         public static class Collector
         {
+            public static CollectorUpdate update = new CollectorUpdate(collectorRepository);
             public static CollectorSave save = new CollectorSave(collectorRepository);
             public static CollectorQueryAll query = new CollectorQueryAll(collectorRepository);
         }
-
-        public static class Harvest
+        public class Harvest
         {
-            public static HarvestSave save = new HarvestSave(harvestRepository);
-            public static HarvestQueryAll query = new HarvestQueryAll(harvestRepository);
+            // Similar structure for Harvest related services can be added here
         }
     }
 }
