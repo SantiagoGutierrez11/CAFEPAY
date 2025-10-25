@@ -42,20 +42,23 @@
             this.dgCollector.AllowUserToResizeColumns = false;
             this.dgCollector.AllowUserToResizeRows = false;
             this.dgCollector.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgCollector.Location = new System.Drawing.Point(61, 103);
+            this.dgCollector.Location = new System.Drawing.Point(81, 127);
+            this.dgCollector.Margin = new System.Windows.Forms.Padding(4);
             this.dgCollector.MultiSelect = false;
             this.dgCollector.Name = "dgCollector";
             this.dgCollector.ReadOnly = true;
+            this.dgCollector.RowHeadersWidth = 51;
             this.dgCollector.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgCollector.Size = new System.Drawing.Size(646, 235);
+            this.dgCollector.Size = new System.Drawing.Size(861, 289);
             this.dgCollector.TabIndex = 0;
             this.dgCollector.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgCollector_CellContentClick);
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(61, 58);
+            this.btnAdd.Location = new System.Drawing.Point(81, 71);
+            this.btnAdd.Margin = new System.Windows.Forms.Padding(4);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(168, 39);
+            this.btnAdd.Size = new System.Drawing.Size(224, 48);
             this.btnAdd.TabIndex = 1;
             this.btnAdd.Text = "Agregar";
             this.btnAdd.UseVisualStyleBackColor = true;
@@ -63,9 +66,10 @@
             // 
             // btnModify
             // 
-            this.btnModify.Location = new System.Drawing.Point(539, 58);
+            this.btnModify.Location = new System.Drawing.Point(719, 71);
+            this.btnModify.Margin = new System.Windows.Forms.Padding(4);
             this.btnModify.Name = "btnModify";
-            this.btnModify.Size = new System.Drawing.Size(168, 39);
+            this.btnModify.Size = new System.Drawing.Size(224, 48);
             this.btnModify.TabIndex = 2;
             this.btnModify.Text = "Modificar";
             this.btnModify.UseVisualStyleBackColor = true;
@@ -74,23 +78,24 @@
             // lbCollectors
             // 
             this.lbCollectors.AutoSize = true;
-            this.lbCollectors.Location = new System.Drawing.Point(62, 36);
+            this.lbCollectors.Location = new System.Drawing.Point(83, 44);
+            this.lbCollectors.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbCollectors.Name = "lbCollectors";
-            this.lbCollectors.Size = new System.Drawing.Size(70, 13);
+            this.lbCollectors.Size = new System.Drawing.Size(0, 16);
             this.lbCollectors.TabIndex = 3;
-            this.lbCollectors.Text = "Recolectores";
             // 
             // ViewCollector
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 350);
+            this.ClientSize = new System.Drawing.Size(1067, 431);
             this.Controls.Add(this.lbCollectors);
             this.Controls.Add(this.btnModify);
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.dgCollector);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ViewCollector";
-            this.Text = "Recolector";
+            this.Text = "Recolectores";
             this.Load += new System.EventHandler(this.ViewCollector_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgCollector)).EndInit();
             this.ResumeLayout(false);
