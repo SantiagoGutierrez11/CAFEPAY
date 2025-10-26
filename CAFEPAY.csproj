@@ -235,7 +235,6 @@
     <Content Include="bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll" />
     <Content Include="bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml" />
     <Content Include="bin\Debug\Oracle.ManagedDataAccess.dll" />
-    <Content Include="bin\Debug\Resources\LOGO-CAFICAUCA.png" />
     <Content Include="bin\Debug\System.Buffers.dll" />
     <Content Include="bin\Debug\System.Buffers.xml" />
     <Content Include="bin\Debug\System.Diagnostics.DiagnosticSource.dll" />
@@ -256,6 +255,9 @@
     <Content Include="bin\Debug\System.Threading.Tasks.Extensions.xml" />
     <Content Include="bin\Debug\System.ValueTuple.dll" />
     <Content Include="bin\Debug\System.ValueTuple.xml" />
+    <Content Include="Resources\LOGO-CAFICAUCA.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Release\" />

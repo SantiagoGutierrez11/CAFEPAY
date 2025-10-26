@@ -55,7 +55,7 @@ namespace CAFEPAY.Views.ViewCollector
             // Intentar cargar el logo
             try
             {
-                string imagePath = Path.Combine(Application.StartupPath, "resources", "LOGO-CAFICAUCA.png");
+                string imagePath = Path.Combine(Application.StartupPath, "Resources", "LOGO-CAFICAUCA.png");
                 if (File.Exists(imagePath))
                 {
                     logoImage.Image = Image.FromFile(imagePath);
