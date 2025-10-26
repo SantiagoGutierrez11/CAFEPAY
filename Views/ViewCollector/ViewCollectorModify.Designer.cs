@@ -35,7 +35,7 @@
             this.cmbStatus = new System.Windows.Forms.ComboBox();
             this.btnAccept = new System.Windows.Forms.Button();
             this.btnDecline = new System.Windows.Forms.Button();
-            this.lbWorkerCode = new System.Windows.Forms.Label();
+            this.textBoxWorkerCode = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // textBoxId
@@ -102,22 +102,22 @@
             this.btnDecline.UseVisualStyleBackColor = true;
             this.btnDecline.Click += new System.EventHandler(this.btnDecline_Click);
             // 
-            // lbWorkerCode
+            // textBoxWorkerCode
             // 
-            this.lbWorkerCode.AutoSize = true;
-            this.lbWorkerCode.Location = new System.Drawing.Point(188, 68);
-            this.lbWorkerCode.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lbWorkerCode.Name = "lbWorkerCode";
-            this.lbWorkerCode.Size = new System.Drawing.Size(67, 16);
-            this.lbWorkerCode.TabIndex = 14;
-            this.lbWorkerCode.Text = "---------------";
+            this.textBoxWorkerCode.AutoSize = true;
+            this.textBoxWorkerCode.Location = new System.Drawing.Point(188, 68);
+            this.textBoxWorkerCode.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.textBoxWorkerCode.Name = "textBoxWorkerCode";
+            this.textBoxWorkerCode.Size = new System.Drawing.Size(67, 16);
+            this.textBoxWorkerCode.TabIndex = 14;
+            this.textBoxWorkerCode.Text = "---------------";
             // 
             // ViewCollectorModify
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(572, 415);
-            this.Controls.Add(this.lbWorkerCode);
+            this.Controls.Add(this.textBoxWorkerCode);
             this.Controls.Add(this.btnDecline);
             this.Controls.Add(this.btnAccept);
             this.Controls.Add(this.cmbStatus);
@@ -142,6 +142,6 @@
         private System.Windows.Forms.ComboBox cmbStatus;
         private System.Windows.Forms.Button btnAccept;
         private System.Windows.Forms.Button btnDecline;
-        private System.Windows.Forms.Label lbWorkerCode;
+        private System.Windows.Forms.TextBox textBoxWorkerCode;
     }
 }

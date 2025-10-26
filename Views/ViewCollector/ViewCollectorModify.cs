@@ -202,6 +202,44 @@ namespace CAFEPAY.Views.ViewCollector
             pictureBox.Image = placeholder;
         }
 
+        private void CreateStyledReadOnlyField(Panel container, string labelText, Control control, int y, int width, int labelHeight, int fieldHeight)
+        {
+            // Label en blanco
+            var label = new Label
+            {
+                Text = labelText,
+                Font = new Font("Segoe UI", 11, FontStyle.Bold),
+                ForeColor = whiteColor,
+                Location = new Point(0, y),
+                Size = new Size(width, labelHeight),
+                AutoSize = false,
+                TextAlign = ContentAlignment.MiddleLeft
+            };
+            container.Controls.Add(label);
+
+            // Control con estilo de solo lectura
+            if (control != null)
+            {
+                control.Location = new Point(0, y + labelHeight + 8);
+                control.Size = new Size(width, fieldHeight);
+                control.Font = new Font("Segoe UI", 11, FontStyle.Regular);
+                control.BackColor = Color.FromArgb(240, 240, 240); // Fondo gris claro
+                control.ForeColor = Color.FromArgb(100, 100, 100); // Texto gris
+                control.Enabled = true; // Permitir focus pero no edición
+
+                if (control is System.Windows.Forms.TextBox textBox)
+                {
+                    textBox.BorderStyle = BorderStyle.FixedSingle;
+                    textBox.Padding = new Padding(12, 8, 12, 8);
+                    textBox.ReadOnly = true;
+                    textBox.Cursor = Cursors.Default; // Cursor normal, no de texto
+                }
+
+                ApplyRoundedCorners(control, 8);
+                container.Controls.Add(control);
+            }
+        }
+
         private void AddFieldsToDesign(Panel container)
         {
             int currentY = 80;
@@ -211,7 +249,7 @@ namespace CAFEPAY.Views.ViewCollector
             int verticalSpacing = 25;
 
             // 🔹 ID DE RECOLECTOR (SOLO LECTURA)
-            CreateStyledLabelField(container, "ID de Recolector", lbWorkerCode, currentY, fieldWidth, labelHeight, fieldHeight);
+            CreateStyledReadOnlyField(container, "ID de Recolector", textBoxWorkerCode, currentY, fieldWidth, labelHeight, fieldHeight);
             currentY += fieldHeight + verticalSpacing;
 
             // 🔹 Cédula
@@ -274,42 +312,6 @@ namespace CAFEPAY.Views.ViewCollector
                         textBox.Cursor = Cursors.Default;
                     }
 
-                }
-
-                ApplyRoundedCorners(control, 8);
-                container.Controls.Add(control);
-            }
-        }
-
-        private void CreateStyledLabelField(Panel container, string labelText, Control control, int y, int width, int labelHeight, int fieldHeight)
-        {
-            // Label en blanco
-            var label = new Label
-            {
-                Text = labelText,
-                Font = new Font("Segoe UI", 11, FontStyle.Bold),
-                ForeColor = whiteColor,
-                Location = new Point(0, y),
-                Size = new Size(width, labelHeight),
-                AutoSize = false,
-                TextAlign = ContentAlignment.MiddleLeft
-            };
-            container.Controls.Add(label);
-
-            // Label de solo lectura con estilo
-            if (control != null)
-            {
-                control.Location = new Point(0, y + labelHeight + 8);
-                control.Size = new Size(width, fieldHeight);
-                control.Font = new Font("Segoe UI", 11, FontStyle.Regular);
-                control.BackColor = Color.FromArgb(240, 240, 240); // Fondo gris claro para solo lectura
-                control.ForeColor = Color.FromArgb(100, 100, 100); // Texto gris para indicar no editable
-
-                if (control is System.Windows.Forms.Label lbl)
-                {
-                    lbl.TextAlign = ContentAlignment.MiddleLeft;
-                    lbl.BorderStyle = BorderStyle.FixedSingle;
-                    lbl.Padding = new Padding(12, 8, 12, 8);
                 }
 
                 ApplyRoundedCorners(control, 8);
@@ -381,7 +383,7 @@ namespace CAFEPAY.Views.ViewCollector
 
         private void ConfigureExistingControlsStyle()
         {
-            var textBoxes = new[] { textBoxId, textBoxFirstName, textBoxLastName, textBoxPhone };
+            var textBoxes = new[] { textBoxId, textBoxFirstName, textBoxLastName, textBoxPhone, textBoxWorkerCode };
             foreach (var textBox in textBoxes)
             {
                 if (textBox != null)
@@ -390,6 +392,22 @@ namespace CAFEPAY.Views.ViewCollector
                     textBox.BackColor = whiteColor;
                     textBox.ForeColor = blackColor;
                     textBox.Font = new Font("Segoe UI", 11, FontStyle.Regular);
+
+                    // Estilo especial para el campo de solo lectura
+                    if (textBox == textBoxWorkerCode)
+                    {
+                        textBox.BackColor = Color.FromArgb(240, 240, 240);
+                        textBox.ForeColor = Color.FromArgb(100, 100, 100);
+                        textBox.ReadOnly = true;
+                        textBox.Cursor = Cursors.Default;
+                        textBox.TextAlign = HorizontalAlignment.Left;
+
+                        textBox.GotFocus += (s, e) => {
+                            // Enviar el focus a otro control inmediatamente
+                            this.SelectNextControl(textBox, true, true, true, true);
+                        };
+
+                    }
                 }
             }
 
@@ -402,12 +420,12 @@ namespace CAFEPAY.Views.ViewCollector
             }
 
             // Estilo para el label de WorkerCode (solo lectura)
-            if (lbWorkerCode != null)
+            if (textBoxWorkerCode != null)
             {
-                lbWorkerCode.BackColor = Color.FromArgb(240, 240, 240);
-                lbWorkerCode.ForeColor = Color.FromArgb(100, 100, 100);
-                lbWorkerCode.Font = new Font("Segoe UI", 11, FontStyle.Regular);
-                lbWorkerCode.TextAlign = ContentAlignment.MiddleLeft;
+                textBoxWorkerCode.BackColor = Color.FromArgb(240, 240, 240);
+                textBoxWorkerCode.ForeColor = Color.FromArgb(100, 100, 100);
+                textBoxWorkerCode.Font = new Font("Segoe UI", 11, FontStyle.Regular);
+                textBoxWorkerCode.TextAlign = HorizontalAlignment.Left;
             }
         }
 
@@ -443,7 +461,7 @@ namespace CAFEPAY.Views.ViewCollector
             textBoxId.Text = oldCollectorDTO.id.ToString();
             textBoxPhone.Text = oldCollectorDTO.phone;
             cmbStatus.SelectedValue = oldCollectorDTO.status;
-            lbWorkerCode.Text = oldCollectorDTO.workerCode;
+            textBoxWorkerCode.Text = oldCollectorDTO.workerCode;
         }
 
         private class StatusItem
