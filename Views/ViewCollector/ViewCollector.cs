@@ -35,11 +35,14 @@ namespace CAFEPAY.Views.ViewCollector
             ApplyExactFigmaDesign();
             loadCollectors();
 
+            // Pantalla completa
+            this.WindowState = FormWindowState.Maximized;
+
             // Conectar eventos
             dgCollector.SelectionChanged += dgCollector_SelectionChanged;
-            dgCollector.CellDoubleClick += dgCollector_CellDoubleClick;
-        }
 
+        }
+            
         private void ApplyExactFigmaDesign()
         {
             // Configuración principal del formulario
@@ -465,14 +468,6 @@ namespace CAFEPAY.Views.ViewCollector
         private void dgCollector_SelectionChanged(object sender, EventArgs e)
         {
             btnModify.Enabled = dgCollector.CurrentCell != null;
-        }
-
-        private void dgCollector_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0 && e.RowIndex < listDTOCollector.Count)
-            {
-                btnModify_Click(sender, e);
-            }
         }
 
         protected override void OnVisibleChanged(EventArgs e)

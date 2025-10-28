@@ -29,6 +29,9 @@ namespace CAFEPAY.Views.ViewCollector
             this.collectorDTO = _collectorDTO;
             InitializeComponent();
             ApplyVisualDesign();
+
+            // Pantalla completa
+            this.WindowState = FormWindowState.Maximized;
         }
 
         private void ApplyVisualDesign()

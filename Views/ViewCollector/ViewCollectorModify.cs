@@ -38,6 +38,9 @@ namespace CAFEPAY.Views.ViewCollector
             ApplyVisualDesign();
             loadCollector();
             loadComboBox();
+
+            // Pantalla completa
+            this.WindowState = FormWindowState.Maximized;
         }
 
         private void ApplyVisualDesign()
