@@ -1,6 +1,11 @@
-﻿using CAFEPAY.ArqHex.Collectors.domain;
-using CAFEPAY.ArqHex.Collectors.infrastructure;
+﻿using CAFEPAY.ArqHex.Harvests.Application.HarvestQueryAll;
+using CAFEPAY.ArqHex.Harvests.Application.HarvestSave;
+using CAFEPAY.ArqHex.Harvests.Domain;
+using CAFEPAY.ArqHex.Harvests.Infrastructure;
+using CAFEPAY.ArqHex.Collectors.application.CollectorQueryAll;
 using CAFEPAY.ArqHex.Collectors.application.CollectorSave;
+using CAFEPAY.ArqHex.Collectors.domain;
+using CAFEPAY.ArqHex.Collectors.infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;

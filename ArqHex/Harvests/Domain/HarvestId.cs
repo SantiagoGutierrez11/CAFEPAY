@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CAFEPAY.ArqHex.Harvests.Domain
 {
-    internal class HarvestId
+    public class HarvestId
     {
         public Decimal harvestIdValue;
         public HarvestId(Decimal _harvestIdValue) { 

@@ -173,6 +173,7 @@ namespace CAFEPAY
         {
             attCollections = new List<Collects>();
         }
+
     }
 
     public class Collects
