@@ -20,7 +20,7 @@ namespace CAFEPAY.ArqHex.Collectors.infrastructure
             if (collector == null) throw new ArgumentNullException(nameof(collector));
 
             const string sql = @"
-        INSERT INTO COLLECTOR (WORKER_CODE, ID, FIRST_NAME, LAST_NAME, PHONE, STATUS_ID)
+        INSERT INTO ADMINCAFEPAY.COLLECTOR (WORKER_CODE, ID, FIRST_NAME, LAST_NAME, PHONE, STATUS_ID)
         VALUES (:p_worker_code, :p_id, :p_first_name, :p_last_name, :p_phone, :p_status_id)";
 
             using (var connection = new OracleConnection(connectionString))
@@ -58,7 +58,7 @@ namespace CAFEPAY.ArqHex.Collectors.infrastructure
             if (collector == null) throw new ArgumentNullException(nameof(collector));
             if (string.IsNullOrWhiteSpace(oldId.ToString())) throw new ArgumentException("oldId es requerido", nameof(oldId));
             const string sql = @"
-UPDATE COLLECTOR
+UPDATE ADMINCAFEPAY.COLLECTOR
    SET FIRST_NAME = :p_first_name,
        LAST_NAME  = :p_last_name,
        PHONE      = :p_phone,
@@ -113,7 +113,7 @@ UPDATE COLLECTOR
             using (var connection = new OracleConnection(connectionString))
             {
                 connection.Open();
-                const string query = "SELECT WORKER_CODE, ID, FIRST_NAME, LAST_NAME, PHONE, STATUS_ID FROM COLLECTOR ORDER BY WORKER_CODE";
+                const string query = "SELECT WORKER_CODE, ID, FIRST_NAME, LAST_NAME, PHONE, STATUS_ID FROM ADMINCAFEPAY.COLLECTOR ORDER BY WORKER_CODE";
 
                 using (var command = new OracleCommand(query, connection))
                 using (var reader = command.ExecuteReader())
@@ -124,7 +124,7 @@ UPDATE COLLECTOR
                         var id = new CollectorId(reader.GetInt64(1));
                         var firstName = new CollectorFirstName(reader.GetString(2));
                         var lastName = new CollectorLastName(reader.GetString(3));
-                        var phone = new CollectorPhone(reader.GetInt64(4));
+                        var phone = new CollectorPhone(reader.GetString(4));
                         var status = new CollectorStatus(reader.GetInt32(5));
 
                         var collector = new Collector(workerCode, id, firstName, lastName, phone, status);

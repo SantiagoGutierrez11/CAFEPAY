@@ -28,44 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lbText = new System.Windows.Forms.Label();
             this.textBoxId = new System.Windows.Forms.MaskedTextBox();
-            this.lbTextConfirm = new System.Windows.Forms.Label();
             this.btnAccept = new System.Windows.Forms.Button();
             this.btnDecline = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // lbText
-            // 
-            this.lbText.AutoSize = true;
-            this.lbText.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbText.Location = new System.Drawing.Point(124, 9);
-            this.lbText.Name = "lbText";
-            this.lbText.Size = new System.Drawing.Size(327, 29);
-            this.lbText.TabIndex = 0;
-            this.lbText.Text = "Esta modificando la cedula";
-            // 
             // textBoxId
             // 
-            this.textBoxId.Location = new System.Drawing.Point(129, 112);
+            this.textBoxId.Location = new System.Drawing.Point(172, 138);
+            this.textBoxId.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBoxId.Name = "textBoxId";
-            this.textBoxId.Size = new System.Drawing.Size(322, 20);
+            this.textBoxId.Size = new System.Drawing.Size(428, 22);
             this.textBoxId.TabIndex = 1;
-            // 
-            // lbTextConfirm
-            // 
-            this.lbTextConfirm.AutoSize = true;
-            this.lbTextConfirm.Location = new System.Drawing.Point(220, 96);
-            this.lbTextConfirm.Name = "lbTextConfirm";
-            this.lbTextConfirm.Size = new System.Drawing.Size(132, 13);
-            this.lbTextConfirm.TabIndex = 2;
-            this.lbTextConfirm.Text = "Confirme cedula a cambiar";
             // 
             // btnAccept
             // 
-            this.btnAccept.Location = new System.Drawing.Point(129, 161);
+            this.btnAccept.Location = new System.Drawing.Point(172, 198);
+            this.btnAccept.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnAccept.Name = "btnAccept";
-            this.btnAccept.Size = new System.Drawing.Size(75, 23);
+            this.btnAccept.Size = new System.Drawing.Size(100, 28);
             this.btnAccept.TabIndex = 3;
             this.btnAccept.Text = "Aceptar";
             this.btnAccept.UseVisualStyleBackColor = true;
@@ -73,9 +54,10 @@
             // 
             // btnDecline
             // 
-            this.btnDecline.Location = new System.Drawing.Point(376, 161);
+            this.btnDecline.Location = new System.Drawing.Point(501, 198);
+            this.btnDecline.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnDecline.Name = "btnDecline";
-            this.btnDecline.Size = new System.Drawing.Size(75, 23);
+            this.btnDecline.Size = new System.Drawing.Size(100, 28);
             this.btnDecline.TabIndex = 4;
             this.btnDecline.Text = "Rechazar";
             this.btnDecline.UseVisualStyleBackColor = true;
@@ -83,14 +65,13 @@
             // 
             // ViewCollectorModifyId
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(625, 187);
+            this.ClientSize = new System.Drawing.Size(833, 230);
             this.Controls.Add(this.btnDecline);
             this.Controls.Add(this.btnAccept);
-            this.Controls.Add(this.lbTextConfirm);
             this.Controls.Add(this.textBoxId);
-            this.Controls.Add(this.lbText);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "ViewCollectorModifyId";
             this.Text = "ViewCollectorModifyId";
             this.Load += new System.EventHandler(this.ViewCollectorModifyId_Load);
@@ -100,10 +81,7 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Label lbText;
         private System.Windows.Forms.MaskedTextBox textBoxId;
-        private System.Windows.Forms.Label lbTextConfirm;
         private System.Windows.Forms.Button btnAccept;
         private System.Windows.Forms.Button btnDecline;
     }

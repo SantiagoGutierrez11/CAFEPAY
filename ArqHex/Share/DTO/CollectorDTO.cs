@@ -12,7 +12,7 @@ namespace CAFEPAY.ArqHex.Share.DTO
         public long id { get; set; }
         public string firstName { get; set; }
         public string lastName { get; set; }
-        public long phone { get; set; }
+        public string phone { get; set; }
         public int status { get; set; }         // 1 = activo , 2 = inactivo
 
         public string statusText { get; set; }
