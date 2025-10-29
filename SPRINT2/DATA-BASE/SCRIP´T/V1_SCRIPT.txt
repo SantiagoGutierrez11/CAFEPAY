@@ -1,0 +1,138 @@
+--------------------------------------------------------
+-- DROPS como en tu estructura (fallarán si no existen)
+--------------------------------------------------------
+DROP TRIGGER HARVEST_BI_SET_ID;
+DROP TABLE HARVEST CASCADE CONSTRAINTS;
+DROP TABLE PLOT_HARVEST_SEQ CASCADE CONSTRAINTS;
+DROP TABLE PLOT CASCADE CONSTRAINTS;
+DROP TABLE OWNER_PLOT CASCADE CONSTRAINTS;
+
+--------------------------------------------------------
+-- OWNER_PLOT (no autoincremental)
+--------------------------------------------------------
+CREATE TABLE OWNER_PLOT (
+    IDOWNER    NUMBER(10,0)    NOT NULL,
+    FIRSTNAME  VARCHAR2(30)    NOT NULL,
+    LASTNAME   VARCHAR2(30)    NOT NULL
+);
+ALTER TABLE OWNER_PLOT
+  ADD CONSTRAINT OWNER_PLOT_PK PRIMARY KEY (IDOWNER) ENABLE;
+
+--------------------------------------------------------
+-- PLOT (no autoincremental)
+--------------------------------------------------------
+CREATE TABLE PLOT (
+    IDPLOT   NUMBER(10,0)  NOT NULL,
+    IDOWNER  NUMBER(10,0)  NOT NULL
+);
+ALTER TABLE PLOT
+  ADD CONSTRAINT PLOT_PK PRIMARY KEY (IDPLOT) ENABLE;
+ALTER TABLE PLOT
+  ADD CONSTRAINT PLOT_FK_OWNER FOREIGN KEY (IDOWNER)
+      REFERENCES OWNER_PLOT (IDOWNER) ENABLE;
+
+--------------------------------------------------------
+-- HARVEST (PK compuesta y precio/fechas)
+--------------------------------------------------------
+CREATE TABLE HARVEST (
+    IDPLOT        NUMBER(10,0)  NOT NULL,
+    IDHARVEST     NUMBER(10,0)  NOT NULL,
+    STARTDATE     DATE          NOT NULL,
+    ENDDATE       DATE,
+    PRICEPERKILO  NUMBER(10,2)  NOT NULL
+);
+ALTER TABLE HARVEST
+  ADD CONSTRAINT HARVEST_PK PRIMARY KEY (IDPLOT, IDHARVEST) ENABLE;
+ALTER TABLE HARVEST
+  ADD CONSTRAINT HARVEST_FK_PLOT FOREIGN KEY (IDPLOT)
+      REFERENCES PLOT (IDPLOT) ENABLE;
+ALTER TABLE HARVEST
+  ADD CONSTRAINT HARVEST_CHK_DATES CHECK (ENDDATE IS NULL OR ENDDATE >= STARTDATE) ENABLE;
+ALTER TABLE HARVEST
+  ADD CONSTRAINT HARVEST_CHK_PRICE CHECK (PRICEPERKILO >= 0) ENABLE;
+
+--------------------------------------------------------
+-- Tabla auxiliar para correlativo por LOTE
+--------------------------------------------------------
+CREATE TABLE PLOT_HARVEST_SEQ (
+    IDPLOT   NUMBER(10,0) NOT NULL,
+    NEXT_ID  NUMBER(10,0) NOT NULL,
+    CONSTRAINT PLOT_HARVEST_SEQ_PK PRIMARY KEY (IDPLOT),
+    CONSTRAINT PLOT_HARVEST_SEQ_FK FOREIGN KEY (IDPLOT)
+        REFERENCES PLOT (IDPLOT)
+);
+
+CREATE INDEX IX_PLOT_HARVEST_SEQ_IDPLOT ON PLOT_HARVEST_SEQ (IDPLOT);
+
+--------------------------------------------------------
+-- Trigger: asigna IDHARVEST incremental por IDPLOT
+-- Nota: es BEFORE INSERT; el NOT NULL se valida DESPUÉS.
+--------------------------------------------------------
+CREATE OR REPLACE TRIGGER HARVEST_BI_SET_ID
+BEFORE INSERT ON HARVEST
+FOR EACH ROW
+DECLARE
+    v_next NUMBER;
+BEGIN
+    IF :NEW.IDHARVEST IS NULL THEN
+        BEGIN
+            SELECT NEXT_ID
+              INTO v_next
+              FROM PLOT_HARVEST_SEQ
+             WHERE IDPLOT = :NEW.IDPLOT
+             FOR UPDATE;
+
+            :NEW.IDHARVEST := v_next;
+            UPDATE PLOT_HARVEST_SEQ
+               SET NEXT_ID = v_next + 1
+             WHERE IDPLOT = :NEW.IDPLOT;
+
+        EXCEPTION
+            WHEN NO_DATA_FOUND THEN
+                :NEW.IDHARVEST := 1;
+                INSERT INTO PLOT_HARVEST_SEQ (IDPLOT, NEXT_ID)
+                VALUES (:NEW.IDPLOT, 2);
+        END;
+    END IF;
+END;
+/
+SHOW ERRORS TRIGGER HARVEST_BI_SET_ID;
+
+--------------------------------------------------------
+-- Ejemplo: debes proporcionar IDOWNER e IDPLOT manualmente
+--------------------------------------------------------
+-- Owners
+INSERT INTO OWNER_PLOT (IDOWNER, FIRSTNAME, LASTNAME) VALUES (100, 'Ana',  'Rivas');
+INSERT INTO OWNER_PLOT (IDOWNER, FIRSTNAME, LASTNAME) VALUES (200, 'Luis', 'Cano');
+
+-- Plots
+INSERT INTO PLOT (IDPLOT, IDOWNER) VALUES (1, 100);
+INSERT INTO PLOT (IDPLOT, IDOWNER) VALUES (2, 100);
+
+--------------------------------------------------------
+-- Harvests: manda IDHARVEST = NULL para que el trigger numere
+--------------------------------------------------------
+-- Plot 1 -> harvest 1
+INSERT INTO HARVEST (IDPLOT, IDHARVEST, STARTDATE, ENDDATE, PRICEPERKILO)
+VALUES (1, NULL, DATE '2025-01-10', DATE '2025-02-10', 3.50);
+
+-- Plot 1 -> harvest 2
+INSERT INTO HARVEST (IDPLOT, IDHARVEST, STARTDATE, ENDDATE, PRICEPERKILO)
+VALUES (1, NULL, DATE '2025-03-05', DATE '2025-04-01', 3.80);
+
+-- Plot 2 -> harvest 1
+INSERT INTO HARVEST (IDPLOT, IDHARVEST, STARTDATE, ENDDATE, PRICEPERKILO)
+VALUES (2, NULL, DATE '2025-01-15', DATE '2025-02-20', 3.60);
+
+-- Plot 2 -> harvest 2
+INSERT INTO HARVEST (IDPLOT, IDHARVEST, STARTDATE, ENDDATE, PRICEPERKILO)
+VALUES (2, NULL, DATE '2025-05-01', DATE '2025-05-30', 3.90);
+
+COMMIT;
+
+--------------------------------------------------------
+-- Verificación
+--------------------------------------------------------
+SELECT IDPLOT, IDHARVEST, STARTDATE, ENDDATE, PRICEPERKILO
+  FROM HARVEST
+ ORDER BY IDPLOT, IDHARVEST;
