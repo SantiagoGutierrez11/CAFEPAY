@@ -1,0 +1,273 @@
+--------------------------------------------------------
+-- DROPS
+--------------------------------------------------------
+DROP TRIGGER HARVEST_BI_VLD_ONE_ACTIVE;
+DROP TRIGGER HARVEST_BI_BU_STATUS;
+DROP TRIGGER HARVEST_BI_SET_ID;
+DROP TABLE HARVEST CASCADE CONSTRAINTS;
+DROP TABLE PLOT_HARVEST_SEQ CASCADE CONSTRAINTS;
+DROP TABLE PLOT CASCADE CONSTRAINTS;
+DROP TABLE OWNER_PLOT CASCADE CONSTRAINTS;
+DROP TABLE HARVEST_STATUS_DOMAIN CASCADE CONSTRAINTS;
+DROP TABLE PLOT_STATUS_DOMAIN CASCADE CONSTRAINTS;
+
+--------------------------------------------------------
+-- OWNER_PLOT
+--------------------------------------------------------
+CREATE TABLE OWNER_PLOT (
+    IDOWNER    NUMBER(10,0)   NOT NULL,
+    FIRSTNAME  VARCHAR2(30)   NOT NULL,
+    LASTNAME   VARCHAR2(30)   NOT NULL
+);
+ALTER TABLE OWNER_PLOT
+  ADD CONSTRAINT OWNER_PLOT_PK PRIMARY KEY (IDOWNER) ENABLE;
+
+--------------------------------------------------------
+-- DOMINIO DE ESTADO DEL LOTE
+--------------------------------------------------------
+CREATE TABLE PLOT_STATUS_DOMAIN (
+    STATUS_ID   NUMBER       NOT NULL,
+    STATUS_NAME VARCHAR2(15) NOT NULL
+);
+ALTER TABLE PLOT_STATUS_DOMAIN
+  ADD CONSTRAINT PLOT_STATUS_PK PRIMARY KEY (STATUS_ID) ENABLE;
+
+INSERT INTO PLOT_STATUS_DOMAIN (STATUS_ID, STATUS_NAME) VALUES (1, 'ACTIVO');
+INSERT INTO PLOT_STATUS_DOMAIN (STATUS_ID, STATUS_NAME) VALUES (2, 'INACTIVO');
+
+--------------------------------------------------------
+-- TABLA PLOT (LOTE)
+--------------------------------------------------------
+CREATE TABLE PLOT (
+    IDPLOT      NUMBER(10,0)  NOT NULL,
+    IDOWNER     NUMBER(10,0)  NOT NULL,
+    PLOTNAME    VARCHAR2(30)  NOT NULL,
+    STATUS_ID   NUMBER        NOT NULL
+);
+
+ALTER TABLE PLOT
+  ADD CONSTRAINT PLOT_PK PRIMARY KEY (IDPLOT) ENABLE;
+
+ALTER TABLE PLOT
+  ADD CONSTRAINT PLOT_FK_OWNER FOREIGN KEY (IDOWNER)
+      REFERENCES OWNER_PLOT (IDOWNER) ENABLE;
+
+ALTER TABLE PLOT
+  ADD CONSTRAINT PLOT_FK_STATUS FOREIGN KEY (STATUS_ID)
+      REFERENCES PLOT_STATUS_DOMAIN (STATUS_ID) ENABLE;
+
+--------------------------------------------------------
+-- DOMINIO DE ESTADO DE LA COSECHA
+--------------------------------------------------------
+CREATE TABLE HARVEST_STATUS_DOMAIN (
+    STATUS_ID   NUMBER       NOT NULL,
+    STATUS_NAME VARCHAR2(15) NOT NULL
+);
+ALTER TABLE HARVEST_STATUS_DOMAIN
+  ADD CONSTRAINT HARVEST_STATUS_PK PRIMARY KEY (STATUS_ID) ENABLE;
+
+INSERT INTO HARVEST_STATUS_DOMAIN (STATUS_ID, STATUS_NAME) VALUES (1, 'EN_PROCESO');
+INSERT INTO HARVEST_STATUS_DOMAIN (STATUS_ID, STATUS_NAME) VALUES (2, 'FINALIZADO');
+
+--------------------------------------------------------
+-- TABLA HARVEST (COSECHA)
+--------------------------------------------------------
+CREATE TABLE HARVEST (
+    IDPLOT        NUMBER(10,0)  NOT NULL,
+    IDHARVEST     NUMBER(10,0)  NOT NULL,
+    STARTDATE     DATE          NOT NULL,
+    ENDDATE       DATE,
+    PRICEPERKILO  NUMBER(10,2)  NOT NULL,
+    STATUS_ID     NUMBER        NOT NULL
+);
+
+ALTER TABLE HARVEST
+  ADD CONSTRAINT HARVEST_PK PRIMARY KEY (IDPLOT, IDHARVEST) ENABLE;
+
+ALTER TABLE HARVEST
+  ADD CONSTRAINT HARVEST_FK_PLOT FOREIGN KEY (IDPLOT)
+      REFERENCES PLOT (IDPLOT) ENABLE;
+
+ALTER TABLE HARVEST
+  ADD CONSTRAINT HARVEST_FK_STATUS FOREIGN KEY (STATUS_ID)
+      REFERENCES HARVEST_STATUS_DOMAIN (STATUS_ID) ENABLE;
+
+ALTER TABLE HARVEST
+  ADD CONSTRAINT HARVEST_CHK_PRICE CHECK (PRICEPERKILO >= 0) ENABLE;
+
+ALTER TABLE HARVEST
+  ADD CONSTRAINT HARVEST_CHK_STATE_DATE CHECK (
+      (STATUS_ID = 1 AND ENDDATE IS NULL) OR
+      (STATUS_ID = 2 AND ENDDATE IS NOT NULL)
+) ENABLE;
+
+--------------------------------------------------------
+-- TABLA AUXILIAR: correlativo por lote
+--------------------------------------------------------
+CREATE TABLE PLOT_HARVEST_SEQ (
+    IDPLOT   NUMBER(10,0) NOT NULL,
+    NEXT_ID  NUMBER(10,0) NOT NULL,
+    CONSTRAINT PLOT_HARVEST_SEQ_PK PRIMARY KEY (IDPLOT),
+    CONSTRAINT PLOT_HARVEST_SEQ_FK FOREIGN KEY (IDPLOT)
+        REFERENCES PLOT (IDPLOT)
+);
+
+--------------------------------------------------------
+-- TRIGGER 1: IDHARVEST incremental por IDPLOT
+--------------------------------------------------------
+CREATE OR REPLACE TRIGGER HARVEST_BI_SET_ID
+BEFORE INSERT ON HARVEST
+FOR EACH ROW
+DECLARE
+    v_next NUMBER;
+BEGIN
+    IF :NEW.IDHARVEST IS NULL THEN
+        BEGIN
+            SELECT NEXT_ID INTO v_next
+              FROM PLOT_HARVEST_SEQ
+             WHERE IDPLOT = :NEW.IDPLOT
+             FOR UPDATE;
+
+            :NEW.IDHARVEST := v_next;
+            UPDATE PLOT_HARVEST_SEQ
+               SET NEXT_ID = v_next + 1
+             WHERE IDPLOT = :NEW.IDPLOT;
+        EXCEPTION
+            WHEN NO_DATA_FOUND THEN
+                :NEW.IDHARVEST := 1;
+                INSERT INTO PLOT_HARVEST_SEQ (IDPLOT, NEXT_ID)
+                VALUES (:NEW.IDPLOT, 2);
+        END;
+    END IF;
+END;
+/
+SHOW ERRORS TRIGGER HARVEST_BI_SET_ID;
+
+--------------------------------------------------------
+-- TRIGGER 2: Estado automático de la cosecha
+--------------------------------------------------------
+CREATE OR REPLACE TRIGGER HARVEST_BI_BU_STATUS
+BEFORE INSERT OR UPDATE OF ENDDATE, STATUS_ID ON HARVEST
+FOR EACH ROW
+BEGIN
+    IF INSERTING THEN
+        IF :NEW.ENDDATE IS NOT NULL THEN
+            :NEW.STATUS_ID := 2; -- FINALIZADO
+        ELSIF :NEW.STATUS_ID IS NULL THEN
+            :NEW.STATUS_ID := 1; -- EN_PROCESO
+        END IF;
+    END IF;
+
+    IF :NEW.ENDDATE IS NOT NULL THEN
+        :NEW.STATUS_ID := 2;
+    END IF;
+
+    IF :NEW.STATUS_ID = 2 AND :NEW.ENDDATE IS NULL THEN
+        :NEW.ENDDATE := TRUNC(SYSDATE);
+    END IF;
+END;
+/
+SHOW ERRORS TRIGGER HARVEST_BI_BU_STATUS;
+
+--------------------------------------------------------
+-- TRIGGER 3: Validar una cosecha activa por lote
+--------------------------------------------------------
+CREATE OR REPLACE TRIGGER HARVEST_BI_VLD_ONE_ACTIVE
+BEFORE INSERT OR UPDATE OF STATUS_ID, ENDDATE ON HARVEST
+FOR EACH ROW
+DECLARE
+    v_exists NUMBER;
+BEGIN
+    IF (:NEW.STATUS_ID = 1 AND :NEW.ENDDATE IS NULL) THEN
+        SELECT COUNT(*) INTO v_exists
+          FROM HARVEST H
+         WHERE H.IDPLOT = :NEW.IDPLOT
+           AND H.STATUS_ID = 1
+           AND H.ENDDATE IS NULL;
+
+        IF v_exists > 0 THEN
+            RAISE_APPLICATION_ERROR(
+                -20051,
+                'Solo se permite una cosecha activa por lote. IDPLOT='||:NEW.IDPLOT
+            );
+        END IF;
+    END IF;
+END;
+/
+SHOW ERRORS TRIGGER HARVEST_BI_VLD_ONE_ACTIVE;
+
+--------------------------------------------------------
+-- DATOS DE EJEMPLO
+--------------------------------------------------------
+
+-- Dueños
+INSERT INTO OWNER_PLOT (IDOWNER, FIRSTNAME, LASTNAME)
+VALUES (100, 'Ana', 'Rivas');
+INSERT INTO OWNER_PLOT (IDOWNER, FIRSTNAME, LASTNAME)
+VALUES (200, 'Luis', 'Cano');
+
+-- Lotes
+INSERT INTO PLOT (IDPLOT, IDOWNER, PLOTNAME, STATUS_ID)
+VALUES (1, 100, 'El Cafetal Norte', 1);
+INSERT INTO PLOT (IDPLOT, IDOWNER, PLOTNAME, STATUS_ID)
+VALUES (2, 100, 'La Montañita', 1);
+INSERT INTO PLOT (IDPLOT, IDOWNER, PLOTNAME, STATUS_ID)
+VALUES (3, 200, 'Los Arroyos', 2);
+
+--------------------------------------------------------
+-- Cosechas del Lote 1 - "El Cafetal Norte"
+--------------------------------------------------------
+-- finalizada
+INSERT INTO HARVEST (IDPLOT, IDHARVEST, STARTDATE, ENDDATE, PRICEPERKILO, STATUS_ID)
+VALUES (1, NULL, DATE '2024-01-10', DATE '2024-02-15', 3.40, 2);
+
+-- finalizada (CORREGIDO)
+INSERT INTO HARVEST (IDPLOT, IDHARVEST, STARTDATE, ENDDATE, PRICEPERKILO, STATUS_ID)
+VALUES (1, NULL, DATE '2024-03-05', DATE '2024-04-20', 3.60, 2);
+
+-- activa (CORREGIDO)
+INSERT INTO HARVEST (IDPLOT, IDHARVEST, STARTDATE, ENDDATE, PRICEPERKILO, STATUS_ID)
+VALUES (1, NULL, DATE '2024-06-01', NULL, 3.75, 1);
+
+--------------------------------------------------------
+-- Cosechas del Lote 2 - "La Montañita"
+--------------------------------------------------------
+-- finalizada (CORREGIDO)
+INSERT INTO HARVEST (IDPLOT, IDHARVEST, STARTDATE, ENDDATE, PRICEPERKILO, STATUS_ID)
+VALUES (2, NULL, DATE '2024-02-01', DATE '2024-03-10', 3.50, 2);
+
+-- finalizada (CORREGIDO)
+INSERT INTO HARVEST (IDPLOT, IDHARVEST, STARTDATE, ENDDATE, PRICEPERKILO, STATUS_ID)
+VALUES (2, NULL, DATE '2024-04-01', DATE '2024-05-15', 3.70, 2);
+
+-- activa (CORREGIDO)
+INSERT INTO HARVEST (IDPLOT, IDHARVEST, STARTDATE, ENDDATE, PRICEPERKILO, STATUS_ID)
+VALUES (2, NULL, DATE '2025-01-05', NULL, 3.90, 1);
+
+--------------------------------------------------------
+-- Cosechas del Lote 3 - "Los Arroyos" (INACTIVO)
+--------------------------------------------------------
+-- finalizada (CORREGIDO)
+INSERT INTO HARVEST (IDPLOT, IDHARVEST, STARTDATE, ENDDATE, PRICEPERKILO, STATUS_ID)
+VALUES (3, NULL, DATE '2023-05-01', DATE '2023-06-20', 3.20, 2);
+
+-- finalizada (CORREGIDO)
+INSERT INTO HARVEST (IDPLOT, IDHARVEST, STARTDATE, ENDDATE, PRICEPERKILO, STATUS_ID)
+VALUES (3, NULL, DATE '2023-08-01', DATE '2023-09-25', 3.25, 2);
+
+COMMIT;
+
+--------------------------------------------------------
+-- CONSULTAS DE PRUEBA 
+-------------------------------------------------------- 
+SELECT  
+    P.PLOTNAME,
+    H.IDHARVEST,
+    H.STARTDATE,
+    H.ENDDATE,
+    S.STATUS_NAME AS HARVEST_STATUS,
+    H.PRICEPERKILO
+FROM HARVEST H
+JOIN PLOT P ON P.IDPLOT = H.IDPLOT
+JOIN HARVEST_STATUS_DOMAIN S ON S.STATUS_ID = H.STATUS_ID
+ORDER BY P.IDPLOT, H.IDHARVEST;
