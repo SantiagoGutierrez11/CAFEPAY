@@ -1,0 +1,217 @@
+--------------------------------------------------------
+-- DROPS 
+--------------------------------------------------------
+DROP TRIGGER HARVEST_BI_VLD_ONE_ACTIVE;
+DROP TRIGGER HARVEST_BI_BU_STATUS;
+DROP TRIGGER HARVEST_BI_SET_ID;
+DROP TABLE HARVEST CASCADE CONSTRAINTS;
+DROP TABLE PLOT_HARVEST_SEQ CASCADE CONSTRAINTS;
+DROP TABLE PLOT CASCADE CONSTRAINTS;
+DROP TABLE OWNER_PLOT CASCADE CONSTRAINTS;
+DROP TABLE HARVEST_STATUS_DOMAIN CASCADE CONSTRAINTS;
+
+--------------------------------------------------------
+-- OWNER_PLOT
+--------------------------------------------------------
+CREATE TABLE OWNER_PLOT (
+    IDOWNER    NUMBER(10,0)   NOT NULL,
+    FIRSTNAME  VARCHAR2(30)   NOT NULL,
+    LASTNAME   VARCHAR2(30)   NOT NULL
+);
+ALTER TABLE OWNER_PLOT
+  ADD CONSTRAINT OWNER_PLOT_PK PRIMARY KEY (IDOWNER) ENABLE;
+
+--------------------------------------------------------
+-- PLOT 
+--------------------------------------------------------
+CREATE TABLE PLOT (
+    IDPLOT   NUMBER(10,0)  NOT NULL,
+    IDOWNER  NUMBER(10,0)  NOT NULL
+);
+ALTER TABLE PLOT
+  ADD CONSTRAINT PLOT_PK PRIMARY KEY (IDPLOT) ENABLE;
+ALTER TABLE PLOT
+  ADD CONSTRAINT PLOT_FK_OWNER FOREIGN KEY (IDOWNER)
+      REFERENCES OWNER_PLOT (IDOWNER) ENABLE;
+
+--------------------------------------------------------
+-- Dominio de estado para HARVEST
+--------------------------------------------------------
+CREATE TABLE HARVEST_STATUS_DOMAIN (
+    STATUS_ID   NUMBER       NOT NULL,
+    STATUS_NAME VARCHAR2(15) NOT NULL
+);
+ALTER TABLE HARVEST_STATUS_DOMAIN
+  ADD CONSTRAINT HARVEST_STATUS_PK PRIMARY KEY (STATUS_ID) ENABLE;
+
+INSERT INTO HARVEST_STATUS_DOMAIN (STATUS_ID, STATUS_NAME) VALUES (1, 'EN_PROCESO');
+INSERT INTO HARVEST_STATUS_DOMAIN (STATUS_ID, STATUS_NAME) VALUES (2, 'FINALIZADO');
+
+--------------------------------------------------------
+-- HARVEST
+--------------------------------------------------------
+CREATE TABLE HARVEST (
+    IDPLOT        NUMBER(10,0)  NOT NULL,
+    IDHARVEST     NUMBER(10,0)  NOT NULL,
+    STARTDATE     DATE          NOT NULL,
+    ENDDATE       DATE,
+    PRICEPERKILO  NUMBER(10,2)  NOT NULL,
+    STATUS_ID     NUMBER        NOT NULL
+);
+
+ALTER TABLE HARVEST
+  ADD CONSTRAINT HARVEST_PK PRIMARY KEY (IDPLOT, IDHARVEST) ENABLE;
+
+ALTER TABLE HARVEST
+  ADD CONSTRAINT HARVEST_FK_PLOT FOREIGN KEY (IDPLOT)
+      REFERENCES PLOT (IDPLOT) ENABLE;
+
+ALTER TABLE HARVEST
+  ADD CONSTRAINT HARVEST_FK_STATUS FOREIGN KEY (STATUS_ID)
+      REFERENCES HARVEST_STATUS_DOMAIN (STATUS_ID) ENABLE;
+
+ALTER TABLE HARVEST
+  ADD CONSTRAINT HARVEST_CHK_PRICE CHECK (PRICEPERKILO >= 0) ENABLE;
+
+ALTER TABLE HARVEST
+  ADD CONSTRAINT HARVEST_CHK_STATE_DATE CHECK (
+      (STATUS_ID = 1 AND ENDDATE IS NULL) OR
+      (STATUS_ID = 2 AND ENDDATE IS NOT NULL)
+) ENABLE;
+
+--------------------------------------------------------
+-- Tabla auxiliar: para incrementar id de cosecha en cada lote
+--------------------------------------------------------
+CREATE TABLE PLOT_HARVEST_SEQ (
+    IDPLOT   NUMBER(10,0) NOT NULL,
+    NEXT_ID  NUMBER(10,0) NOT NULL,
+    CONSTRAINT PLOT_HARVEST_SEQ_PK PRIMARY KEY (IDPLOT),
+    CONSTRAINT PLOT_HARVEST_SEQ_FK FOREIGN KEY (IDPLOT)
+        REFERENCES PLOT (IDPLOT)
+);
+
+
+--------------------------------------------------------
+-- Trigger 1: IDHARVEST incremental por IDPLOT
+--------------------------------------------------------
+CREATE OR REPLACE TRIGGER HARVEST_BI_SET_ID
+BEFORE INSERT ON HARVEST
+FOR EACH ROW
+DECLARE
+    v_next NUMBER;
+BEGIN
+    IF :NEW.IDHARVEST IS NULL THEN
+        BEGIN
+            SELECT NEXT_ID INTO v_next
+              FROM PLOT_HARVEST_SEQ
+             WHERE IDPLOT = :NEW.IDPLOT
+             FOR UPDATE;
+            :NEW.IDHARVEST := v_next;
+            UPDATE PLOT_HARVEST_SEQ
+               SET NEXT_ID = v_next + 1
+             WHERE IDPLOT = :NEW.IDPLOT;
+        EXCEPTION
+            WHEN NO_DATA_FOUND THEN
+                :NEW.IDHARVEST := 1;
+                INSERT INTO PLOT_HARVEST_SEQ (IDPLOT, NEXT_ID)
+                VALUES (:NEW.IDPLOT, 2);
+        END;
+    END IF;
+END;
+/
+SHOW ERRORS TRIGGER HARVEST_BI_SET_ID;
+
+--------------------------------------------------------
+-- Trigger 2: Manejo automatico de estado y fecha cuando finalize cosecha
+--------------------------------------------------------
+CREATE OR REPLACE TRIGGER HARVEST_BI_BU_STATUS
+BEFORE INSERT OR UPDATE OF ENDDATE, STATUS_ID ON HARVEST
+FOR EACH ROW
+BEGIN
+    IF INSERTING THEN
+        IF :NEW.ENDDATE IS NOT NULL THEN
+            :NEW.STATUS_ID := 2; -- FINALIZADO
+        ELSIF :NEW.STATUS_ID IS NULL THEN
+            :NEW.STATUS_ID := 1; -- EN_PROCESO
+        END IF;
+    END IF;
+
+    IF :NEW.ENDDATE IS NOT NULL THEN
+        :NEW.STATUS_ID := 2; -- FINALIZADO
+    END IF;
+
+    IF :NEW.STATUS_ID = 2 AND :NEW.ENDDATE IS NULL THEN
+        :NEW.ENDDATE := TRUNC(SYSDATE); -- fija fin al cerrar
+    END IF;
+END;
+/
+SHOW ERRORS TRIGGER HARVEST_BI_BU_STATUS;
+
+--------------------------------------------------------
+-- Regla de negocio: UNA cosecha activa por lote
+-- (1) Índice único condicional para concurrencia
+--------------------------------------------------------
+CREATE UNIQUE INDEX UNQ_HARVEST_ONE_ACTIVE
+ON HARVEST (
+    CASE
+        WHEN STATUS_ID = 1 AND ENDDATE IS NULL
+        THEN IDPLOT
+    END
+);
+
+--------------------------------------------------------
+-- (2) Trigger de validación con excepción manejable 
+--     ORA-20051: Solo una cosecha activa por lote.
+--------------------------------------------------------
+CREATE OR REPLACE TRIGGER HARVEST_BI_VLD_ONE_ACTIVE
+BEFORE INSERT OR UPDATE OF STATUS_ID, ENDDATE ON HARVEST
+FOR EACH ROW
+DECLARE
+    v_exists NUMBER;
+BEGIN
+    -- ¿Queda ACTIVA?
+    IF (:NEW.STATUS_ID = 1 AND :NEW.ENDDATE IS NULL) THEN
+        SELECT COUNT(*) INTO v_exists
+          FROM HARVEST H
+         WHERE H.IDPLOT = :NEW.IDPLOT
+           AND H.STATUS_ID = 1
+           AND H.ENDDATE IS NULL;
+           
+        IF v_exists > 0 THEN
+            -- Código -20051 para capturar en OracleException.Number
+            RAISE_APPLICATION_ERROR(
+                -20051,
+                'Solo se permite una cosecha activa por lote. IDPLOT='||:NEW.IDPLOT
+            );
+        END IF;
+    END IF;
+END;
+/
+SHOW ERRORS TRIGGER HARVEST_BI_VLD_ONE_ACTIVE;
+
+--------------------------------------------------------
+-- Datos de ejemplo
+--------------------------------------------------------
+INSERT INTO OWNER_PLOT (IDOWNER, FIRSTNAME, LASTNAME) VALUES (100, 'Ana',  'Rivas');
+INSERT INTO OWNER_PLOT (IDOWNER, FIRSTNAME, LASTNAME) VALUES (200, 'Luis', 'Cano');
+
+INSERT INTO PLOT (IDPLOT, IDOWNER) VALUES (1, 100);
+INSERT INTO PLOT (IDPLOT, IDOWNER) VALUES (2, 100);
+
+-- Plot 1 -> activa OK
+INSERT INTO HARVEST (IDPLOT, IDHARVEST, STARTDATE, ENDDATE, PRICEPERKILO, STATUS_ID)
+VALUES (1, NULL, DATE '2025-01-10', NULL, 3.50, 1);
+
+-- Plot 1 -> intentar otra activa (provoca ORA-20051)
+-- INSERT INTO HARVEST (IDPLOT, IDHARVEST, STARTDATE, ENDDATE, PRICEPERKILO, STATUS_ID)
+-- VALUES (1, NULL, DATE '2025-02-01', NULL, 3.60, 1);
+
+-- Cerrar la activa
+UPDATE HARVEST SET ENDDATE = DATE '2025-01-31'
+ WHERE IDPLOT = 1 AND IDHARVEST = 1;
+
+-- Ahora sí permite nueva activa
+INSERT INTO HARVEST (IDPLOT, IDHARVEST, STARTDATE, ENDDATE, PRICEPERKILO, STATUS_ID)
+VALUES (1, NULL, DATE '2025-02-01', NULL, 3.60, 1);
+
+COMMIT;
