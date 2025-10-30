@@ -6,13 +6,11 @@ using System.Threading.Tasks;
 
 namespace CAFEPAY.ArqHex.Share.DTO
 {
-    public class HarvestDTO
+    public class PlotDTO
     {
-        public long? id { get; set; }
         public long idPlot { get; set; }
-        public DateTime startDate { get; set; }
-        public DateTime? endDate { get; set; }
-        public decimal pricePerKilo { get; set; }
+        public long idOwner { get; set; }
+        public string name { get; set; }
         public int status { get; set; }
         public string statusText { get; set; }
     }

@@ -1,4 +1,5 @@
-﻿using CAFEPAY.ArqHex.Harvests.Domain;
+﻿using CAFEPAY.ArqHex.Collectors.domain;
+using CAFEPAY.ArqHex.Harvests.Domain;
 using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
@@ -30,10 +31,8 @@ namespace CAFEPAY.ArqHex.Harvests.Infrastructure
             {
                 cmd.BindByName = true;
                 cmd.Parameters.Add("p_idplot", OracleDbType.Int64).Value = harvest.idPlot.idPlotValue;
-                cmd.Parameters.Add("p_idharvest", OracleDbType.Int64).Value = DBNull.Value;
                 cmd.Parameters.Add("p_startdate", OracleDbType.Date).Value = harvest.startDate.startDateValue;
-                cmd.Parameters.Add("p_enddate", OracleDbType.Date).Value = harvest.endDate.endDateValue;
-                cmd.Parameters.Add("p_priceperkilo", OracleDbType.Decimal).Value = harvest.pricePerKilo.pricePerKiloValue;
+                cmd.Parameters.Add("p_price", OracleDbType.Decimal).Value = harvest.pricePerKilo.pricePerKiloValue;
 
                 // Parámetro OUT para recuperar el ID asignado por el trigger (si el trigger asignó uno)
                 var outParam = new OracleParameter("p_new_id", OracleDbType.Int64)
@@ -53,6 +52,22 @@ namespace CAFEPAY.ArqHex.Harvests.Infrastructure
                 {
                     // duplicidad de pk/unique (depende de tus constraints)
                     throw new InvalidOperationException("Clave duplicada al insertar harvest.", ex);
+                }
+                catch (OracleException ex) when (ex.Number == 20051)
+                {
+                    // RAISE_APPLICATION_ERROR del trigger: una activa por lote
+                    throw new HarvestActiveExistsException(harvest.idPlot.idPlotValue, ex);
+                }
+                catch (OracleException ex) when (ex.Number == 1 &&
+                                                 ex.Message.IndexOf("UNQ_HARVEST_ONE_ACTIVE", StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    // Violación del índice único condicional
+                    throw new HarvestActiveExistsException(harvest.idPlot.idPlotValue, ex);
+                }
+                catch (OracleException ex) when (ex.Number == 1)
+                {
+                    // Otras únicas (PK, etc.)
+                    throw new InvalidOperationException("Clave duplicada.", ex);
                 }
                 long assignedId = -1;
                 // Si se devolvió algo en p_new_id, asignarlo
@@ -88,7 +103,15 @@ namespace CAFEPAY.ArqHex.Harvests.Infrastructure
                             HarvestStartDate startDate = new HarvestStartDate(reader.GetDateTime(2));
                             HarvestPricePerKilo price = new HarvestPricePerKilo(reader.GetDecimal(3));
                             HarvestStatus status = new HarvestStatus(reader.GetInt32(4));
-                            HarvestEndDate endDate = new HarvestEndDate(reader.GetDateTime(5));
+                            HarvestEndDate endDate = null;
+                            if (reader.IsDBNull(5))
+                            {
+                                endDate = null;
+                            }
+                            else
+                            {
+                                endDate = new HarvestEndDate(reader.GetDateTime(5));
+                            }
 
                             Harvest harvest = new Harvest(id, idPlot, startDate, price, status, endDate);
                             harvests.Add(harvest);

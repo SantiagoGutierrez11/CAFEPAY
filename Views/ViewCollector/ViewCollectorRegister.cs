@@ -524,7 +524,7 @@ namespace CAFEPAY.Views.ViewCollector
             try
             {
                 // Solo si pasa TODAS las validaciones, proceder
-                AppServices.Collector.save.execute(_workerCode, idValue, _firstName, _lastName, _phone, _status);
+                AppServices.CollectorServices.save.execute(_workerCode, idValue, _firstName, _lastName, _phone, _status);
 
                 var collectorDTO = new CollectorDTO
                 {

@@ -10,16 +10,16 @@ namespace CAFEPAY.ArqHex.Harvests.Infrastucture
 {
     public class HarvestController
     {
-        public long saveHarvest(long _idPlot, DateTime _startDate, decimal _pricePerKilo, int _status, DateTime? _endDate = null)
+        public long saveHarvest(long _idPlot, DateTime _startDate, decimal _pricePerKilo)
         {
-            return AppServices.Harvest.save.execute( _idPlot, _startDate, _endDate, _pricePerKilo, _status);
+            return AppServices.HarvestServices.save.execute( _idPlot, _startDate, _pricePerKilo);
         }
         public List<Harvest>listHarvests(){
-            return AppServices.Harvest.query.execute();
+            return AppServices.HarvestServices.query.execute();
         }
         public void updateHarvest(long _idHarvest, long _idPlot, DateTime _startDate, decimal _pricePerKilo, int _status, DateTime? _endDate = null)
         {
-            AppServices.Harvest.update.execute(_idHarvest, _idPlot, _startDate, _endDate, _pricePerKilo, _status);
+            AppServices.HarvestServices.update.execute(_idHarvest, _idPlot, _startDate, _endDate, _pricePerKilo, _status);
         }
     }
 }
