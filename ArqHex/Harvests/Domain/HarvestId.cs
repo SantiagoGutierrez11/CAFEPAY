@@ -8,28 +8,13 @@ namespace CAFEPAY.ArqHex.Harvests.Domain
 {
     public class HarvestId
     {
-        public Decimal harvestIdValue;
-        public HarvestId(Decimal _harvestIdValue) { 
-            this.harvestIdValue = _harvestIdValue;
+        public long? idValue;
+        public HarvestId(long _idValue) { 
+            this.idValue = _idValue;
             validateFormat();
         }
         public void validateFormat()
         {
-            if (this.harvestIdValue.ToString().Length > 10) // 10 digits max 
-            {
-                throw new ArgumentException("HarvestId cannot have more than 10 digits");
-            }
-            if (!Decimal.Truncate(this.harvestIdValue).Equals(this.harvestIdValue)) // No decimals allowed
-            {
-                throw new ArgumentException("HarvestId cannot have decimals");
-            }
-            if (!int.TryParse(harvestIdValue.ToString(), out int id) || id < 0) // Only positive integers allowed
-            {
-                throw new ArgumentException("HarvestId must be a positive integer");
-            }
-        }
-        public Decimal getValue() { 
-            return this.harvestIdValue;
         }
     }
 }

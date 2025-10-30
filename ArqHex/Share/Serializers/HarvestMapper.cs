@@ -13,13 +13,14 @@ namespace CAFEPAY.ArqHex.Share.Serializers
         public static List<HarvestDTO> ToDTOList(IReadOnlyList<Harvest> harvests)
         {
             if (harvests == null) return new List<HarvestDTO>();
-            return harvests.Select(c => new HarvestDTO
+            return harvests.Select(h => new HarvestDTO
             {
-                Id = c.getId(),
-                StartDate = c.getStartDate(),
-                EndDate = c.getEndDate(),
-                PricePerKilo = c.getPricePerKilo(),
-                Location = c.getLocation()
+                id = h.id.idValue,
+                idPlot = h.idPlot.idPlotValue,
+                startDate = h.startDate.startDateValue,
+                endDate = h.endDate?.endDateValue,
+                pricePerKilo = h.pricePerKilo.pricePerKiloValue,
+                status = h.status.statusValue
             }).ToList();
         }
     }

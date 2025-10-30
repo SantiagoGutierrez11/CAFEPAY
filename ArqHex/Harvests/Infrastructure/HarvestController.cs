@@ -8,13 +8,18 @@ using System.Threading.Tasks;
 
 namespace CAFEPAY.ArqHex.Harvests.Infrastucture
 {
-    internal class HarvestController
+    public class HarvestController
     {
-        public void saveHarvest(Decimal harvestId, String harvestLocation, Decimal harvestPricePerKilo, DateTime harvestStartDate, DateTime harvestEndDate){
-            ServiceContainer.Harvest.save.execute(harvestId, harvestLocation, harvestPricePerKilo, harvestStartDate, harvestEndDate);
+        public long saveHarvest(long _idPlot, DateTime _startDate, decimal _pricePerKilo, int _status, DateTime? _endDate = null)
+        {
+            return AppServices.Harvest.save.execute( _idPlot, _startDate, _endDate, _pricePerKilo, _status);
         }
-        public Dictionary<HarvestId, Harvest> listHarvests(){
-            return ServiceContainer.Harvest.query.execute();
+        public List<Harvest>listHarvests(){
+            return AppServices.Harvest.query.execute();
+        }
+        public void updateHarvest(long _idHarvest, long _idPlot, DateTime _startDate, decimal _pricePerKilo, int _status, DateTime? _endDate = null)
+        {
+            AppServices.Harvest.update.execute(_idHarvest, _idPlot, _startDate, _endDate, _pricePerKilo, _status);
         }
     }
 }

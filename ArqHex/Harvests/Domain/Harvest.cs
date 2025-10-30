@@ -9,39 +9,21 @@ namespace CAFEPAY.ArqHex.Harvests.Domain
 {
     public class Harvest
     {
-        private HarvestId Id;
-        private HarvestStartDate StartDate;
-        private HarvestEndDate EndDate;
-        private HarvestPricePerKilo PricePerKilo;
-        private HarvestLocation Location;
-        public Harvest(
-            HarvestId id,
-            HarvestStartDate startDate,
-            HarvestEndDate endDate,
-            HarvestPricePerKilo pricePerKilo,
-            HarvestLocation location)
-        {
-            this.Id = id;
-            this.StartDate = startDate;
-            this.EndDate = endDate;
-            this.PricePerKilo = pricePerKilo;
-            this.Location = location;
-        }
+        public HarvestId id { get; }
+        public HarvestIdPlot idPlot { get; }
+        public HarvestStartDate startDate { get; }
+        public HarvestPricePerKilo pricePerKilo { get; }
+        public HarvestStatus status { get; }
+        public HarvestEndDate endDate { get; }
 
-        public decimal getId() {
-            return this.Id.getValue();
-        }
-        public DateTime getStartDate() { 
-            return this.StartDate.getValue(); 
-        }
-        public DateTime getEndDate() {
-            return this.EndDate.getValue(); 
-        }
-        public decimal getPricePerKilo() {
-            return this.PricePerKilo.getValue(); 
-        }
-        public string getLocation() {
-            return this.Location.getValue(); 
+        public Harvest(HarvestId _id, HarvestIdPlot _idPlot, HarvestStartDate _startDate, HarvestPricePerKilo _pricePerKilo, HarvestStatus _status, HarvestEndDate _endDate =null)
+        {
+            this.id = _id;
+            this.idPlot = _idPlot;
+            this.startDate = _startDate;
+            this.pricePerKilo = _pricePerKilo;
+            this.status = _status;
+            this.endDate = _endDate;
         }
     }
 }

@@ -8,10 +8,11 @@ namespace CAFEPAY.ArqHex.Share.DTO
 {
     public class HarvestDTO
     {
-        public decimal Id { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public decimal PricePerKilo { get; set; }
-        public string Location { get; set; }
+        public long? id { get; set; }
+        public long idPlot { get; set; }
+        public DateTime startDate { get; set; }
+        public DateTime? endDate { get; set; }
+        public decimal pricePerKilo { get; set; }
+        public int status { get; set; }
     }
 }

@@ -8,7 +8,9 @@ namespace CAFEPAY.ArqHex.Harvests.Domain
 {
     public interface HarvestRepository
     {
-        void save(CAFEPAY.Harvest harvest); // Save a new collector , update or insert if not exists
-        Dictionary<HarvestId, CAFEPAY.Harvest> queryAll();
+        long save(Harvest harvest); // Save a new collector , update or insert if not exists
+        void update(Harvest harvest); // Update an existing collector
+        List<Harvest> queryAll(); // Get all collectors
+
     }
 }

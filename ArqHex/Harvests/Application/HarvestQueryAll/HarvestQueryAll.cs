@@ -16,9 +16,10 @@ namespace CAFEPAY.ArqHex.Harvests.Application.HarvestQueryAll
             this.harvestRepository = harvestRepository;
         }
 
-        public Dictionary<HarvestId, Harvest> execute()
+        public List<Harvest> execute()
         {
             return this.harvestRepository.queryAll();
         }
+
     }
 }

@@ -11,8 +11,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CAFEPAY.ArqHex.Collectors.application.CollectorQueryAll;
 using CAFEPAY.ArqHex.Collectors.application.CollectorUpdate;
+using CAFEPAY.ArqHex.Harvests.Application.HarvestUpdate;
 
 namespace CAFEPAY.ArqHex.Share
 {
@@ -20,6 +20,7 @@ namespace CAFEPAY.ArqHex.Share
     {
         private static readonly string connectionstring = "User Id=adminCAFEPAY;Password=adminCAFEPAY;Data Source=localhost:1521/xe;";
         private static readonly CollectorRepository collectorRepository = new OracleCollectorRepository(connectionstring);
+        private static readonly HarvestRepository harvestRepository = new OracleHarvestRepository(connectionstring);
         public static class Collector
         {
             public static CollectorUpdate update = new CollectorUpdate(collectorRepository);
@@ -28,7 +29,9 @@ namespace CAFEPAY.ArqHex.Share
         }
         public class Harvest
         {
-            // Similar structure for Harvest related services can be added here
+            public static HarvestSave save = new HarvestSave(harvestRepository);
+            public static HarvestQueryAll query = new HarvestQueryAll(harvestRepository);
+            public static HarvestUpdate update = new HarvestUpdate(harvestRepository);
         }
     }
 }

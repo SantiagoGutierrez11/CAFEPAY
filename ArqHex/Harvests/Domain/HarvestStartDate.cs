@@ -3,27 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace CAFEPAY.ArqHex.Harvests.Domain
 {
     public class HarvestStartDate
     {
-        private DateTime HarvestStartDateValue { get; }
+        public DateTime startDateValue { get; }
 
-        public HarvestStartDate(DateTime value)
+        public  HarvestStartDate(DateTime _startDateValue)
         {
-            if (value == default)
-                throw new ArgumentNullException(nameof(value), "Harvest start date cannot be null or default");
-
-            if (value > DateTime.Now)
-                throw new ArgumentException("Harvest start date cannot be in the future");
-
-            HarvestStartDateValue = value;
+            this.startDateValue = _startDateValue;
+            validateFormat();
         }
-
-        public DateTime getValue()
+        public void validateFormat()
         {
-            return this.HarvestStartDateValue;
+            DateTime currentDate = DateTime.Now;
+            if (this.startDateValue > currentDate)
+            {
+                throw new ArgumentException("Harvest start date cannot be in the future");
+            }
         }
     }
 }

@@ -8,22 +8,17 @@ namespace CAFEPAY.ArqHex.Harvests.Domain
 {
     public class HarvestEndDate
     {
-        private DateTime HarvestEndDateValue { get; }
+        public DateTime? endDateValue { get; }
 
-        public HarvestEndDate(DateTime value)
+        public HarvestEndDate(DateTime? _endDateValue)
         {
-            if (value == default)
-                throw new ArgumentNullException(nameof(value), "Harvest end date cannot be null or default");
+            this.endDateValue = _endDateValue;
+        }
+        public void validateFormat()
+        {
 
-            if (value > DateTime.Now)
-                throw new ArgumentException("Harvest end date cannot be in the future");
-
-            HarvestEndDateValue = value;
         }
 
-        public DateTime getValue()
-        {
-            return this.HarvestEndDateValue;
-        }
+
     }
 }

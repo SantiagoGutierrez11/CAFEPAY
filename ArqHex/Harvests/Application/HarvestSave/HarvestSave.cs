@@ -14,25 +14,16 @@ namespace CAFEPAY.ArqHex.Harvests.Application.HarvestSave
         {
             this.harvestRepository = _harvestRepository;
         }
-        public void Execute(decimal harvestId, DateTime harvestStartDate, DateTime harvestEndDate, decimal harvestPricePerKilo, string harvestLocation)
+        public long execute(long _idPlot, DateTime _startDate, DateTime? _endDate, decimal _pricePerKilo, int _status)
         {
-            HarvestId id = new HarvestId(harvestId);
-            HarvestStartDate startDate = new HarvestStartDate(harvestStartDate);
-            HarvestEndDate endDate = new HarvestEndDate(harvestEndDate);
-            HarvestPricePerKilo pricePerKilo = new HarvestPricePerKilo(harvestPricePerKilo);
-            HarvestLocation location = new HarvestLocation(harvestLocation);
-
-            Harvest harvest = new Harvest
-            {
-                attIdHarvest = (int)id.getValue(),
-                attStarDate = startDate.GetValue(),
-                attEndDate = endDate.GetValue(),
-                price_per_kilo = (int)pricePerKilo.GetValue(),
-                attLocation = location.GetValue(),
-                attCollections = new List<Collects>() // Assuming an empty list for now
-            };
-
-            harvestRepository.save(harvest);
+            long idAssigned = -1;
+            HarvestIdPlot idPlot = new HarvestIdPlot(_idPlot);
+			HarvestStartDate startDate = new HarvestStartDate(_startDate);
+            HarvestEndDate endDate = new HarvestEndDate(_endDate);
+            HarvestPricePerKilo pricePerKilo = new HarvestPricePerKilo(_pricePerKilo);
+            HarvestStatus status = new HarvestStatus(_status);
+            Harvest harvest = new Harvest(null, idPlot, startDate, pricePerKilo, status, null);
+            return idAssigned = harvestRepository.save(harvest);
         }
     }
 }
