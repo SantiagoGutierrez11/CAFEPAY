@@ -392,5 +392,10 @@ namespace CAFEPAY.Views.ViewCollector
                 textBoxId.Focus();
             }
         }
+
+        private void textBoxId_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+
+        }
     }
 }

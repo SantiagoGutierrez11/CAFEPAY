@@ -40,6 +40,7 @@
             this.textBoxId.Name = "textBoxId";
             this.textBoxId.Size = new System.Drawing.Size(428, 22);
             this.textBoxId.TabIndex = 1;
+            this.textBoxId.MaskInputRejected += new System.Windows.Forms.MaskInputRejectedEventHandler(this.textBoxId_MaskInputRejected);
             // 
             // btnAccept
             // 

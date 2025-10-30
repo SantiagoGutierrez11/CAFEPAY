@@ -13,17 +13,17 @@ namespace CAFEPAY.ArqHex.Collectors.infrastructure
     {
        public void saveCollector(string _collectorWorkerCode, long _collectorId, string _collectorFirstName,
                             string _collectorLastName, string _collectorPhone, int _collectorStatus) { 
-            AppServices.Collector.save.execute(_collectorWorkerCode, _collectorId, _collectorFirstName, _collectorLastName,
+            AppServices.CollectorServices.save.execute(_collectorWorkerCode, _collectorId, _collectorFirstName, _collectorLastName,
                                                     _collectorPhone, _collectorStatus);
         }
         public void updateCollector(long _oldId, string _collectorWorkerCode, long _collectorId, string _collectorFirstName,
                             string _collectorLastName, string _collectorPhone, int _collectorStatus)
         {
-            AppServices.Collector.update.execute(_oldId, _collectorWorkerCode, _collectorId, _collectorFirstName, _collectorLastName,
+            AppServices.CollectorServices.update.execute(_oldId, _collectorWorkerCode, _collectorId, _collectorFirstName, _collectorLastName,
                                                     _collectorPhone, _collectorStatus);
         }
         public List<Collector> listCollectors() { 
-            return AppServices.Collector.query.execute();
+            return AppServices.CollectorServices.query.execute();
         }
     }
 }

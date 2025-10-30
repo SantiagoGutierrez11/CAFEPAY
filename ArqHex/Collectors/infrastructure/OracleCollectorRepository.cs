@@ -30,7 +30,7 @@ namespace CAFEPAY.ArqHex.Collectors.infrastructure
 
                 cmd.Parameters.Add(new OracleParameter("p_worker_code", OracleDbType.Varchar2, 30,
                     collector.workerCode.collectorWorkerCode, ParameterDirection.Input));
-                cmd.Parameters.Add(new OracleParameter("p_id", OracleDbType.Varchar2, 30,
+                cmd.Parameters.Add(new OracleParameter("p_id", OracleDbType.Int64, 30,
                     collector.id.collectorId, ParameterDirection.Input));
                 cmd.Parameters.Add(new OracleParameter("p_first_name", OracleDbType.Varchar2, 50,
                     collector.firstName.collectorFirstName, ParameterDirection.Input));

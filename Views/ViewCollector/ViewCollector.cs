@@ -360,7 +360,7 @@ namespace CAFEPAY.Views.ViewCollector
         {
             try
             {
-                listCollector = AppServices.Collector.query.execute();
+                listCollector = AppServices.CollectorServices.query.execute();
                 listDTOCollector = CollectorMaper.ToDTOList(listCollector);
 
                 dgCollector.AutoGenerateColumns = false;

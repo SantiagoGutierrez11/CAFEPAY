@@ -1,4 +1,8 @@
-﻿using System;
+﻿using CAFEPAY.ArqHex.Harvests.Domain;
+using CAFEPAY.ArqHex.Share;
+using CAFEPAY.ArqHex.Share.DTO;
+using CAFEPAY.ArqHex.Share.Serializers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,178 +12,87 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace CAFEPAY
+namespace CAFEPAY.Views.ViewHarvest
 {
     public partial class ViewHarvest : Form
     {
-        private List<Harvest> cosechas = new List<Harvest>();
-        private int currentId = 1;
+        private string _lastSortProp;
+        private bool _sortAsc = true;
+        List<Harvest> listHarvest = new List<Harvest>();
+        List<HarvestDTO> listHarvestDTO = new List<HarvestDTO>();
 
         public ViewHarvest()
         {
             InitializeComponent();
-            // Configuración inicial
-            txtId.Text = currentId.ToString();
-            dtpStartDate.Value = DateTime.Today;
-            dtpEndDate.Value = DateTime.Today;
+            loadHarvests();
+            dgHarvest.ColumnHeaderMouseClick += dgHarvest_ColumnHeaderMouseClick;
+
         }
 
-        // EVENTO para btnAgregar (doble click en el botón en el diseñador)
-        private void btnAgregar_Click(object sender, EventArgs e)
+        private void ViewHarvest_Load(object sender, EventArgs e)
+        {
+
+        }
+        private void dgHarvest_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            var col = dgHarvest.Columns[e.ColumnIndex];
+            var prop = col.DataPropertyName;                 // ej: "startDate", "endDate", etc.
+            if (string.IsNullOrWhiteSpace(prop)) return;
+
+            _sortAsc = (_lastSortProp == prop) ? !_sortAsc : true;
+            _lastSortProp = prop;
+
+            Func<HarvestDTO, object> key = x => x?.GetType().GetProperty(prop)?.GetValue(x, null);
+            var sorted = _sortAsc
+                ? listHarvestDTO.OrderBy(key).ToList()
+                : listHarvestDTO.OrderByDescending(key).ToList();
+
+            dgHarvest.DataSource = null;                     // refresco simple
+            dgHarvest.DataSource = sorted;
+        }
+        public void loadHarvests()
         {
             try
             {
-                // Validar campos obligatorios
-                if (string.IsNullOrWhiteSpace(txtPrice.Text) ||
-                    string.IsNullOrWhiteSpace(txtLocation.Text))
-                {
-                    MessageBox.Show("Por favor complete todos los campos", "Advertencia",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
+                listHarvest = AppServices.HarvestServices.query.execute();
+                listHarvestDTO = HarvestMaper.ToDTOList(listHarvest);
+                listHarvestDTO = HarvestMaper.ToDTOList(listHarvest)
+                .OrderByDescending(h => h.status == 1 && h.endDate == null).ToList(); // activas primero
+   
+                dgHarvest.AutoGenerateColumns = false;
+                dgHarvest.Columns.Clear();
+                AddColumn("idPlot", "Parcela Id", 150);
+                AddColumn("id", "Cosecha Id", 150);
+                AddColumn("startDate", "Fecha Inicio", 150);
+                AddColumn("endDate", "Fecha Fin", 150);
+                AddColumn("pricePerKilo", "Precio por Kilo", 150);
+                AddColumn("statusText", "Estado", 150);
+                dgHarvest.DataSource = listHarvestDTO;
 
-                // Crear nueva cosecha
-                Harvest nuevaCosecha = new Harvest
-                {
-                    attIdHarvest = currentId,
-                    attStarDate = dtpStartDate.Value,
-                    attEndDate = dtpEndDate.Value,
-                    price_per_kilo = int.Parse(txtPrice.Text),
-                    attLocation = txtLocation.Text,
-                    attCollections = new List<Collects>()
-                };
-
-                cosechas.Add(nuevaCosecha);
-                currentId++;
-
-                // Actualizar interfaz
-                txtId.Text = currentId.ToString();
-                ActualizarDataGridView();
-
-                MessageBox.Show("Cosecha agregada exitosamente!", "Éxito",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                LimpiarCampos();
-            }
-            catch (FormatException)
-            {
-                MessageBox.Show("Por favor ingrese un precio válido", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error: {ex.Message}", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error loading harvests: " + ex.Message);
+                return;
             }
         }
-
-        // EVENTO para btnLimpiar
-        private void btnLimpiar_Click(object sender, EventArgs e)
+        private void AddColumn(string dataProperty, string headerText, int width)
         {
-            LimpiarCampos();
-        }
-
-        // EVENTO para btnVerColectas
-        private void btnVerColectas_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Funcionalidad de ver colectas en desarrollo", "Información",
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        // EVENTO para btnCerrar
-        private void btnCerrar_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        // EVENTO para btnEditar
-        private void btnEditar_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Funcionalidad de editar en desarrollo", "Información",
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        // EVENTO para btnEliminar
-        private void btnEliminar_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Funcionalidad de eliminar en desarrollo", "Información",
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        // EVENTO para btnExportar
-        private void btnExportar_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Funcionalidad de exportar en desarrollo", "Información",
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        private void LimpiarCampos()
-        {
-            dtpStartDate.Value = DateTime.Today;
-            dtpEndDate.Value = DateTime.Today;
-            txtPrice.Text = "";
-            txtLocation.Text = "";
-            txtPrice.Focus(); // Poner foco en el primer campo editable
-        }
-
-        private void ActualizarDataGridView()
-        {
-            dgvCosechas.DataSource = null;
-            dgvCosechas.DataSource = cosechas;
-
-            // Opcional: Formatear columnas
-            if (dgvCosechas.Columns.Count > 0)
+            var column = new DataGridViewTextBoxColumn
             {
-                dgvCosechas.Columns["attIdHarvest"].HeaderText = "ID";
-                dgvCosechas.Columns["attStarDate"].HeaderText = "Fecha Inicio";
-                dgvCosechas.Columns["attEndDate"].HeaderText = "Fecha Fin";
-                dgvCosechas.Columns["price_per_kilo"].HeaderText = "Precio/Kg";
-                dgvCosechas.Columns["attLocation"].HeaderText = "Ubicación";
-            }
+                DataPropertyName = dataProperty,
+                HeaderText = headerText,
+                Width = width
+            };
+            dgHarvest.Columns.Add(column);
         }
 
-        private void groupBoxDatos_Enter(object sender, EventArgs e)
+        private void btnAdd_Click(object sender, EventArgs e)
         {
-
+            ViewHarvestRegister viewHarvestRegister = new ViewHarvestRegister();
+            viewHarvestRegister.Owner = this;
+            viewHarvestRegister.Show();
+            this.Hide();
         }
-
-        private void dtpStartDate_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtId_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lblId_Click(object sender, EventArgs e)
-        {
-
-        }
-    }
-
-    // CLASES (fuera de la clase Form1)
-    public class Harvest
-    {
-        public int attIdHarvest { get; set; }
-        public DateTime attStarDate { get; set; }
-        public DateTime attEndDate { get; set; }
-        public int price_per_kilo { get; set; }
-        public string attLocation { get; set; }
-        public List<Collects> attCollections { get; set; }
-
-        public Harvest()
-        {
-            attCollections = new List<Collects>();
-        }
-    }
-
-    public class Collects
-    {
-        public int CollectId { get; set; }
-        public string Weight { get; set; }
-        public DateTime CollectDate { get; set; }
-        public string CollectorName { get; set; }
     }
 }

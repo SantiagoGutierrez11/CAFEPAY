@@ -1,31 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CAFEPAY.ArqHex.Harvests.Domain
 {
-    internal class Harvest
+    public class Harvest
     {
-        public HarvestId Id;
-        public HarvestStartDate StartDate;
-        public HarvestEndDate EndDate;
-        public HarvestPricePerKilo PricePerKilo;
-        public HarvestLocation Location;
+        public HarvestId id { get; }
+        public HarvestIdPlot idPlot { get; }
+        public HarvestStartDate startDate { get; }
+        public HarvestPricePerKilo pricePerKilo { get; }
+        public HarvestStatus status { get; }
+        public HarvestEndDate endDate { get; }
 
-        public Harvest(HarvestId _harvestId, HarvestStartDate _harvestStartDate, HarvestEndDate _harvestEndDate,
-            HarvestPricePerKilo _harvestPricePerKilo, HarvestLocation _harvestLocation)
+        public Harvest(HarvestId _id, HarvestIdPlot _idPlot, HarvestStartDate _startDate, HarvestPricePerKilo _pricePerKilo, HarvestStatus _status, HarvestEndDate _endDate =null)
         {
-            this.Id = _harvestId;
-            this.StartDate = _harvestStartDate;
-            this.EndDate = _harvestEndDate;
-            this.PricePerKilo = _harvestPricePerKilo;
-            this.Location = _harvestLocation;
-        }
-        public void recordHarvest()
-        {
-
+            this.id = _id;
+            this.idPlot = _idPlot;
+            this.startDate = _startDate;
+            this.pricePerKilo = _pricePerKilo;
+            this.status = _status;
+            this.endDate = _endDate;
         }
     }
 }

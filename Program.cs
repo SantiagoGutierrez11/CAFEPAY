@@ -1,5 +1,6 @@
 ﻿
 using CAFEPAY.Views.ViewCollector;
+using CAFEPAY.Views.ViewHarvest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,8 +26,10 @@ namespace CAFEPAY
             */
 
             //)FJnTmGvIIkti?L]
-            ViewCollector viewCollector = new ViewCollector();
-            viewCollector.Show();
+            //ViewCollector viewCollector = new ViewCollector();
+            //viewCollector.Show();
+            ViewHarvest viewHarvest = new ViewHarvest();   
+            viewHarvest.Show();
         }
     }
 }

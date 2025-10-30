@@ -95,11 +95,38 @@
     <Compile Include="ArqHex\Collectors\domain\CollectorStatus.cs" />
     <Compile Include="ArqHex\Collectors\domain\CollectorRepository.cs" />
     <Compile Include="ArqHex\Collectors\domain\CollectorWorkerCode.cs" />
+    <Compile Include="ArqHex\Collectors\domain\HarvestActiveExistsException.cs" />
     <Compile Include="ArqHex\Collectors\infrastructure\CollectorController.cs" />
     <Compile Include="ArqHex\Collectors\infrastructure\OracleCollectorRepository.cs" />
+    <Compile Include="ArqHex\Harvests\Application\HarvestUpdate\HarvestUpdate.cs" />
+    <Compile Include="ArqHex\Harvests\Domain\HarvestStatus.cs" />
+    <Compile Include="ArqHex\Plots\Application\PlotQueryAll\PlotQueryAll.cs" />
+    <Compile Include="ArqHex\Plots\Domain\Plot.cs" />
+    <Compile Include="ArqHex\Plots\Domain\PlotId.cs" />
+    <Compile Include="ArqHex\Plots\Domain\PlotName.cs" />
+    <Compile Include="ArqHex\Plots\Domain\PlotOwnerId.cs" />
+    <Compile Include="ArqHex\Plots\Domain\PlotRepository.cs" />
+    <Compile Include="ArqHex\Plots\Domain\PlotStatus.cs" />
+    <Compile Include="ArqHex\Plots\Infrastructure\OraclePlotRepository.cs" />
+    <Compile Include="ArqHex\Plots\Infrastructure\PlotController.cs" />
     <Compile Include="ArqHex\Share\DTO\CollectorDTO.cs" />
-    <Compile Include="ArqHex\Share\Serializers\CollectorMaper.cs" />
     <Compile Include="ArqHex\Share\AppServices.cs" />
+    <Compile Include="ArqHex\Harvests\Application\HarvestQueryAll\HarvestQueryAll.cs" />
+    <Compile Include="ArqHex\Harvests\Application\HarvestSave\HarvestSave.cs" />
+    <Compile Include="ArqHex\Harvests\Domain\HarvestEndDate.cs" />
+    <Compile Include="ArqHex\Harvests\Domain\HarvestId.cs" />
+    <Compile Include="ArqHex\Harvests\Domain\HarvestIdPlot.cs" />
+    <Compile Include="ArqHex\Harvests\Domain\HarvestPricePerKilo.cs" />
+    <Compile Include="ArqHex\Harvests\Domain\HarvestRepository.cs" />
+    <Compile Include="ArqHex\Harvests\Domain\Harvest.cs" />
+    <Compile Include="ArqHex\Harvests\Domain\HarvestStartDate.cs" />
+    <Compile Include="ArqHex\Harvests\Infrastructure\HarvestController.cs" />
+    <Compile Include="ArqHex\Harvests\Infrastructure\OracleHarvestRepository.cs" />
+    <Compile Include="ArqHex\Share\DTO\HarvestDTO.cs" />
+    <Compile Include="ArqHex\Share\DTO\PlotDTO.cs" />
+    <Compile Include="ArqHex\Share\Serializers\CollectorMaper.cs" />
+    <Compile Include="ArqHex\Share\Serializers\HarvestMapper.cs" />
+    <Compile Include="ArqHex\Share\Serializers\PlotMapper.cs" />
     <Compile Include="Views\ViewCollector\ViewCollector.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -148,14 +175,32 @@
     <Compile Include="Views\ViewCollect\ViewCollectDetail.Designer.cs">
       <DependentUpon>ViewCollectDetail.cs</DependentUpon>
     </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\ViewHarvest\ViewHarvest.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\ViewHarvest\ViewHarvest.Designer.cs">
       <DependentUpon>ViewHarvest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\ViewHarvest\ViewHarvestFinishConfirm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ViewHarvest\ViewHarvestFinishConfirm.Designer.cs">
+      <DependentUpon>ViewHarvestFinishConfirm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewHarvest\ViewHarvestRegister.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ViewHarvest\ViewHarvestRegister.Designer.cs">
+      <DependentUpon>ViewHarvestRegister.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewHarvest\ViewHarvestRegisterConfirm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ViewHarvest\ViewHarvestRegisterConfirm.Designer.cs">
+      <DependentUpon>ViewHarvestRegisterConfirm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\ViewMain\ViewMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -192,9 +237,6 @@
     <EmbeddedResource Include="Views\ViewCollect\ViewCollectDetail.resx">
       <DependentUpon>ViewCollectDetail.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\ViewHarvest\ViewHarvest.resx">
-      <DependentUpon>ViewHarvest.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -205,6 +247,18 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Views\ViewHarvest\ViewHarvest.resx">
+      <DependentUpon>ViewHarvest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ViewHarvest\ViewHarvestFinishConfirm.resx">
+      <DependentUpon>ViewHarvestFinishConfirm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ViewHarvest\ViewHarvestRegister.resx">
+      <DependentUpon>ViewHarvestRegister.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ViewHarvest\ViewHarvestRegisterConfirm.resx">
+      <DependentUpon>ViewHarvestRegisterConfirm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\ViewPayment\ViewPayment.resx">
       <DependentUpon>ViewPayment.cs</DependentUpon>
     </EmbeddedResource>

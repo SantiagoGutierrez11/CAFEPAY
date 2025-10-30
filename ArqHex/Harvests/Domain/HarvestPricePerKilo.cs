@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace CAFEPAY.ArqHex.Harvests.Domain
 {
-    internal class HarvestPricePerKilo
+    public class HarvestPricePerKilo
     {
         public decimal pricePerKiloValue;
 
-        public HarvestPricePerKilo(decimal _pricePerKiloValue)
+        public HarvestPricePerKilo(decimal _pricePerKilo)
         {
-            this.pricePerKiloValue = _pricePerKiloValue;
+            this.pricePerKiloValue = _pricePerKilo;
             ValidateFormat();
         }
 
@@ -29,9 +29,5 @@ namespace CAFEPAY.ArqHex.Harvests.Domain
             }
         }
 
-        public decimal GetValue()
-        {
-            return this.pricePerKiloValue;
-        }
     }
 }

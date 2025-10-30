@@ -359,7 +359,7 @@ namespace CAFEPAY.Views.ViewCollector
         {
             try
             {
-                AppServices.Collector.update.execute(oldCollector.id, newCollector.workerCode, newCollector.id, newCollector.firstName, newCollector.lastName, newCollector.phone, newCollector.status);
+                AppServices.CollectorServices.update.execute(oldCollector.id, newCollector.workerCode, newCollector.id, newCollector.firstName, newCollector.lastName, newCollector.phone, newCollector.status);
                 if (viewCollector is ViewCollector parent)
                 {
                     parent.loadCollectors();

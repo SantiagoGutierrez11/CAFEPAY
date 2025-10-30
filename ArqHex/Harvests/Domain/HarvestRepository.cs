@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace CAFEPAY.ArqHex.Harvests.Domain
 {
-    internal interface HarvestRepository
+    public interface HarvestRepository
     {
-        void save(Harvest harvest); // Save a new collector , update or insert if not exists
+        long save(Harvest harvest); // Save a new collector , update or insert if not exists
+        void update(Harvest harvest); // Update an existing collector
+        List<Harvest> queryAll(); // Get all collectors
+
     }
 }
