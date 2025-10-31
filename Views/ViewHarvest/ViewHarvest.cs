@@ -55,7 +55,6 @@ namespace CAFEPAY.Views.ViewHarvest
             try
             {
                 listHarvest = AppServices.HarvestServices.query.execute();
-                listHarvestDTO = HarvestMaper.ToDTOList(listHarvest);
                 listHarvestDTO = HarvestMaper.ToDTOList(listHarvest)
                 .OrderByDescending(h => h.status == 1 && h.endDate == null).ToList(); // activas primero
    
