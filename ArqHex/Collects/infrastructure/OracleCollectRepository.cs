@@ -32,7 +32,7 @@ namespace CAFEPAY.ArqHex.Collects.infrastructure
                 cmd.BindByName = true;
 
                 cmd.Parameters.Add("p_collect_id", OracleDbType.Int64).Value = collect.id.collectId;
-                cmd.Parameters.Add("p_collector_id", OracleDbType.Int64).Value = collect.collectorId.collectCollectorId;
+                cmd.Parameters.Add("p_collector_id", OracleDbType.Int64).Value = collect.collectorId.collectIdCollector;
                 cmd.Parameters.Add("p_collect_date", OracleDbType.Date).Value = collect.date.collectDate;
                 cmd.Parameters.Add("p_collected_kilos", OracleDbType.Decimal).Value = collect.kilos.collectedKilos;
                 cmd.Parameters.Add("p_harvest_id", OracleDbType.Int64).Value = collect.tHarvestId.collectIdHarvest;
@@ -72,7 +72,7 @@ UPDATE ADMINCAFEPAY.COLLECT
             {
                 cmd.BindByName = true;
 
-                cmd.Parameters.Add("p_collector_id", OracleDbType.Int64).Value = collect.collectorId.collectCollectorId;
+                cmd.Parameters.Add("p_collector_id", OracleDbType.Int64).Value = collect.collectorId.collectIdCollector;
                 cmd.Parameters.Add("p_collect_date", OracleDbType.Date).Value = collect.date.collectDate;
                 cmd.Parameters.Add("p_collected_kilos", OracleDbType.Decimal).Value = collect.kilos.collectedKilos;
                 cmd.Parameters.Add("p_harvest_id", OracleDbType.Int64).Value = collect.tHarvestId.collectIdHarvest;
