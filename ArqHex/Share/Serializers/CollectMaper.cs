@@ -22,7 +22,8 @@ namespace CAFEPAY.ArqHex.Share.Serializers
                 harvestId = c.tHarvestId.collectIdHarvest,
                 collectDate = c.date.collectDate,
                 collectedKilos = c.kilos.collectedKilos,
-                status = c.status.collectStatus
+                status = c.status.collectStatus,
+                paid = c.paid.collectPaid
             }).ToList();
         }
     }

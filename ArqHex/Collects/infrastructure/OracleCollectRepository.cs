@@ -23,8 +23,8 @@ namespace CAFEPAY.ArqHex.Collects.infrastructure
             if (collect == null) throw new ArgumentNullException(nameof(collect));
 
             const string sql = @"
-        INSERT INTO ADMINCAFEPAY.COLLECT (COLLECT_ID, COLLECTOR_ID, COLLECT_DATE, COLLECTED_KILOS, HARVEST_ID, PAYMENT_ID, STATUS)
-        VALUES (:p_collect_id, :p_collector_id, :p_collect_date, :p_collected_kilos, :p_harvest_id, :p_payment_id, :p_status)";
+        INSERT INTO ADMINCAFEPAY.COLLECT (COLLECT_ID, COLLECTOR_ID, COLLECT_DATE, COLLECTED_KILOS, HARVEST_ID, PAYMENT_ID, STATUS, PAID)
+        VALUES (:p_collect_id, :p_collector_id, :p_collect_date, :p_collected_kilos, :p_harvest_id, :p_payment_id, :p_status_id, :p_paid)";
 
             using (var connection = new OracleConnection(connectionString))
             using (var cmd = new OracleCommand(sql, connection))
@@ -37,7 +37,8 @@ namespace CAFEPAY.ArqHex.Collects.infrastructure
                 cmd.Parameters.Add("p_collected_kilos", OracleDbType.Decimal).Value = collect.kilos.collectedKilos;
                 cmd.Parameters.Add("p_harvest_id", OracleDbType.Int64).Value = collect.tHarvestId.collectIdHarvest;
                 cmd.Parameters.Add("p_payment_id", OracleDbType.Int64).Value = collect.paymentId.collectIdPayment;
-                cmd.Parameters.Add("p_status", OracleDbType.Int32).Value = collect.status.collectStatus;
+                cmd.Parameters.Add("p_status_id", OracleDbType.Int32).Value = collect.status.collectStatus;
+                cmd.Parameters.Add("p_paid", OracleDbType.Int64).Value = collect.paid.collectPaid;
 
                 connection.Open();
                 try
@@ -63,7 +64,8 @@ UPDATE ADMINCAFEPAY.COLLECT
        COLLECTED_KILOS = :p_collected_kilos,
        HARVEST_ID = :p_harvest_id,
        PAYMENT_ID = :p_payment_id,
-       STATUS = :p_status,
+       STATUS = :p_status_id,
+       PAID = :p_paid,
        COLLECT_ID = :p_new_collect_id
  WHERE COLLECT_ID = :p_old_collect_id";
 
@@ -77,7 +79,8 @@ UPDATE ADMINCAFEPAY.COLLECT
                 cmd.Parameters.Add("p_collected_kilos", OracleDbType.Decimal).Value = collect.kilos.collectedKilos;
                 cmd.Parameters.Add("p_harvest_id", OracleDbType.Int64).Value = collect.tHarvestId.collectIdHarvest;
                 cmd.Parameters.Add("p_payment_id", OracleDbType.Int64).Value = collect.paymentId.collectIdPayment;
-                cmd.Parameters.Add("p_status", OracleDbType.Int32).Value = collect.status.collectStatus;
+                cmd.Parameters.Add("p_status_id", OracleDbType.Int32).Value = collect.status.collectStatus;
+                cmd.Parameters.Add("p_paid", OracleDbType.Int64).Value = collect.paid.collectPaid;
                 cmd.Parameters.Add("p_new_collect_id", OracleDbType.Int64).Value = collect.id.collectId;
                 cmd.Parameters.Add("p_old_collect_id", OracleDbType.Int64).Value = oldId;
 
@@ -104,7 +107,7 @@ UPDATE ADMINCAFEPAY.COLLECT
             using (var connection = new OracleConnection(connectionString))
             {
                 connection.Open();
-                const string query = "SELECT COLLECT_ID, COLLECTOR_ID, COLLECT_DATE, COLLECTED_KILOS, HARVEST_ID, PAYMENT_ID, STATUS FROM ADMINCAFEPAY.COLLECT ORDER BY COLLECT_ID";
+                const string query = "SELECT COLLECT_ID, COLLECTOR_ID, COLLECT_DATE, COLLECTED_KILOS, HARVEST_ID, PAYMENT_ID, STATUS, PAID FROM ADMINCAFEPAY.COLLECT ORDER BY COLLECT_ID";
 
                 using (var command = new OracleCommand(query, connection))
                 using (var reader = command.ExecuteReader())
@@ -118,10 +121,11 @@ UPDATE ADMINCAFEPAY.COLLECT
                         var collectIdHarvest = new CollectIdHarvest(reader.GetInt64(4));
                         var collectIdPayment = new CollectIdPayment(reader.GetInt64(5));
                         var collectStatus = new CollectStatus(reader.GetInt32(6));
+                        var collectPaid = new CollectPaid(reader.GetInt64(7));
 
                         var collect = new Collect(collectId, collectCollectorId, collectIdPayment,
                                                   collectIdHarvest, collectDate, collectedKilos,
-                                                  collectStatus);
+                                                  collectStatus, collectPaid);
                         collects.Add(collect);
                     }
                 }

@@ -14,11 +14,13 @@ namespace CAFEPAY.ArqHex.Collects.domain
         public CollectIdPayment paymentId { get; }
         public CollectIdHarvest tHarvestId { get; }
         public CollectDate date { get; }
-        public CollectedKilos kilos { get; }  
+        public CollectedKilos kilos { get; }
         public CollectStatus status { get; }
+        public CollectPaid paid { get; } 
 
         public Collect(CollectId _collectId, CollectIdCollector _collectCollectorId, CollectIdPayment _collectPaymentId,
-            CollectIdHarvest _collectHarvestId, CollectDate _collectDate, CollectedKilos _collectedKilos, CollectStatus collectStatus)
+            CollectIdHarvest _collectHarvestId, CollectDate _collectDate, CollectedKilos _collectedKilos,
+            CollectStatus collectStatus, CollectPaid collectPaid)  // Nuevo parámetro
         {
             this.id = _collectId;
             this.collectorId = _collectCollectorId;
@@ -27,6 +29,7 @@ namespace CAFEPAY.ArqHex.Collects.domain
             this.date = _collectDate;
             this.kilos = _collectedKilos;
             this.status = collectStatus;
+            this.paid = collectPaid;  // Asignación del nuevo atributo
         }
     }
 }

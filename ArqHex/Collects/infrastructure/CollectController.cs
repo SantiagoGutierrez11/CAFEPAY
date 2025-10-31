@@ -12,20 +12,20 @@ namespace CAFEPAY.ArqHex.Collects.infrastructure
     {
         public void saveCollect(long _collectId, long _collectCollectorId, DateTime _collectDate,
                                decimal _collectedKilos, long _collectIdHarvest, long _collectIdPayment,
-                               int _collectStatus)
+                               int _collectStatus, long _collectPaid)
         {
             AppServices.CollectServices.save.execute(_collectId, _collectCollectorId, _collectDate,
                                                      _collectedKilos, _collectIdHarvest, _collectIdPayment,
-                                                     _collectStatus);
+                                                     _collectStatus, _collectPaid);
         }
 
         public void updateCollect(long _oldId, long _collectId, long _collectCollectorId, DateTime _collectDate,
                                  decimal _collectedKilos, long _collectIdHarvest, long _collectIdPayment,
-                                 int _collectStatus)
+                                 int _collectStatus, long _collectPaid)
         {
             AppServices.CollectServices.update.execute(_oldId, _collectId, _collectCollectorId, _collectDate,
                                                        _collectedKilos, _collectIdHarvest, _collectIdPayment,
-                                                       _collectStatus);
+                                                       _collectStatus, _collectPaid);
         }
 
         public List<Collect> listCollects()

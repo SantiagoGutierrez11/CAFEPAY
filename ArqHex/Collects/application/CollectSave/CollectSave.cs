@@ -16,7 +16,7 @@ namespace CAFEPAY.ArqHex.Collects.application.CollectSave
 
         public void execute(long _collectId, long _collectCollectorId, DateTime _collectDate,
                            decimal _collectedKilos, long _collectIdHarvest, long _collectIdPayment,
-                           int _collectStatus){
+                           int _collectStatus, long _collectPaid){
             CollectId collectId = new CollectId(_collectId);
             CollectIdCollector collectCollectorId = new CollectIdCollector(_collectCollectorId);
             CollectDate collectDate = new CollectDate(_collectDate);
@@ -24,9 +24,10 @@ namespace CAFEPAY.ArqHex.Collects.application.CollectSave
             CollectIdHarvest collectIdHarvest = new CollectIdHarvest(_collectIdHarvest);
             CollectIdPayment collectIdPayment = new CollectIdPayment(_collectIdPayment);
             CollectStatus collectStatus = new CollectStatus(_collectStatus);
+            CollectPaid collectPaid = new CollectPaid(_collectPaid);
 
             Collect collect = new Collect(collectId, collectCollectorId, collectIdPayment,
-                                          collectIdHarvest, collectDate, collectedKilos, collectStatus);
+                                          collectIdHarvest, collectDate, collectedKilos, collectStatus, collectPaid);
             collectRepository.save(collect);
         }
     }
