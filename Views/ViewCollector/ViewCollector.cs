@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CAFEPAY.Views.ViewMain;
 
 namespace CAFEPAY.Views.ViewCollector
 {
@@ -126,9 +127,9 @@ namespace CAFEPAY.Views.ViewCollector
             homeButton.Region = new Region(homePath);
 
             homeButton.Click += (s, e) => {
-                // Acción al hacer clic en el botón home
-                MessageBox.Show("Volviendo al menú principal...", "Información",
-                   MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // Volver al menú principal
+                var viewMain = new ViewMain.ViewMain();
+                viewMain.Show();
                 this.Close();
             };
 
@@ -363,6 +364,8 @@ namespace CAFEPAY.Views.ViewCollector
                 listCollector = AppServices.CollectorServices.query.execute();
                 listDTOCollector = CollectorMaper.ToDTOList(listCollector);
 
+                listDTOCollector.Reverse(); //
+
                 dgCollector.AutoGenerateColumns = false;
                 dgCollector.Columns.Clear();
 
@@ -394,6 +397,8 @@ namespace CAFEPAY.Views.ViewCollector
                 dgCollector.Columns.Add(colStatus);
 
                 dgCollector.DataSource = listDTOCollector;
+
+                dgCollector.ClearSelection();
             }
             catch (Exception ex)
             {

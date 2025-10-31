@@ -38,9 +38,29 @@ namespace CAFEPAY.Views.ViewCollector
             ApplyVisualDesign();
             LoadComboStatus();
             ConfigureRealTimeValidation();
+            ConfigureMaxLengthRestrictions(); // ← NUEVO: Configurar restricciones de longitud
 
             // Pantalla completa
             this.WindowState = FormWindowState.Maximized;
+        }
+
+        // ← NUEVO MÉTODO: Configurar restricciones de longitud máxima
+        private void ConfigureMaxLengthRestrictions()
+        {
+            // Worker Code: Longitud exacta 6 caracteres
+            txtBoxWorkerCode.MaxLength = 6;
+
+            // Cédula: Máximo 10 dígitos
+            txtBoxId.MaxLength = 10;
+
+            // Nombres: Máximo 30 caracteres
+            txtBoxFirstName.MaxLength = 30;
+
+            // Apellidos: Máximo 30 caracteres
+            txtBoxLastName.MaxLength = 30;
+
+            // Celular: Longitud exacta 10 dígitos
+            txtBoxPhone.MaxLength = 10;
         }
 
         // ← MÉTODO ACTUALIZADO: Configurar validación en tiempo real con BLOQUEO
@@ -534,9 +554,9 @@ namespace CAFEPAY.Views.ViewCollector
             homeButton.Region = new Region(homePath);
 
             homeButton.Click += (s, e) => {
-                isClosing = true;
-                MessageBox.Show("Volviendo al menú principal...", "Información",
-                   MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // Volver al menú principal
+                var viewMain = new ViewMain.ViewMain();
+                viewMain.Show();
                 this.Close();
             };
             this.Controls.Add(homeButton);

@@ -95,7 +95,7 @@ namespace CAFEPAY.Views.ViewCollector
             // ✅ ICONO DE CONFIRMACIÓN
             var confirmIcon = new Label
             {
-                Text = "✓",
+                Text = "?",
                 Font = new Font("Segoe UI", 36, FontStyle.Bold),
                 ForeColor = successGreen,
                 Dock = DockStyle.Top,
@@ -108,7 +108,7 @@ namespace CAFEPAY.Views.ViewCollector
             // 🏷️ TÍTULO PRINCIPAL
             var titleLabel = new Label
             {
-                Text = "MODIFICACIÓN EXITOSA",
+                Text = "¿ESTAS SEGURO?",
                 Font = new Font("Segoe UI", 18, FontStyle.Bold),
                 ForeColor = whiteColor,
                 Dock = DockStyle.Top,
@@ -120,7 +120,7 @@ namespace CAFEPAY.Views.ViewCollector
 
             var subtitleLabel = new Label
             {
-                Text = "El recolector ha sido modificado correctamente",
+                Text = "El recolector se modificará con esta información",
                 Font = new Font("Segoe UI", 11, FontStyle.Regular),
                 ForeColor = Color.FromArgb(200, 200, 200),
                 Dock = DockStyle.Top,
