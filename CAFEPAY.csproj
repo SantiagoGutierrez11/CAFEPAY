@@ -331,6 +331,11 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ArqHex\Payments\application\PaymentQueryAll\" />
+    <Folder Include="ArqHex\Payments\application\PaymentSave\" />
+    <Folder Include="ArqHex\Payments\application\PaymentUpdate\" />
+    <Folder Include="ArqHex\Payments\domain\" />
+    <Folder Include="ArqHex\Payments\infrastructure\" />
     <Folder Include="bin\Release\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
