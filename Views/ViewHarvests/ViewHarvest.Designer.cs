@@ -55,6 +55,7 @@ namespace CAFEPAY.Views.ViewHarvest
             this.btnFinish.TabIndex = 1;
             this.btnFinish.Text = "Finalizar";
             this.btnFinish.UseVisualStyleBackColor = true;
+            this.btnFinish.Click += new System.EventHandler(this.btnFinish_Click);
             // 
             // dgHarvest
             // 

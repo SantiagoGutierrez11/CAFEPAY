@@ -20,6 +20,7 @@ namespace CAFEPAY.Views.ViewCollector
     public partial class ViewCollectorModify : Form
     {
         private System.Windows.Forms.Form viewCollector;
+        private Form viewMain;
         private CollectorDTO oldCollectorDTO;
 
         // Colores exactos del diseño (igual que ViewCollectorRegister)
@@ -30,10 +31,11 @@ namespace CAFEPAY.Views.ViewCollector
         private Color blackColor = Color.Black;
         private Color darkGrayColor = Color.FromArgb(64, 64, 64); // Gris oscuro para el botón home
 
-        public ViewCollectorModify(CollectorDTO _oldCollectorDTO, Form _viewCollector)
+        public ViewCollectorModify(CollectorDTO _oldCollectorDTO, Form _viewCollector, Form _viewMain)
         {
             this.viewCollector = _viewCollector;
             this.oldCollectorDTO = _oldCollectorDTO;
+            this.viewMain = _viewMain;
             InitializeComponent();
             ApplyVisualDesign();
             loadCollector();
@@ -107,6 +109,7 @@ namespace CAFEPAY.Views.ViewCollector
             homeButton.Click += (s, e) => {
                 MessageBox.Show("Volviendo al menú principal...", "Información",
                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                viewMain.Show();
                 this.Close();
             };
             this.Controls.Add(homeButton);
@@ -626,14 +629,14 @@ namespace CAFEPAY.Views.ViewCollector
                 if (newCollectorDTO.id != oldCollectorDTO.id)
                 {
                     var ownerViewCollector = this.Owner;
-                    ViewCollectorModifyId viewCollectorModifyId = new ViewCollectorModifyId(newCollectorDTO, oldCollectorDTO, viewCollector);
+                    ViewCollectorModifyId viewCollectorModifyId = new ViewCollectorModifyId(newCollectorDTO, oldCollectorDTO, viewCollector, viewMain);
                     viewCollectorModifyId.Owner = this;
                     this.Hide();
                     viewCollectorModifyId.Show();
                 }
                 else
                 {
-                    ViewCollectorModifyConfirm_ viewCollectorModifyConfirm = new ViewCollectorModifyConfirm_(newCollectorDTO, oldCollectorDTO, viewCollector);
+                    ViewCollectorModifyConfirm_ viewCollectorModifyConfirm = new ViewCollectorModifyConfirm_(newCollectorDTO, oldCollectorDTO, viewCollector, viewMain);
                     viewCollectorModifyConfirm.Owner = this;
                     viewCollectorModifyConfirm.Show();
                     this.Hide();

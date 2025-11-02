@@ -31,8 +31,8 @@ namespace CAFEPAY.Views.ViewCollector
         // Variable para el botón home
         private Button homeButton;
         private bool isClosing = false;
-
-        public ViewCollectorRegister()
+        private Form viewMain;
+        public ViewCollectorRegister(Form _viewMain)
         {
             InitializeComponent();
             ApplyVisualDesign();
@@ -41,6 +41,7 @@ namespace CAFEPAY.Views.ViewCollector
 
             // Pantalla completa
             this.WindowState = FormWindowState.Maximized;
+            this.viewMain = _viewMain;
         }
 
         // ← MÉTODO ACTUALIZADO: Configurar validación en tiempo real con BLOQUEO
@@ -537,6 +538,7 @@ namespace CAFEPAY.Views.ViewCollector
                 isClosing = true;
                 MessageBox.Show("Volviendo al menú principal...", "Información",
                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                viewMain.Show();
                 this.Close();
             };
             this.Controls.Add(homeButton);
@@ -945,7 +947,7 @@ namespace CAFEPAY.Views.ViewCollector
                     status = _status
                 };
 
-                ViewCollectorRegisterConfirm viewCollectorRegisterConfirm = new ViewCollectorRegisterConfirm(collectorDTO);
+                ViewCollectorRegisterConfirm viewCollectorRegisterConfirm = new ViewCollectorRegisterConfirm(collectorDTO, viewMain);
                 viewCollectorRegisterConfirm.Owner = this.Owner;
                 this.Close();
                 viewCollectorRegisterConfirm.Show();

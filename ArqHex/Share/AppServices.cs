@@ -16,6 +16,7 @@ using CAFEPAY.ArqHex.Harvests.Application.HarvestUpdate;
 using CAFEPAY.ArqHex.Plots.Application.PlotQueryAll;
 using CAFEPAY.ArqHex.Plots.Domain;
 using CAFEPAY.ArqHex.Plots.Infrastructure;
+using CAFEPAY.ArqHex.Plots.Application.PlotQueyById;
 
 namespace CAFEPAY.ArqHex.Share
 {
@@ -43,6 +44,7 @@ namespace CAFEPAY.ArqHex.Share
         public class PlotServices
         {
             public static PlotQueryAll query = new PlotQueryAll(plotRepository);
+            public static PlotQueryById queryById = new PlotQueryById(plotRepository);
         }
     }
 }
