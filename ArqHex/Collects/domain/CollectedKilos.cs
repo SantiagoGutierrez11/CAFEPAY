@@ -8,7 +8,7 @@ namespace CAFEPAY.ArqHex.Collects.domain
 {
     public class CollectedKilos
     {
-        public int collectedKilos { get; }
+        public decimal collectedKilos { get; }
 
         public CollectedKilos(decimal _collectedKilosValue)
         {

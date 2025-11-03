@@ -13,7 +13,7 @@ namespace CAFEPAY.ArqHex.Share.DTO
         public long harvestId { get; set; }
         public long paymentId { get; set; }
         public DateTime collectDate { get; set; }
-        public int collectedKilos { get; set; }
+        public decimal collectedKilos { get; set; }
         public long paid { get; set; }  
         public int status { get; set; }         // 1 = activo , 2 = inactivo
         public string statustext { get; set; }
