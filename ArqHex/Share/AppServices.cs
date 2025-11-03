@@ -27,8 +27,6 @@ namespace CAFEPAY.ArqHex.Share
         private static readonly HarvestRepository harvestRepository = new OracleHarvestRepository(connectionstring);
         private static readonly PlotRepository plotRepository = new OraclePlotRepository(connectionstring);
 
-        public static object HarvestQueryAll { get; internal set; }
-
         public static class CollectorServices
         {
             public static CollectorUpdate update = new CollectorUpdate(collectorRepository);
