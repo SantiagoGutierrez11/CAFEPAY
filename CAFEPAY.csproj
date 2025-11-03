@@ -113,6 +113,7 @@
     <Compile Include="ArqHex\Collects\domain\CollectIdPayment.cs" />
     <Compile Include="ArqHex\Collects\infrastructure\CollectController.cs" />
     <Compile Include="ArqHex\Collects\infrastructure\OracleCollectRepository.cs" />
+    <Compile Include="ArqHex\Harvests\Application\HarvestAssociativeCollector\HarvestAssociativeCollector.cs" />
     <Compile Include="ArqHex\Harvests\Application\HarvestUpdate\HarvestUpdate.cs" />
     <Compile Include="ArqHex\Harvests\Domain\HarvestStatus.cs" />
     <Compile Include="ArqHex\Plots\Application\PlotQueryAll\PlotQueryAll.cs" />
@@ -273,6 +274,9 @@
     </Compile>
     <EmbeddedResource Include="Views\ViewHarvests\ViewHarvest.resx">
       <DependentUpon>ViewHarvest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ViewHarvests\ViewHarvestAssociateCollector.resx">
+      <DependentUpon>ViewHarvestAssociateCollector.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\ViewHarvests\ViewHarvestFinishConfirm.resx">
       <DependentUpon>ViewHarvestFinishConfirm.cs</DependentUpon>

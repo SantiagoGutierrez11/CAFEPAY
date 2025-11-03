@@ -1,27 +1,28 @@
-﻿using CAFEPAY.ArqHex.Harvests.Application.HarvestQueryAll;
-using CAFEPAY.ArqHex.Harvests.Application.HarvestSave;
-using CAFEPAY.ArqHex.Harvests.Domain;
-using CAFEPAY.ArqHex.Harvests.Infrastructure;
-using CAFEPAY.ArqHex.Collectors.application.CollectorQueryAll;
+﻿using CAFEPAY.ArqHex.Collectors.application.CollectorQueryAll;
 using CAFEPAY.ArqHex.Collectors.application.CollectorSave;
+using CAFEPAY.ArqHex.Collectors.application.CollectorUpdate;
 using CAFEPAY.ArqHex.Collectors.domain;
 using CAFEPAY.ArqHex.Collectors.infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CAFEPAY.ArqHex.Collectors.application.CollectorUpdate;
-using CAFEPAY.ArqHex.Harvests.Application.HarvestUpdate;
-using CAFEPAY.ArqHex.Plots.Application.PlotQueryAll;
-using CAFEPAY.ArqHex.Plots.Domain;
-using CAFEPAY.ArqHex.Plots.Infrastructure;
 using CAFEPAY.ArqHex.Collects.application.CollectQueryAll;
 using CAFEPAY.ArqHex.Collects.application.CollectSave;
 using CAFEPAY.ArqHex.Collects.application.CollectUpdate;
 using CAFEPAY.ArqHex.Collects.domain;
 using CAFEPAY.ArqHex.Collects.infrastructure;
+using CAFEPAY.ArqHex.Harvests.Application.HarvestAssociativeCollector;
+using CAFEPAY.ArqHex.Harvests.Application.HarvestQueryAll;
+using CAFEPAY.ArqHex.Harvests.Application.HarvestSave;
+using CAFEPAY.ArqHex.Harvests.Application.HarvestUpdate;
+using CAFEPAY.ArqHex.Harvests.Domain;
+using CAFEPAY.ArqHex.Harvests.Infrastructure;
+using CAFEPAY.ArqHex.Plots.Application.PlotQueryAll;
 using CAFEPAY.ArqHex.Plots.Application.PlotQueyById;
+using CAFEPAY.ArqHex.Plots.Domain;
+using CAFEPAY.ArqHex.Plots.Infrastructure;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace CAFEPAY.ArqHex.Share
 {
@@ -47,6 +48,7 @@ namespace CAFEPAY.ArqHex.Share
             public static HarvestSave save = new HarvestSave(harvestRepository);
             public static HarvestQueryAll query = new HarvestQueryAll(harvestRepository);
             public static HarvestUpdate update = new HarvestUpdate(harvestRepository);
+            public static HarvestAssociateCollector associateCollector = new HarvestAssociateCollector(harvestRepository);
         }
 
         public static class PlotServices

@@ -11,6 +11,7 @@ namespace CAFEPAY.ArqHex.Harvests.Domain
         long save(Harvest harvest); // Save a new collector , update or insert if not exists
         void update(Harvest harvest); // Update an existing collector
         List<Harvest> queryAll(); // Get all collectors
+        long associateCollector(long idHarvest, long idCollector);
 
     }
 }
