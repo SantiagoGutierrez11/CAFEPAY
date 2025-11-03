@@ -20,6 +20,7 @@ namespace CAFEPAY.Views.ViewCollector
         private CollectorDTO newCollector;
         private CollectorDTO oldCollector;
         private Form viewCollector;
+        private Form viewMain;
 
         // Colores exactos del diseño
         private Color darkBlueColor = Color.FromArgb(13, 43, 97);  // #0D2B61 - Azul oscuro del formulario
@@ -28,16 +29,18 @@ namespace CAFEPAY.Views.ViewCollector
         private Color whiteColor = Color.White;
         private Color successGreen = Color.FromArgb(46, 125, 50); // Verde éxito
 
-        public ViewCollectorModifyConfirm_(CollectorDTO _newCollectorDTO, CollectorDTO _oldCollectorDTO, Form viewCollector)
+        public ViewCollectorModifyConfirm_(CollectorDTO _newCollectorDTO, CollectorDTO _oldCollectorDTO, Form _viewCollector, Form _viewMain)
         {
             this.oldCollector = _oldCollectorDTO;
             this.newCollector = _newCollectorDTO;
-            this.viewCollector = viewCollector;
+            this.viewCollector = _viewCollector;
+            this.viewMain = _viewMain;
             InitializeComponent();
             ApplyVisualDesign();
 
             // Pantalla completa
             this.WindowState = FormWindowState.Maximized;
+            
         }
 
         private void ApplyVisualDesign()

@@ -29,56 +29,40 @@
         private void InitializeComponent()
         {
             this.lbLote = new System.Windows.Forms.Label();
-            this.lbIdPlot = new System.Windows.Forms.Label();
             this.lbNombreDeLote = new System.Windows.Forms.Label();
-            this.lbPlotName = new System.Windows.Forms.Label();
             this.lbNumeroDeCosecha = new System.Windows.Forms.Label();
-            this.lbIdHarvest = new System.Windows.Forms.Label();
             this.lbPrecioPorKilo = new System.Windows.Forms.Label();
-            this.lbPricePerKilo = new System.Windows.Forms.Label();
             this.lbFechaInicio = new System.Windows.Forms.Label();
-            this.lbStartDate = new System.Windows.Forms.Label();
             this.lbFechaDeCierre = new System.Windows.Forms.Label();
-            this.lbEndDate = new System.Windows.Forms.Label();
             this.btnConfirm = new System.Windows.Forms.Button();
             this.btnDecline = new System.Windows.Forms.Button();
+            this.textBoxIdPlot = new System.Windows.Forms.TextBox();
+            this.textBoxPlotName = new System.Windows.Forms.TextBox();
+            this.textBoxIdHarvest = new System.Windows.Forms.TextBox();
+            this.textBoxPricePerKilo = new System.Windows.Forms.TextBox();
+            this.textBoxStartDate = new System.Windows.Forms.TextBox();
+            this.textBoxEndDate = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // lbLote
             // 
             this.lbLote.AutoSize = true;
+            this.lbLote.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbLote.Location = new System.Drawing.Point(53, 19);
             this.lbLote.Name = "lbLote";
-            this.lbLote.Size = new System.Drawing.Size(28, 13);
+            this.lbLote.Size = new System.Drawing.Size(32, 13);
             this.lbLote.TabIndex = 1;
             this.lbLote.Text = "Lote";
-            // 
-            // lbIdPlot
-            // 
-            this.lbIdPlot.AutoSize = true;
-            this.lbIdPlot.Location = new System.Drawing.Point(53, 45);
-            this.lbIdPlot.Name = "lbIdPlot";
-            this.lbIdPlot.Size = new System.Drawing.Size(61, 13);
-            this.lbIdPlot.TabIndex = 2;
-            this.lbIdPlot.Text = "------------------";
             // 
             // lbNombreDeLote
             // 
             this.lbNombreDeLote.AutoSize = true;
+            this.lbNombreDeLote.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbNombreDeLote.Location = new System.Drawing.Point(53, 70);
             this.lbNombreDeLote.Name = "lbNombreDeLote";
-            this.lbNombreDeLote.Size = new System.Drawing.Size(79, 13);
+            this.lbNombreDeLote.Size = new System.Drawing.Size(93, 13);
             this.lbNombreDeLote.TabIndex = 3;
             this.lbNombreDeLote.Text = "Nombre de lote";
-            // 
-            // lbPlotName
-            // 
-            this.lbPlotName.AutoSize = true;
-            this.lbPlotName.Location = new System.Drawing.Point(53, 97);
-            this.lbPlotName.Name = "lbPlotName";
-            this.lbPlotName.Size = new System.Drawing.Size(61, 13);
-            this.lbPlotName.TabIndex = 4;
-            this.lbPlotName.Text = "------------------";
             // 
             // lbNumeroDeCosecha
             // 
@@ -89,15 +73,6 @@
             this.lbNumeroDeCosecha.TabIndex = 5;
             this.lbNumeroDeCosecha.Text = "Numero de cosecha";
             // 
-            // lbIdHarvest
-            // 
-            this.lbIdHarvest.AutoSize = true;
-            this.lbIdHarvest.Location = new System.Drawing.Point(53, 152);
-            this.lbIdHarvest.Name = "lbIdHarvest";
-            this.lbIdHarvest.Size = new System.Drawing.Size(61, 13);
-            this.lbIdHarvest.TabIndex = 6;
-            this.lbIdHarvest.Text = "------------------";
-            // 
             // lbPrecioPorKilo
             // 
             this.lbPrecioPorKilo.AutoSize = true;
@@ -106,15 +81,6 @@
             this.lbPrecioPorKilo.Size = new System.Drawing.Size(74, 13);
             this.lbPrecioPorKilo.TabIndex = 7;
             this.lbPrecioPorKilo.Text = "Precio por kilo";
-            // 
-            // lbPricePerKilo
-            // 
-            this.lbPricePerKilo.AutoSize = true;
-            this.lbPricePerKilo.Location = new System.Drawing.Point(53, 205);
-            this.lbPricePerKilo.Name = "lbPricePerKilo";
-            this.lbPricePerKilo.Size = new System.Drawing.Size(61, 13);
-            this.lbPricePerKilo.TabIndex = 8;
-            this.lbPricePerKilo.Text = "------------------";
             // 
             // lbFechaInicio
             // 
@@ -125,15 +91,6 @@
             this.lbFechaInicio.TabIndex = 9;
             this.lbFechaInicio.Text = "Fecha Inicio";
             // 
-            // lbStartDate
-            // 
-            this.lbStartDate.AutoSize = true;
-            this.lbStartDate.Location = new System.Drawing.Point(53, 261);
-            this.lbStartDate.Name = "lbStartDate";
-            this.lbStartDate.Size = new System.Drawing.Size(61, 13);
-            this.lbStartDate.TabIndex = 10;
-            this.lbStartDate.Text = "------------------";
-            // 
             // lbFechaDeCierre
             // 
             this.lbFechaDeCierre.AutoSize = true;
@@ -143,15 +100,6 @@
             this.lbFechaDeCierre.TabIndex = 11;
             this.lbFechaDeCierre.Text = "Fecha de cierre";
             // 
-            // lbEndDate
-            // 
-            this.lbEndDate.AutoSize = true;
-            this.lbEndDate.Location = new System.Drawing.Point(53, 311);
-            this.lbEndDate.Name = "lbEndDate";
-            this.lbEndDate.Size = new System.Drawing.Size(61, 13);
-            this.lbEndDate.TabIndex = 12;
-            this.lbEndDate.Text = "------------------";
-            // 
             // btnConfirm
             // 
             this.btnConfirm.Location = new System.Drawing.Point(52, 358);
@@ -160,6 +108,7 @@
             this.btnConfirm.TabIndex = 14;
             this.btnConfirm.Text = "Confirmar";
             this.btnConfirm.UseVisualStyleBackColor = true;
+            this.btnConfirm.Click += new System.EventHandler(this.btnConfirm_Click);
             // 
             // btnDecline
             // 
@@ -169,25 +118,74 @@
             this.btnDecline.TabIndex = 15;
             this.btnDecline.Text = "Rechazar";
             this.btnDecline.UseVisualStyleBackColor = true;
+            this.btnDecline.Click += new System.EventHandler(this.btnDecline_Click);
+            // 
+            // textBoxIdPlot
+            // 
+            this.textBoxIdPlot.Location = new System.Drawing.Point(56, 41);
+            this.textBoxIdPlot.Name = "textBoxIdPlot";
+            this.textBoxIdPlot.ReadOnly = true;
+            this.textBoxIdPlot.Size = new System.Drawing.Size(201, 20);
+            this.textBoxIdPlot.TabIndex = 16;
+            // 
+            // textBoxPlotName
+            // 
+            this.textBoxPlotName.Location = new System.Drawing.Point(56, 86);
+            this.textBoxPlotName.Name = "textBoxPlotName";
+            this.textBoxPlotName.ReadOnly = true;
+            this.textBoxPlotName.Size = new System.Drawing.Size(201, 20);
+            this.textBoxPlotName.TabIndex = 17;
+            // 
+            // textBoxIdHarvest
+            // 
+            this.textBoxIdHarvest.Location = new System.Drawing.Point(54, 142);
+            this.textBoxIdHarvest.Name = "textBoxIdHarvest";
+            this.textBoxIdHarvest.ReadOnly = true;
+            this.textBoxIdHarvest.Size = new System.Drawing.Size(201, 20);
+            this.textBoxIdHarvest.TabIndex = 18;
+            // 
+            // textBoxPricePerKilo
+            // 
+            this.textBoxPricePerKilo.Location = new System.Drawing.Point(56, 194);
+            this.textBoxPricePerKilo.Name = "textBoxPricePerKilo";
+            this.textBoxPricePerKilo.ReadOnly = true;
+            this.textBoxPricePerKilo.Size = new System.Drawing.Size(201, 20);
+            this.textBoxPricePerKilo.TabIndex = 19;
+            // 
+            // textBoxStartDate
+            // 
+            this.textBoxStartDate.Location = new System.Drawing.Point(56, 246);
+            this.textBoxStartDate.Name = "textBoxStartDate";
+            this.textBoxStartDate.ReadOnly = true;
+            this.textBoxStartDate.Size = new System.Drawing.Size(201, 20);
+            this.textBoxStartDate.TabIndex = 20;
+            // 
+            // textBoxEndDate
+            // 
+            this.textBoxEndDate.Location = new System.Drawing.Point(56, 300);
+            this.textBoxEndDate.Name = "textBoxEndDate";
+            this.textBoxEndDate.ReadOnly = true;
+            this.textBoxEndDate.Size = new System.Drawing.Size(201, 20);
+            this.textBoxEndDate.TabIndex = 21;
             // 
             // ViewHarvestFinishConfirm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(401, 418);
+            this.Controls.Add(this.textBoxEndDate);
+            this.Controls.Add(this.textBoxStartDate);
+            this.Controls.Add(this.textBoxPricePerKilo);
+            this.Controls.Add(this.textBoxIdHarvest);
+            this.Controls.Add(this.textBoxPlotName);
+            this.Controls.Add(this.textBoxIdPlot);
             this.Controls.Add(this.btnDecline);
             this.Controls.Add(this.btnConfirm);
-            this.Controls.Add(this.lbEndDate);
             this.Controls.Add(this.lbFechaDeCierre);
-            this.Controls.Add(this.lbStartDate);
             this.Controls.Add(this.lbFechaInicio);
-            this.Controls.Add(this.lbPricePerKilo);
             this.Controls.Add(this.lbPrecioPorKilo);
-            this.Controls.Add(this.lbIdHarvest);
             this.Controls.Add(this.lbNumeroDeCosecha);
-            this.Controls.Add(this.lbPlotName);
             this.Controls.Add(this.lbNombreDeLote);
-            this.Controls.Add(this.lbIdPlot);
             this.Controls.Add(this.lbLote);
             this.Name = "ViewHarvestFinishConfirm";
             this.Text = "ViewHarvestFinishConfirm";
@@ -200,18 +198,18 @@
         #endregion
 
         private System.Windows.Forms.Label lbLote;
-        private System.Windows.Forms.Label lbIdPlot;
         private System.Windows.Forms.Label lbNombreDeLote;
-        private System.Windows.Forms.Label lbPlotName;
         private System.Windows.Forms.Label lbNumeroDeCosecha;
-        private System.Windows.Forms.Label lbIdHarvest;
         private System.Windows.Forms.Label lbPrecioPorKilo;
-        private System.Windows.Forms.Label lbPricePerKilo;
         private System.Windows.Forms.Label lbFechaInicio;
-        private System.Windows.Forms.Label lbStartDate;
         private System.Windows.Forms.Label lbFechaDeCierre;
-        private System.Windows.Forms.Label lbEndDate;
         private System.Windows.Forms.Button btnConfirm;
         private System.Windows.Forms.Button btnDecline;
+        private System.Windows.Forms.TextBox textBoxIdPlot;
+        private System.Windows.Forms.TextBox textBoxPlotName;
+        private System.Windows.Forms.TextBox textBoxIdHarvest;
+        private System.Windows.Forms.TextBox textBoxPricePerKilo;
+        private System.Windows.Forms.TextBox textBoxStartDate;
+        private System.Windows.Forms.TextBox textBoxEndDate;
     }
 }

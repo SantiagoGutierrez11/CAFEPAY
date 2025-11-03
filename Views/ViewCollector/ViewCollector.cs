@@ -129,7 +129,9 @@ namespace CAFEPAY.Views.ViewCollector
                 // Acción al hacer clic en el botón home
                 MessageBox.Show("Volviendo al menú principal...", "Información",
                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.Owner.Show();            // volver al padre         
                 this.Close();
+               
             };
 
             topHeaderPanel.Controls.Add(homeButton);
@@ -420,7 +422,7 @@ namespace CAFEPAY.Views.ViewCollector
             if (dgCollector.CurrentCell != null)
                 dgCollector.ClearSelection();
 
-            ViewCollectorRegister viewCollectorRegister = new ViewCollectorRegister();
+            ViewCollectorRegister viewCollectorRegister = new ViewCollectorRegister(this.Owner);
             viewCollectorRegister.Owner = this;
             viewCollectorRegister.Show();
             this.Hide();
@@ -459,7 +461,7 @@ namespace CAFEPAY.Views.ViewCollector
                 return;
             }
 
-            ViewCollectorModify viewCollectorModify = new ViewCollectorModify(selectedCollector, this);
+            ViewCollectorModify viewCollectorModify = new ViewCollectorModify(selectedCollector, this, this.Owner);
             viewCollectorModify.Owner = this;
             viewCollectorModify.Show();
             this.Hide();

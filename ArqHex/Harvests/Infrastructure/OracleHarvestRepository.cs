@@ -23,15 +23,15 @@ namespace CAFEPAY.ArqHex.Harvests.Infrastructure
             // Asumimos: harvest.PlotId.Value (long), harvest.HarvestId?.Value (long? nullable)
             const string sql = @"
             INSERT INTO HARVEST (IDPLOT, STARTDATE, PRICEPERKILO)
-            VALUES (:p_idplot, :p_startdate, :p_price)
+            VALUES (:p_idPlot, :p_startDate, :p_price)
             RETURNING IDHARVEST INTO :p_new_id";
 
             using (var conn = new OracleConnection(connectionString))
             using (var cmd = new OracleCommand(sql, conn))
             {
                 cmd.BindByName = true;
-                cmd.Parameters.Add("p_idplot", OracleDbType.Int64).Value = harvest.idPlot.idPlotValue;
-                cmd.Parameters.Add("p_startdate", OracleDbType.Date).Value = harvest.startDate.startDateValue;
+                cmd.Parameters.Add("p_idPlot", OracleDbType.Int64).Value = harvest.idPlot.idPlotValue;
+                cmd.Parameters.Add("p_startDate", OracleDbType.Date).Value = harvest.startDate.startDateValue;
                 cmd.Parameters.Add("p_price", OracleDbType.Decimal).Value = harvest.pricePerKilo.pricePerKiloValue;
 
                 // Parámetro OUT para recuperar el ID asignado por el trigger (si el trigger asignó uno)
@@ -127,21 +127,18 @@ namespace CAFEPAY.ArqHex.Harvests.Infrastructure
             if (harvest == null) throw new ArgumentNullException(nameof(harvest));
             const string sql = @"
             UPDATE HARVEST
-            SET STARTDATE      = :p_startdate,
-            ENDDATE  = :p_enddate,
-            PRICEPERKILO         = :p_priceperkilo,
-            WHERE IDPLOT = :p_idplot
+            SET ENDDATE  = :p_endDate,
+            STATUS_ID         = :p_status
+            WHERE IDPLOT = :p_idPlot
             AND IDHARVEST          = :p_id";
-            ;
             using (var conn = new OracleConnection(connectionString))
             using (var cmd = new OracleCommand(sql, conn))
             {
                 cmd.BindByName = true;
                 cmd.Parameters.Add("p_id", OracleDbType.Int64).Value = harvest.id.idValue;
-                cmd.Parameters.Add("p_idplot", OracleDbType.Int64).Value = harvest.idPlot.idPlotValue;
-                cmd.Parameters.Add("p_idharvest", OracleDbType.Int64).Value = harvest.endDate.endDateValue;
-                cmd.Parameters.Add("p_enddate", OracleDbType.Date).Value = harvest.endDate.endDateValue;
-                cmd.Parameters.Add("p_priceperkilo", OracleDbType.Decimal).Value = harvest.pricePerKilo.pricePerKiloValue;
+                cmd.Parameters.Add("p_idPlot", OracleDbType.Int64).Value = harvest.idPlot.idPlotValue;
+                cmd.Parameters.Add("p_endDate", OracleDbType.Date).Value = harvest.endDate.endDateValue;
+                cmd.Parameters.Add("p_status", OracleDbType.Int32).Value = harvest.status.statusValue;
 
                 conn.Open();
                 try

@@ -30,8 +30,10 @@ namespace CAFEPAY.Views.ViewHarvest
         private void loadSettings()
         {
             var today = DateTime.Today;
-            dtTmStartDate.MinDate = today;
             dtTmStartDate.MaxDate = today;
+
+            dtTmStartDate.MinDate = today;
+            
             dtTmStartDate.Value = today;
         }
         public void loadComboBoxPlot()
