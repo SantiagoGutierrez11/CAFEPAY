@@ -18,7 +18,7 @@ namespace CAFEPAY.ArqHex.Collects.application.CollectUpdate
 
         public void execute(long _oldId, long _collectId, long _collectCollectorId, DateTime _collectDate,
                            decimal _collectedKilos, long _collectIdHarvest, long _collectIdPayment,
-                           int _collectStatus, long _collectPaid)
+                           int _collectStatus, long _collectPaid, long _collectIdPlot, int _collectIsContable)
         {
             CollectId collectId = new CollectId(_collectId);
             CollectIdCollector collectCollectorId = new CollectIdCollector(_collectCollectorId);
@@ -28,10 +28,13 @@ namespace CAFEPAY.ArqHex.Collects.application.CollectUpdate
             CollectIdPayment collectIdPayment = new CollectIdPayment(_collectIdPayment);
             CollectStatus collectStatus = new CollectStatus(_collectStatus);
             CollectPaid collectPaid = new CollectPaid(_collectPaid);
+            CollectIdPlot collectIdPlot = new CollectIdPlot(_collectIdPlot);
+            CollectIsContable collectIsContable = new CollectIsContable(_collectIsContable); 
+            
 
             Collect collect = new Collect(collectId, collectCollectorId, collectIdPayment,
                                           collectIdHarvest, collectDate, collectedKilos,
-                                          collectStatus, collectPaid);
+                                          collectStatus, collectPaid, collectIdPlot, collectIsContable);
 
             collectRepository.update(collect, _oldId);
         }

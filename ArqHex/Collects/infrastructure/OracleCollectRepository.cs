@@ -122,10 +122,12 @@ UPDATE ADMINCAFEPAY.COLLECT
                         var collectIdPayment = new CollectIdPayment(reader.GetInt64(5));
                         var collectStatus = new CollectStatus(reader.GetInt32(6));
                         var collectPaid = new CollectPaid(reader.GetInt64(7));
+                        var collectIsContable = new CollectIsContable(reader.GetInt32(8));
+                        var collectIdPlot = new CollectIdPlot(reader.GetInt64(9));
 
                         var collect = new Collect(collectId, collectCollectorId, collectIdPayment,
                                                   collectIdHarvest, collectDate, collectedKilos,
-                                                  collectStatus, collectPaid);
+                                                  collectStatus, collectPaid, collectIdPlot,collectIsContable );
                         collects.Add(collect);
                     }
                 }

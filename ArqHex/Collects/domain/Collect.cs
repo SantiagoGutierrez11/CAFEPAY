@@ -17,10 +17,12 @@ namespace CAFEPAY.ArqHex.Collects.domain
         public CollectedKilos kilos { get; }
         public CollectStatus status { get; }
         public CollectPaid paid { get; } 
+        public CollectIsContable isContable { get; }
+        public CollectIdPlot plotId { get; }
 
         public Collect(CollectId _collectId, CollectIdCollector _collectCollectorId, CollectIdPayment _collectPaymentId,
             CollectIdHarvest _collectHarvestId, CollectDate _collectDate, CollectedKilos _collectedKilos,
-            CollectStatus collectStatus, CollectPaid collectPaid)  // Nuevo parámetro
+            CollectStatus collectStatus, CollectPaid collectPaid, CollectIdPlot collectIdPlot, CollectIsContable collectIsContable) 
         {
             this.id = _collectId;
             this.collectorId = _collectCollectorId;
@@ -29,7 +31,9 @@ namespace CAFEPAY.ArqHex.Collects.domain
             this.date = _collectDate;
             this.kilos = _collectedKilos;
             this.status = collectStatus;
-            this.paid = collectPaid;  // Asignación del nuevo atributo
+            this.paid = collectPaid; 
+            this.plotId = collectIdPlot;
+            this.isContable = collectIsContable;
         }
     }
 }

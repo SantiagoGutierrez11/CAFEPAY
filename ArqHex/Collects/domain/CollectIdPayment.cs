@@ -50,14 +50,10 @@ namespace CAFEPAY.ArqHex.Collects.domain
         {
             return collectIdPayment.ToString();
         }
-
-        // Método para acceder al valor
         public long GetValue()
         {
             return collectIdPayment;
         }
-
-        // Método para obtener como string
         public string GetValueAsString()
         {
             return collectIdPayment.ToString();

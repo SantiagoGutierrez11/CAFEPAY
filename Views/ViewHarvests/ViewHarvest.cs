@@ -83,7 +83,7 @@ namespace CAFEPAY.Views.ViewHarvest
                 dgHarvest.AutoGenerateColumns = false;
                 dgHarvest.Columns.Clear();
                 AddColumn("idPlot", "Parcela Id", 110);
-                AddColumn("plotName", "Nombre de lote", 180);   // <-- nueva
+                AddColumn("plotName", "Nombre de lote", 180);
                 AddColumn("id", "Cosecha Id", 110);
                 AddColumn("startDate", "Fecha Inicio", 120);
                 AddColumn("endDate", "Fecha Fin", 120);
@@ -186,7 +186,7 @@ namespace CAFEPAY.Views.ViewHarvest
 
         private void btnAssociate_Click(object sender, EventArgs e)
         {
-            // 1️⃣ Validar selección en el DataGridView
+            // Validar selección en el DataGridView
             if (dgHarvest.CurrentCell == null)
             {
                 MessageBox.Show("Por favor, seleccione una cosecha para asociar un recolector.",
@@ -207,7 +207,7 @@ namespace CAFEPAY.Views.ViewHarvest
                 return;
             }
 
-            // 2️⃣ Obtener la cosecha seleccionada
+            // Obtener la cosecha seleccionada
             var selectedHarvest = listHarvestDTO[rowSelected];
             if (selectedHarvest == null)
             {
@@ -218,7 +218,7 @@ namespace CAFEPAY.Views.ViewHarvest
                 return;
             }
 
-            // 3️⃣ Validar que la cosecha esté activa
+            // Validar que la cosecha esté activa
             if (selectedHarvest.status != 1 || selectedHarvest.endDate != null)
             {
                 MessageBox.Show("Solo se pueden asociar recolectores a cosechas activas.",
@@ -228,7 +228,7 @@ namespace CAFEPAY.Views.ViewHarvest
                 return;
             }
 
-            // 4️⃣ Obtener información del lote asociado
+            // Obtener información del lote asociado
             Plot plot = AppServices.PlotServices.queryById.execute(selectedHarvest.idPlot);
             PlotDTO plotDTO = new PlotDTO
             {
@@ -241,7 +241,7 @@ namespace CAFEPAY.Views.ViewHarvest
                              "DESCONOCIDO"
             };
 
-            // 5️⃣ Abrir la nueva vista para asociar recolectores
+            // Abrir la nueva vista para asociar recolectores
             ViewHarvestAssociateCollector viewAssociate = new ViewHarvestAssociateCollector(plotDTO, selectedHarvest);
             viewAssociate.Owner = this;
             viewAssociate.Show();
