@@ -43,7 +43,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(201, 585);
+            this.button1.Location = new System.Drawing.Point(366, 576);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(255, 57);
             this.button1.TabIndex = 0;
@@ -58,13 +58,14 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(584, 271);
+            this.dataGridView1.Size = new System.Drawing.Size(910, 271);
             this.dataGridView1.TabIndex = 1;
+            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(198, 74);
+            this.label1.Location = new System.Drawing.Point(363, 76);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(84, 16);
             this.label1.TabIndex = 2;
@@ -74,7 +75,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(198, 118);
+            this.label2.Location = new System.Drawing.Point(363, 120);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(132, 16);
             this.label2.TabIndex = 3;
@@ -83,7 +84,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(198, 206);
+            this.label3.Location = new System.Drawing.Point(363, 208);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(101, 16);
             this.label3.TabIndex = 4;
@@ -92,7 +93,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(198, 162);
+            this.label4.Location = new System.Drawing.Point(363, 164);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(96, 16);
             this.label4.TabIndex = 5;
@@ -100,28 +101,28 @@
             // 
             // textBoxNombreLote
             // 
-            this.textBoxNombreLote.Location = new System.Drawing.Point(201, 93);
+            this.textBoxNombreLote.Location = new System.Drawing.Point(366, 95);
             this.textBoxNombreLote.Name = "textBoxNombreLote";
             this.textBoxNombreLote.Size = new System.Drawing.Size(255, 22);
             this.textBoxNombreLote.TabIndex = 6;
             // 
             // textBoxNumeroCosecha
             // 
-            this.textBoxNumeroCosecha.Location = new System.Drawing.Point(201, 137);
+            this.textBoxNumeroCosecha.Location = new System.Drawing.Point(366, 139);
             this.textBoxNumeroCosecha.Name = "textBoxNumeroCosecha";
             this.textBoxNumeroCosecha.Size = new System.Drawing.Size(255, 22);
             this.textBoxNumeroCosecha.TabIndex = 7;
             // 
             // textBoxPrecioPorKilo
             // 
-            this.textBoxPrecioPorKilo.Location = new System.Drawing.Point(201, 181);
+            this.textBoxPrecioPorKilo.Location = new System.Drawing.Point(366, 183);
             this.textBoxPrecioPorKilo.Name = "textBoxPrecioPorKilo";
             this.textBoxPrecioPorKilo.Size = new System.Drawing.Size(255, 22);
             this.textBoxPrecioPorKilo.TabIndex = 8;
             // 
             // textBoxFechaInicio
             // 
-            this.textBoxFechaInicio.Location = new System.Drawing.Point(201, 225);
+            this.textBoxFechaInicio.Location = new System.Drawing.Point(366, 227);
             this.textBoxFechaInicio.Name = "textBoxFechaInicio";
             this.textBoxFechaInicio.Size = new System.Drawing.Size(255, 22);
             this.textBoxFechaInicio.TabIndex = 9;
@@ -130,7 +131,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(661, 687);
+            this.ClientSize = new System.Drawing.Size(1013, 687);
             this.Controls.Add(this.textBoxFechaInicio);
             this.Controls.Add(this.textBoxPrecioPorKilo);
             this.Controls.Add(this.textBoxNumeroCosecha);
