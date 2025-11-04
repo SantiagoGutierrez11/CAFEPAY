@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace CAFEPAY.ArqHex.Collects.domain
 {
-    public class CollectIsContable
+    public class CollectIsCountable
     {
-        public int isContableValue { get; }
+        public int isCountableValue { get; }
 
-        public CollectIsContable(int _isContable) 
+        public CollectIsCountable(int _isCountable) 
         {
-            this.isContableValue = _isContable;
+            this.isCountableValue = _isCountable;
             validateFormat();
         }
 

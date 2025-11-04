@@ -12,28 +12,28 @@ namespace CAFEPAY.ArqHex.Collects.domain
         public CollectId id { get; }
         public CollectWorkerCode collectorId { get; }
         public CollectIdPayment paymentId { get; }
-        public CollectIdHarvest tHarvestId { get; }
+        public CollectIdHarvest harvestId { get; }
         public CollectDate date { get; }
         public CollectedKilos kilos { get; }
         public CollectStatus status { get; }
         public CollectorAmountToPaid paid { get; } 
-        public CollectIsContable isContable { get; }
+        public CollectIsCountable iscountable { get; }
         public CollectIdPlot plotId { get; }
 
         public Collect(CollectId _collectId, CollectWorkerCode _collectCollectorId, CollectIdPayment _collectPaymentId,
-            CollectIdHarvest _collectHarvestId, CollectDate _collectDate, CollectedKilos _collectedKilos,
-            CollectStatus collectStatus, CollectorAmountToPaid collectorAmountToPaid, CollectIdPlot collectIdPlot, CollectIsContable collectIsContable) 
+            CollectIdHarvest _collecharvestId, CollectDate _collectDate, CollectedKilos _collectedKilos,
+            CollectStatus collectStatus, CollectorAmountToPaid collectPaid, CollectIdPlot collectIdPlot, CollectIsCountable collectIscountable) 
         {
             this.id = _collectId;
             this.collectorId = _collectCollectorId;
             this.paymentId = _collectPaymentId;
-            this.tHarvestId = _collectHarvestId;
+            this.harvestId = _collecharvestId;
             this.date = _collectDate;
             this.kilos = _collectedKilos;
             this.status = collectStatus;
-            this.paid = collectorAmountToPaid; 
+            this.paid = collectPaid; 
             this.plotId = collectIdPlot;
-            this.isContable = collectIsContable;
+            this.iscountable = collectIscountable;
         }
     }
 }

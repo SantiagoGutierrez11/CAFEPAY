@@ -108,7 +108,7 @@
     <Compile Include="ArqHex\Collects\domain\CollectId.cs" />
     <Compile Include="ArqHex\Collects\domain\CollectWorkerCode.cs" />
     <Compile Include="ArqHex\Collects\domain\CollectIdPlot.cs" />
-    <Compile Include="ArqHex\Collects\domain\CollectIsContable.cs" />
+    <Compile Include="ArqHex\Collects\domain\CollectIsCountable.cs" />
     <Compile Include="ArqHex\Collects\domain\CollectAmountToPay.cs" />
     <Compile Include="ArqHex\Collects\domain\CollectRepository.cs" />
     <Compile Include="ArqHex\Collects\domain\CollectStatus.cs" />
