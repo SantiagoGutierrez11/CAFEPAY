@@ -145,7 +145,7 @@
     <Compile Include="ArqHex\Share\DTO\PlotDTO.cs" />
     <Compile Include="ArqHex\Share\Serializers\CollectMaper.cs" />
     <Compile Include="ArqHex\Share\Serializers\CollectorMaper.cs" />
-    <Compile Include="ArqHex\Share\Serializers\HarvestMapper.cs" />
+    <Compile Include="ArqHex\Share\Serializers\HarvestMaper.cs" />
     <Compile Include="ArqHex\Share\Serializers\PlotMapper.cs" />
     <Compile Include="Views\ViewCollector\ViewCollector.cs">
       <SubType>Form</SubType>
@@ -197,6 +197,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\ViewCollect\ViewCollectRegister.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ViewCollect\ViewCollectRegister.Designer.cs">
+      <DependentUpon>ViewCollectRegister.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\ViewHarvests\ViewHarvest.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -273,6 +279,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Views\ViewCollect\ViewCollectRegister.resx">
+      <DependentUpon>ViewCollectRegister.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\ViewHarvests\ViewHarvest.resx">
       <DependentUpon>ViewHarvest.cs</DependentUpon>
     </EmbeddedResource>

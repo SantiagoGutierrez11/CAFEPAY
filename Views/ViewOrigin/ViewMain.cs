@@ -33,5 +33,13 @@ namespace CAFEPAY.Views.ViewOrigin
             viewHarvest.Show();
             this.Hide();
         }
+
+        private void btnCollects_Click(object sender, EventArgs e)
+        {
+            ViewCollect.ViewCollect viewCollect = new ViewCollect.ViewCollect();
+            viewCollect.Owner = this;
+            viewCollect.Show();
+            this.Hide();
+        }
     }
 }
