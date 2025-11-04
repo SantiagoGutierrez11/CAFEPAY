@@ -122,6 +122,7 @@ namespace CAFEPAY.ArqHex.Harvests.Infrastructure
 
             return harvests;
         }
+
         public void update(Harvest harvest)
         {
             if (harvest == null) throw new ArgumentNullException(nameof(harvest));

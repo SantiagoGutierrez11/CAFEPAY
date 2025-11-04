@@ -5,6 +5,7 @@ using CAFEPAY.ArqHex.Share;
 using CAFEPAY.ArqHex.Share.DTO;
 using CAFEPAY.ArqHex.Share.Serializers;
 using CAFEPAY.Views.ViewCollector;
+using CAFEPAY.Views.ViewHarvests;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -82,7 +83,7 @@ namespace CAFEPAY.Views.ViewHarvest
                 dgHarvest.AutoGenerateColumns = false;
                 dgHarvest.Columns.Clear();
                 AddColumn("idPlot", "Parcela Id", 110);
-                AddColumn("plotName", "Nombre de lote", 180);   // <-- nueva
+                AddColumn("plotName", "Nombre de lote", 180);
                 AddColumn("id", "Cosecha Id", 110);
                 AddColumn("startDate", "Fecha Inicio", 120);
                 AddColumn("endDate", "Fecha Fin", 120);
@@ -182,5 +183,70 @@ namespace CAFEPAY.Views.ViewHarvest
                 this.Hide();
             }
         }
+
+        private void btnAssociate_Click(object sender, EventArgs e)
+        {
+            // Validar selección en el DataGridView
+            if (dgHarvest.CurrentCell == null)
+            {
+                MessageBox.Show("Por favor, seleccione una cosecha para asociar un recolector.",
+                              "Selección requerida",
+                              MessageBoxButtons.OK,
+                              MessageBoxIcon.Information);
+                return;
+            }
+
+            int rowSelected = dgHarvest.CurrentCell.RowIndex;
+
+            if (rowSelected < 0 || rowSelected >= listHarvestDTO.Count)
+            {
+                MessageBox.Show("La selección no es válida.",
+                              "Error",
+                              MessageBoxButtons.OK,
+                              MessageBoxIcon.Error);
+                return;
+            }
+
+            // Obtener la cosecha seleccionada
+            var selectedHarvest = listHarvestDTO[rowSelected];
+            if (selectedHarvest == null)
+            {
+                MessageBox.Show("La cosecha seleccionada no es válida.",
+                              "Error",
+                              MessageBoxButtons.OK,
+                              MessageBoxIcon.Error);
+                return;
+            }
+
+            // Validar que la cosecha esté activa
+            if (selectedHarvest.status != 1 || selectedHarvest.endDate != null)
+            {
+                MessageBox.Show("Solo se pueden asociar recolectores a cosechas activas.",
+                              "Error",
+                              MessageBoxButtons.OK,
+                              MessageBoxIcon.Error);
+                return;
+            }
+
+            // Obtener información del lote asociado
+            Plot plot = AppServices.PlotServices.queryById.execute(selectedHarvest.idPlot);
+            PlotDTO plotDTO = new PlotDTO
+            {
+                idPlot = plot.idPlot.idPlotValue,
+                idOwner = plot.idOwner.idPlotOwnerValue,
+                name = plot.name.plotNameValue,
+                status = plot.status.statusValue,
+                statusText = plot.status.statusValue == 1 ? "ACTIVO" :
+                             plot.status.statusValue == 2 ? "INACTIVO" :
+                             "DESCONOCIDO"
+            };
+
+            // Abrir la nueva vista para asociar recolectores
+            ViewHarvestAssociateCollector viewAssociate = new ViewHarvestAssociateCollector(plotDTO, selectedHarvest);
+            viewAssociate.Owner = this;
+            viewAssociate.Show();
+            this.Hide();
+        }
+
     }
 }

@@ -86,7 +86,7 @@
   <ItemGroup>
     <Compile Include="ArqHex\Collectors\application\CollectorQueryAll\CollectorQueryAll.cs" />
     <Compile Include="ArqHex\Collectors\application\CollectorSave\CollectorSave.cs" />
-    <Compile Include="ArqHex\Collectors\application\CollectorUpdate\CollectorUpdate.cs" />
+    <Compile Include="ArqHex\Collectors\application\CollectUpdate\CollectorUpdate.cs" />
     <Compile Include="ArqHex\Collectors\domain\Collector.cs" />
     <Compile Include="ArqHex\Collectors\domain\CollectorId.cs" />
     <Compile Include="ArqHex\Collectors\domain\CollectorFirstName.cs" />
@@ -98,6 +98,23 @@
     <Compile Include="ArqHex\Collectors\domain\HarvestActiveExistsException.cs" />
     <Compile Include="ArqHex\Collectors\infrastructure\CollectorController.cs" />
     <Compile Include="ArqHex\Collectors\infrastructure\OracleCollectorRepository.cs" />
+    <Compile Include="ArqHex\Collects\application\CollectQueryAll\CollectQueryAll.cs" />
+    <Compile Include="ArqHex\Collects\application\CollectSave\CollectSave.cs" />
+    <Compile Include="ArqHex\Collects\application\CollectUpdate\CollectUpdate.cs" />
+    <Compile Include="ArqHex\Collects\domain\Collect.cs" />
+    <Compile Include="ArqHex\Collects\domain\CollectDate.cs" />
+    <Compile Include="ArqHex\Collects\domain\CollectedKilos.cs" />
+    <Compile Include="ArqHex\Collects\domain\CollectIdHarvest.cs" />
+    <Compile Include="ArqHex\Collects\domain\CollectId.cs" />
+    <Compile Include="ArqHex\Collects\domain\CollectIdCollector.cs" />
+    <Compile Include="ArqHex\Collects\domain\CollectIdPlot.cs" />
+    <Compile Include="ArqHex\Collects\domain\CollectIsContable.cs" />
+    <Compile Include="ArqHex\Collects\domain\CollectPaid.cs" />
+    <Compile Include="ArqHex\Collects\domain\CollectRepository.cs" />
+    <Compile Include="ArqHex\Collects\domain\CollectStatus.cs" />
+    <Compile Include="ArqHex\Collects\domain\CollectIdPayment.cs" />
+    <Compile Include="ArqHex\Collects\infrastructure\CollectController.cs" />
+    <Compile Include="ArqHex\Collects\infrastructure\OracleCollectRepository.cs" />
     <Compile Include="ArqHex\Harvests\Application\HarvestUpdate\HarvestUpdate.cs" />
     <Compile Include="ArqHex\Harvests\Domain\HarvestStatus.cs" />
     <Compile Include="ArqHex\Plots\Application\PlotQueryAll\PlotQueryAll.cs" />
@@ -110,6 +127,7 @@
     <Compile Include="ArqHex\Plots\Domain\PlotStatus.cs" />
     <Compile Include="ArqHex\Plots\Infrastructure\OraclePlotRepository.cs" />
     <Compile Include="ArqHex\Plots\Infrastructure\PlotController.cs" />
+    <Compile Include="ArqHex\Share\DTO\CollectDTO.cs" />
     <Compile Include="ArqHex\Share\DTO\CollectorDTO.cs" />
     <Compile Include="ArqHex\Share\AppServices.cs" />
     <Compile Include="ArqHex\Harvests\Application\HarvestQueryAll\HarvestQueryAll.cs" />
@@ -125,6 +143,7 @@
     <Compile Include="ArqHex\Harvests\Infrastructure\OracleHarvestRepository.cs" />
     <Compile Include="ArqHex\Share\DTO\HarvestDTO.cs" />
     <Compile Include="ArqHex\Share\DTO\PlotDTO.cs" />
+    <Compile Include="ArqHex\Share\Serializers\CollectMaper.cs" />
     <Compile Include="ArqHex\Share\Serializers\CollectorMaper.cs" />
     <Compile Include="ArqHex\Share\Serializers\HarvestMapper.cs" />
     <Compile Include="ArqHex\Share\Serializers\PlotMapper.cs" />
@@ -183,6 +202,12 @@
     </Compile>
     <Compile Include="Views\ViewHarvests\ViewHarvest.Designer.cs">
       <DependentUpon>ViewHarvest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewHarvests\ViewHarvestAssociateCollector.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ViewHarvests\ViewHarvestAssociateCollector.Designer.cs">
+      <DependentUpon>ViewHarvestAssociateCollector.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\ViewHarvests\ViewHarvestFinishConfirm.cs">
       <SubType>Form</SubType>
@@ -251,6 +276,9 @@
     <EmbeddedResource Include="Views\ViewHarvests\ViewHarvest.resx">
       <DependentUpon>ViewHarvest.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\ViewHarvests\ViewHarvestAssociateCollector.resx">
+      <DependentUpon>ViewHarvestAssociateCollector.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\ViewHarvests\ViewHarvestFinishConfirm.resx">
       <DependentUpon>ViewHarvestFinishConfirm.cs</DependentUpon>
     </EmbeddedResource>
@@ -318,6 +346,11 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ArqHex\Payments\application\PaymentQueryAll\" />
+    <Folder Include="ArqHex\Payments\application\PaymentSave\" />
+    <Folder Include="ArqHex\Payments\application\PaymentUpdate\" />
+    <Folder Include="ArqHex\Payments\domain\" />
+    <Folder Include="ArqHex\Payments\infrastructure\" />
     <Folder Include="bin\Release\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
