@@ -32,13 +32,13 @@ namespace CAFEPAY.ArqHex.Collects.infrastructure
                 cmd.BindByName = true;
 
                 cmd.Parameters.Add("p_collect_id", OracleDbType.Int64).Value = collect.id.collectId;
-                cmd.Parameters.Add("p_collector_id", OracleDbType.Int64).Value = collect.collectorId.collectIdCollector;
+                cmd.Parameters.Add("p_collector_id", OracleDbType.Int64).Value = collect.collectorId.collectorWorkerCode;
                 cmd.Parameters.Add("p_collect_date", OracleDbType.Date).Value = collect.date.collectDate;
                 cmd.Parameters.Add("p_collected_kilos", OracleDbType.Decimal).Value = collect.kilos.collectedKilos;
                 cmd.Parameters.Add("p_harvest_id", OracleDbType.Int64).Value = collect.tHarvestId.collectIdHarvest;
                 cmd.Parameters.Add("p_payment_id", OracleDbType.Int64).Value = collect.paymentId.collectIdPayment;
                 cmd.Parameters.Add("p_status_id", OracleDbType.Int32).Value = collect.status.collectStatus;
-                cmd.Parameters.Add("p_paid", OracleDbType.Int64).Value = collect.paid.collectPaid;
+                cmd.Parameters.Add("p_paid", OracleDbType.Int64).Value = collect.paid.collectorAmountToPaid;
 
                 connection.Open();
                 try
@@ -74,13 +74,13 @@ UPDATE ADMINCAFEPAY.COLLECT
             {
                 cmd.BindByName = true;
 
-                cmd.Parameters.Add("p_collector_id", OracleDbType.Int64).Value = collect.collectorId.collectIdCollector;
+                cmd.Parameters.Add("p_collector_id", OracleDbType.Int64).Value = collect.collectorId.collectorWorkerCode;
                 cmd.Parameters.Add("p_collect_date", OracleDbType.Date).Value = collect.date.collectDate;
                 cmd.Parameters.Add("p_collected_kilos", OracleDbType.Decimal).Value = collect.kilos.collectedKilos;
                 cmd.Parameters.Add("p_harvest_id", OracleDbType.Int64).Value = collect.tHarvestId.collectIdHarvest;
                 cmd.Parameters.Add("p_payment_id", OracleDbType.Int64).Value = collect.paymentId.collectIdPayment;
                 cmd.Parameters.Add("p_status_id", OracleDbType.Int32).Value = collect.status.collectStatus;
-                cmd.Parameters.Add("p_paid", OracleDbType.Int64).Value = collect.paid.collectPaid;
+                cmd.Parameters.Add("p_paid", OracleDbType.Int64).Value = collect.paid.collectorAmountToPaid;
                 cmd.Parameters.Add("p_new_collect_id", OracleDbType.Int64).Value = collect.id.collectId;
                 cmd.Parameters.Add("p_old_collect_id", OracleDbType.Int64).Value = oldId;
 
@@ -115,19 +115,19 @@ UPDATE ADMINCAFEPAY.COLLECT
                     while (reader.Read())
                     {
                         var collectId = new CollectId(reader.GetInt64(0));
-                        var collectCollectorId = new CollectIdCollector(reader.GetInt64(1));
+                        var collectCollectorId = new CollectWorkerCode(reader.GetString(1));
                         var collectDate = new CollectDate(reader.GetDateTime(2));
                         var collectedKilos = new CollectedKilos(reader.GetDecimal(3));
                         var collectIdHarvest = new CollectIdHarvest(reader.GetInt64(4));
                         var collectIdPayment = new CollectIdPayment(reader.GetInt64(5));
                         var collectStatus = new CollectStatus(reader.GetInt32(6));
-                        var collectPaid = new CollectPaid(reader.GetInt64(7));
+                        var collectorAmountToPaid = new CollectorAmountToPaid(reader.GetInt64(7));
                         var collectIsContable = new CollectIsContable(reader.GetInt32(8));
                         var collectIdPlot = new CollectIdPlot(reader.GetInt64(9));
 
                         var collect = new Collect(collectId, collectCollectorId, collectIdPayment,
                                                   collectIdHarvest, collectDate, collectedKilos,
-                                                  collectStatus, collectPaid, collectIdPlot,collectIsContable );
+                                                  collectStatus, collectorAmountToPaid, collectIdPlot,collectIsContable );
                         collects.Add(collect);
                     }
                 }

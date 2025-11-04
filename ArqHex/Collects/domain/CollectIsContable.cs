@@ -8,11 +8,11 @@ namespace CAFEPAY.ArqHex.Collects.domain
 {
     public class CollectIsContable
     {
-        private int isContable { get; }
+        public int isContableValue { get; }
 
         public CollectIsContable(int _isContable) 
         {
-            this.isContable = _isContable;
+            this.isContableValue = _isContable;
             validateFormat();
         }
 

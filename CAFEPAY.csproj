@@ -106,10 +106,10 @@
     <Compile Include="ArqHex\Collects\domain\CollectedKilos.cs" />
     <Compile Include="ArqHex\Collects\domain\CollectIdHarvest.cs" />
     <Compile Include="ArqHex\Collects\domain\CollectId.cs" />
-    <Compile Include="ArqHex\Collects\domain\CollectIdCollector.cs" />
+    <Compile Include="ArqHex\Collects\domain\CollectWorkerCode.cs" />
     <Compile Include="ArqHex\Collects\domain\CollectIdPlot.cs" />
     <Compile Include="ArqHex\Collects\domain\CollectIsContable.cs" />
-    <Compile Include="ArqHex\Collects\domain\CollectPaid.cs" />
+    <Compile Include="ArqHex\Collects\domain\CollectAmountToPay.cs" />
     <Compile Include="ArqHex\Collects\domain\CollectRepository.cs" />
     <Compile Include="ArqHex\Collects\domain\CollectStatus.cs" />
     <Compile Include="ArqHex\Collects\domain\CollectIdPayment.cs" />
@@ -346,6 +346,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ArqHex\Collects\application\CollectQueryIn\" />
     <Folder Include="ArqHex\Payments\application\PaymentQueryAll\" />
     <Folder Include="ArqHex\Payments\application\PaymentSave\" />
     <Folder Include="ArqHex\Payments\application\PaymentUpdate\" />

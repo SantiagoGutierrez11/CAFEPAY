@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace CAFEPAY.ArqHex.Collects.domain
 {
-    public class CollectPaid
+    public class CollectorAmountToPaid
     {
-        public long collectPaid { get; }
+        public long collectorAmountToPaid { get; }
 
-        public CollectPaid(long _collectPaidValue)
+        public CollectorAmountToPaid(long _collectorAmountToPaidValue)
         {
-            ValidateFormat(_collectPaidValue);
-            this.collectPaid = _collectPaidValue;
+            ValidateFormat(_collectorAmountToPaidValue);
+            this.collectorAmountToPaid = _collectorAmountToPaidValue;
         }
 
         private void ValidateFormat(long paidValue)
@@ -28,33 +28,33 @@ namespace CAFEPAY.ArqHex.Collects.domain
         // Sobrescribir métodos para comparación
         public override bool Equals(object obj)
         {
-            if (obj is CollectPaid other)
+            if (obj is CollectorAmountToPaid other)
             {
-                return collectPaid == other.collectPaid;
+                return collectorAmountToPaid == other.collectorAmountToPaid;
             }
             return false;
         }
 
         public override int GetHashCode()
         {
-            return collectPaid.GetHashCode();
+            return collectorAmountToPaid.GetHashCode();
         }
 
         public override string ToString()
         {
-            return collectPaid.ToString();
+            return collectorAmountToPaid.ToString();
         }
 
         // Método para acceder al valor
         public long GetValue()
         {
-            return collectPaid;
+            return collectorAmountToPaid;
         }
 
         // Método para obtener como string
         public string GetValueAsString()
         {
-            return collectPaid.ToString();
+            return collectorAmountToPaid.ToString();
         }
     }
 }

@@ -10,22 +10,22 @@ namespace CAFEPAY.ArqHex.Collects.infrastructure
 {
     public class CollectController
     {
-        public void saveCollect(long _collectId, long _collectCollectorId, DateTime _collectDate,
+        public void saveCollect(long _collectId, string _collectCollectorWorkerId, DateTime _collectDate,
                                decimal _collectedKilos, long _collectIdHarvest, long _collectIdPayment,
-                               int _collectStatus, long _collectPaid, long _collectIdPlot, int _collectIsContable)
+                               int _collectStatus, long _collectorAmountToPaid, long _collectIdPlot, int _collectIsContable)
         {
-            AppServices.CollectServices.save.execute(_collectId, _collectCollectorId, _collectDate,
+            AppServices.CollectServices.save.execute(_collectId, _collectCollectorWorkerId, _collectDate,
                                                      _collectedKilos, _collectIdHarvest, _collectIdPayment,
-                                                     _collectStatus, _collectPaid, _collectIdPlot, _collectIsContable);
+                                                     _collectStatus, _collectorAmountToPaid, _collectIdPlot, _collectIsContable);
         }
 
-        public void updateCollect(long _oldId, long _collectId, long _collectCollectorId, DateTime _collectDate,
+        public void updateCollect(long _oldId, long _collectId, string _collectCollectorWorkerId, DateTime _collectDate,
                                  decimal _collectedKilos, long _collectIdHarvest, long _collectIdPayment,
-                                 int _collectStatus, long _collectPaid, long _collectIdPlot, int _collectIsContable)
+                                 int _collectStatus, long _collectorAmountToPaid, long _collectIdPlot, int _collectIsContable)
         {
-            AppServices.CollectServices.update.execute(_oldId, _collectId, _collectCollectorId, _collectDate,
+            AppServices.CollectServices.update.execute(_oldId, _collectId, _collectCollectorWorkerId, _collectDate,
                                                        _collectedKilos, _collectIdHarvest, _collectIdPayment,
-                                                       _collectStatus, _collectPaid, _collectIdPlot, _collectIsContable);
+                                                       _collectStatus, _collectorAmountToPaid, _collectIdPlot, _collectIsContable);
         }
 
         public List<Collect> listCollects()

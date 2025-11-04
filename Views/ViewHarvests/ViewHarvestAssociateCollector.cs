@@ -9,6 +9,7 @@ using CAFEPAY.ArqHex.Share;
 using CAFEPAY.ArqHex.Collectors.domain;
 using CAFEPAY.ArqHex.Share.Serializers;
 using System.Linq;
+using CAFEPAY.ArqHex.Collects.domain;
 
 namespace CAFEPAY.Views.ViewHarvests
 {
@@ -188,7 +189,7 @@ namespace CAFEPAY.Views.ViewHarvests
             try
             {
                 // Recuperar el worker code de los recolectores seleccionados usando DataBoundItem
-                List<string> collectorWorkerCodes = new List<string>();
+                List<CollectDTO> collectsZero = new List<CollectDTO>();
 
                 foreach (DataGridViewRow row in dgCollectors.SelectedRows)
                 {
@@ -197,20 +198,25 @@ namespace CAFEPAY.Views.ViewHarvests
                     {
                         if (!string.IsNullOrWhiteSpace(collector.workerCode))
                         {
-                            collectorWorkerCodes.Add(collector.workerCode.Trim());
+                            CollectDTO collect = new CollectDTO
+                            {
+                                collectId = null,
+                                plotId = plotDTO.idPlot,
+                                harvestId = harvestDTO.id,
+                                paymentId = null,
+                                collectorWorkerCode = collector.workerCode,
+                                collectedKilos = 0,
+                                collectDate = DateTime.Today,
+                                amountToPaid = 0,
+                                isCountable = 0,
+                                status =0, 
+                                statusText = "ZERO"
+                            };
+                        collectsZero.Add(collect);
                         }
                     }
                 }
 
-                // Validar que se hayan recuperado códigos
-                if (collectorWorkerCodes.Count == 0)
-                {
-                    MessageBox.Show("No se pudieron obtener los códigos de los recolectores seleccionados.",
-                                  "Error de datos",
-                                  MessageBoxButtons.OK,
-                                  MessageBoxIcon.Warning);
-                    return;
-                }
             }
             catch (Exception ex)
             {
