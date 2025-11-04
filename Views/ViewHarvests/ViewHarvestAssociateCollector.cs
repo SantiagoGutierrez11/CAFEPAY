@@ -8,6 +8,7 @@ using CAFEPAY.ArqHex.Share.DTO;
 using CAFEPAY.ArqHex.Share;
 using CAFEPAY.ArqHex.Collectors.domain;
 using CAFEPAY.ArqHex.Share.Serializers;
+using System.Linq;
 
 namespace CAFEPAY.Views.ViewHarvests
 {
@@ -49,48 +50,48 @@ namespace CAFEPAY.Views.ViewHarvests
             if (plotDTO != null && harvestDTO != null)
             {
                 // Nombre del lote
-                textBoxNombreLote.Text = plotDTO.name;
+                textBoxPlotName.Text = plotDTO.name;
                 // Número de cosecha (ID)
-                textBoxNumeroCosecha.Text = harvestDTO.id.ToString();
+                textBoxIdHarvest.Text = harvestDTO.id.ToString();
                 // Precio por kilo
-                textBoxPrecioPorKilo.Text = harvestDTO.pricePerKilo.ToString("C2");
+                textBoxPricePerKilo.Text = harvestDTO.pricePerKilo.ToString("C2");
                 // Fecha de inicio
-                textBoxFechaInicio.Text = harvestDTO.startDate.ToString("dd/MM/yyyy");
+                textBoxStartDate.Text = harvestDTO.startDate.ToString("dd/MM/yyyy");
             }
         }
 
         // 🔹 CONFIGURAR EL DATAGRIDVIEW CON EL ESTILO
         private void ConfigureDataGridView()
         {
-            dataGridView1.BorderStyle = BorderStyle.None;
-            dataGridView1.BackgroundColor = whiteColor;
-            dataGridView1.DefaultCellStyle.SelectionBackColor = Color.FromArgb(230, 240, 250);
-            dataGridView1.DefaultCellStyle.SelectionForeColor = Color.Black;
-            dataGridView1.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 248, 248);
-            dataGridView1.RowHeadersVisible = false;
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridView1.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dataGridView1.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dataGridView1.EnableHeadersVisualStyles = false;
-            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridView1.MultiSelect = true; // ✅ Permitir selección múltiple
-            dataGridView1.ReadOnly = true;
+            dgCollectors.BorderStyle = BorderStyle.None;
+            dgCollectors.BackgroundColor = whiteColor;
+            dgCollectors.DefaultCellStyle.SelectionBackColor = Color.FromArgb(230, 240, 250);
+            dgCollectors.DefaultCellStyle.SelectionForeColor = Color.Black;
+            dgCollectors.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 248, 248);
+            dgCollectors.RowHeadersVisible = false;
+            dgCollectors.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgCollectors.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgCollectors.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgCollectors.EnableHeadersVisualStyles = false;
+            dgCollectors.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgCollectors.MultiSelect = true; // Permitir selección múltiple
+            dgCollectors.ReadOnly = true;
 
             // Estilo de encabezados
-            dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = darkBlueColor;
-            dataGridView1.ColumnHeadersDefaultCellStyle.ForeColor = whiteColor;
-            dataGridView1.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
-            dataGridView1.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridView1.ColumnHeadersDefaultCellStyle.Padding = new Padding(10, 0, 0, 0);
-            dataGridView1.ColumnHeadersHeight = 40;
+            dgCollectors.ColumnHeadersDefaultCellStyle.BackColor = darkBlueColor;
+            dgCollectors.ColumnHeadersDefaultCellStyle.ForeColor = whiteColor;
+            dgCollectors.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
+            dgCollectors.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dgCollectors.ColumnHeadersDefaultCellStyle.Padding = new Padding(10, 0, 0, 0);
+            dgCollectors.ColumnHeadersHeight = 40;
 
             // Estilo de celdas
-            dataGridView1.DefaultCellStyle.Font = new Font("Segoe UI", 10);
-            dataGridView1.DefaultCellStyle.BackColor = whiteColor;
-            dataGridView1.DefaultCellStyle.ForeColor = Color.FromArgb(60, 60, 60);
-            dataGridView1.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridView1.DefaultCellStyle.Padding = new Padding(10, 5, 10, 5);
-            dataGridView1.RowTemplate.Height = 40;
+            dgCollectors.DefaultCellStyle.Font = new Font("Segoe UI", 10);
+            dgCollectors.DefaultCellStyle.BackColor = whiteColor;
+            dgCollectors.DefaultCellStyle.ForeColor = Color.FromArgb(60, 60, 60);
+            dgCollectors.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dgCollectors.DefaultCellStyle.Padding = new Padding(10, 5, 10, 5);
+            dgCollectors.RowTemplate.Height = 40;
         }
 
         // 🔹 CARGAR LOS RECOLECTORES EN EL DATAGRIDVIEW
@@ -105,8 +106,8 @@ namespace CAFEPAY.Views.ViewHarvests
                 listDTOCollector = CollectorMaper.ToDTOList(listCollector);
 
                 // 3️⃣ Configurar columnas manualmente
-                dataGridView1.AutoGenerateColumns = false;
-                dataGridView1.Columns.Clear();
+                dgCollectors.AutoGenerateColumns = false;
+                dgCollectors.Columns.Clear();
 
                 // 4️⃣ Agregar columnas
                 AddColumn("workerCode", "ID TRABAJADOR", 120);
@@ -133,13 +134,13 @@ namespace CAFEPAY.Views.ViewHarvests
                     FlatStyle = FlatStyle.Flat,
                     Width = 100
                 };
-                dataGridView1.Columns.Add(colStatus);
+                dgCollectors.Columns.Add(colStatus);
 
                 // 5️⃣ ASIGNAR LOS DATOS AL DATAGRIDVIEW ✅
-                dataGridView1.DataSource = listDTOCollector;
+                dgCollectors.DataSource = listDTOCollector;
 
                 // Limpiar selección inicial
-                dataGridView1.ClearSelection();
+                dgCollectors.ClearSelection();
             }
             catch (Exception ex)
             {
@@ -159,13 +160,13 @@ namespace CAFEPAY.Views.ViewHarvests
                 HeaderText = headerText,
                 Width = width
             };
-            dataGridView1.Columns.Add(column);
+            dgCollectors.Columns.Add(column);
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            // 🔹 VALIDAR QUE HAYA RECOLECTORES SELECCIONADOS
-            if (dataGridView1.SelectedRows.Count == 0)
+            // VALIDAR QUE HAYA RECOLECTORES SELECCIONADOS
+            if (dgCollectors.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Por favor, seleccione al menos un recolector para asociar.",
                               "Selección requerida",
@@ -174,7 +175,7 @@ namespace CAFEPAY.Views.ViewHarvests
                 return;
             }
 
-            // 🔹 VALIDAR QUE EXISTA LA INFORMACIÓN DE LA COSECHA
+            // VALIDAR QUE EXISTA LA INFORMACIÓN DE LA COSECHA
             if (harvestDTO == null)
             {
                 MessageBox.Show("No se ha cargado la información de la cosecha.",
@@ -186,101 +187,34 @@ namespace CAFEPAY.Views.ViewHarvests
 
             try
             {
-                // 🔹 OBTENER TODOS LOS RECOLECTORES SELECCIONADOS
-                List<CollectorDTO> selectedCollectors = new List<CollectorDTO>();
-                List<string> collectorNames = new List<string>();
+                // Recuperar el worker code de los recolectores seleccionados usando DataBoundItem
+                List<string> collectorWorkerCodes = new List<string>();
 
-                foreach (DataGridViewRow row in dataGridView1.SelectedRows)
+                foreach (DataGridViewRow row in dgCollectors.SelectedRows)
                 {
-                    if (row.Index >= 0 && row.Index < listDTOCollector.Count)
+                    // Obtener el CollectorDTO directamente del item enlazado
+                    if (row.DataBoundItem is CollectorDTO collector)
                     {
-                        var collector = listDTOCollector[row.Index];
-                        if (collector != null)
+                        if (!string.IsNullOrWhiteSpace(collector.workerCode))
                         {
-                            selectedCollectors.Add(collector);
-                            collectorNames.Add($"{collector.firstName} {collector.lastName}");
+                            collectorWorkerCodes.Add(collector.workerCode.Trim());
                         }
                     }
                 }
 
-                // 🔹 CONFIRMAR LA ASOCIACIÓN
-                string collectorsText = string.Join("\n", collectorNames);
-                DialogResult result = MessageBox.Show(
-                    $"¿Está seguro de asociar los siguientes recolectores a la cosecha #{harvestDTO.id}?\n\n" +
-                    $"{collectorsText}\n\n" +
-                    $"Total: {selectedCollectors.Count} recolector(es)",
-                    "Confirmar asociación",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question);
-
-                if (result == DialogResult.No)
-                    return;
-
-                // 🔹 ASOCIAR CADA RECOLECTOR A LA COSECHA
-                int successCount = 0;
-                int errorCount = 0;
-                List<string> errors = new List<string>();
-
-                foreach (var collector in selectedCollectors)
+                // Validar que se hayan recuperado códigos
+                if (collectorWorkerCodes.Count == 0)
                 {
-                    try
-                    {
-                        // 🔹 AQUÍ VA TU LÓGICA DE ASOCIACIÓN
-                        // Ejemplo con tu servicio (ajusta según tu arquitectura):
-                        // AppServices.HarvestCollectorServices.associate.execute(harvestDTO.id, collector.id);
-
-                        // 🔹 O si usas un objeto HarvestCollector:
-                        /*
-                        HarvestCollector harvestCollector = new HarvestCollector
-                        {
-                            harvestId = harvestDTO.id,
-                            collectorId = collector.id,
-                            // Otros campos necesarios...
-                        };
-                        AppServices.HarvestCollectorServices.save.execute(harvestCollector);
-                        */
-
-                        successCount++;
-                    }
-                    catch (Exception ex)
-                    {
-                        errorCount++;
-                        errors.Add($"- {collector.firstName} {collector.lastName}: {ex.Message}");
-                    }
-                }
-
-                // 🔹 MOSTRAR RESULTADO
-                if (errorCount == 0)
-                {
-                    MessageBox.Show(
-                        $"✅ {successCount} recolector(es) asociado(s) exitosamente a la cosecha #{harvestDTO.id}",
-                        "Asociación exitosa",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
-
-                    // Limpiar selección
-                    dataGridView1.ClearSelection();
-
-                    // Opcional: Cerrar el formulario y volver al anterior
-                    // this.Close();
-                }
-                else
-                {
-                    string errorMessage = $"Asociación completada con errores:\n\n" +
-                                        $"✅ Exitosos: {successCount}\n" +
-                                        $"❌ Errores: {errorCount}\n\n" +
-                                        $"Detalles de errores:\n" +
-                                        string.Join("\n", errors);
-
-                    MessageBox.Show(errorMessage,
-                                  "Asociación con errores",
+                    MessageBox.Show("No se pudieron obtener los códigos de los recolectores seleccionados.",
+                                  "Error de datos",
                                   MessageBoxButtons.OK,
                                   MessageBoxIcon.Warning);
+                    return;
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al asociar recolectores: {ex.Message}",
+                MessageBox.Show($"Error al procesar los recolectores: {ex.Message}",
                               "Error",
                               MessageBoxButtons.OK,
                               MessageBoxIcon.Error);
@@ -293,6 +227,16 @@ namespace CAFEPAY.Views.ViewHarvests
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+        }
+
+        private void textBoxNombreLote_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBoxNumeroCosecha_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

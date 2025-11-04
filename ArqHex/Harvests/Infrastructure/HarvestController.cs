@@ -21,11 +21,5 @@ namespace CAFEPAY.ArqHex.Harvests.Infrastucture
         {
             AppServices.HarvestServices.update.execute(_idHarvest, _idPlot, _startDate, _endDate, _pricePerKilo, _status);
         }
-        
-        // 🔹 Nuevo método para asociar recolector a cosecha
-        public long associateCollector(long _idHarvest, long _idCollector)
-        {
-            return AppServices.HarvestServices.associateCollector.execute(_idHarvest, _idCollector);
-        }
     }
 }

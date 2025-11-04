@@ -153,58 +153,5 @@ namespace CAFEPAY.ArqHex.Harvests.Infrastructure
                 }
             }
         }
-
-        public long associateCollector(long idHarvest, long idCollector)
-        {
-            const string sql = @"
-            INSERT INTO HARVEST_COLLECTOR (IDHARVEST, IDCOLLECTOR)
-            VALUES (:p_idHarvest, :p_idCollector)
-            RETURNING ID INTO :p_new_id";
-
-            using (var conn = new OracleConnection(connectionString))
-            using (var cmd = new OracleCommand(sql, conn))
-            {
-                cmd.BindByName = true;
-                cmd.Parameters.Add("p_idHarvest", OracleDbType.Int64).Value = idHarvest;
-                cmd.Parameters.Add("p_idCollector", OracleDbType.Int64).Value = idCollector;
-
-                var outParam = new OracleParameter("p_new_id", OracleDbType.Int64)
-                {
-                    Direction = ParameterDirection.Output
-                };
-                cmd.Parameters.Add(outParam);
-
-                conn.Open();
-
-                try
-                {
-                    cmd.ExecuteNonQuery();
-                }
-                catch (OracleException ex) when (ex.Number == 1) // ORA-00001 unique constraint
-                {
-                    throw new InvalidOperationException("El recolector ya está asociado a esta cosecha.", ex);
-                }
-                catch (OracleException ex) when (ex.Number == 2291) // ORA-02291 FK violation
-                {
-                    throw new InvalidOperationException("La cosecha o el recolector no existen.", ex);
-                }
-                catch (OracleException ex) when (ex.Number == 20052) // RAISE_APPLICATION_ERROR personalizado
-                {
-                    throw new InvalidOperationException("No se puede asociar un recolector a una cosecha finalizada.", ex);
-                }
-                catch (OracleException ex) when (ex.Number == 20053) // RAISE_APPLICATION_ERROR personalizado
-                {
-                    throw new InvalidOperationException("La cosecha no está activa.", ex);
-                }
-
-                long assignedId = -1;
-                if (outParam.Value != null && outParam.Value != DBNull.Value)
-                {
-                    assignedId = long.Parse(outParam.Value.ToString());
-                }
-
-                return assignedId;
-            }
-        }
     }
 }
