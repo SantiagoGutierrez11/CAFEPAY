@@ -1,15 +1,16 @@
-﻿using System;
+﻿using CAFEPAY.ArqHex.Collectors.domain;
+using CAFEPAY.ArqHex.Collects.domain;
+using CAFEPAY.ArqHex.Harvests.Domain;
+using CAFEPAY.ArqHex.Plots.Domain;
+using CAFEPAY.ArqHex.Share;
+using CAFEPAY.ArqHex.Share.DTO;
+using CAFEPAY.ArqHex.Share.Serializers;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Forms;
-using CAFEPAY.ArqHex.Plots.Domain;
-using CAFEPAY.ArqHex.Harvests.Domain;
-using CAFEPAY.ArqHex.Share.DTO;
-using CAFEPAY.ArqHex.Share;
-using CAFEPAY.ArqHex.Collectors.domain;
-using CAFEPAY.ArqHex.Share.Serializers;
 using System.Linq;
-using CAFEPAY.ArqHex.Collects.domain;
+using System.Text;
+using System.Windows.Forms;
 
 namespace CAFEPAY.Views.ViewHarvests
 {
@@ -101,7 +102,7 @@ namespace CAFEPAY.Views.ViewHarvests
             try
             {
                 // 1️⃣ Obtener los recolectores desde el servicio
-                listCollector = AppServices.CollectorServices.query.execute();
+                listCollector = AppServices.CollectorServices.queryByStatus.execute(1); // 1 = Activo
 
                 // 2️⃣ Convertir a DTOs
                 listDTOCollector = CollectorMaper.ToDTOList(listCollector);
@@ -203,49 +204,140 @@ namespace CAFEPAY.Views.ViewHarvests
                                 collectId = null,
                                 plotId = plotDTO.idPlot,
                                 harvestId = harvestDTO.id,
-                                paymentId = null,
                                 collectorWorkerCode = collector.workerCode,
-                                collectedKilos = 1,
+                                collectedKilos = 0,
                                 collectDate = DateTime.Today,
                                 amountToPaid = 0,
                                 isCountable = 0,
-                                status =0, 
+                                status = 0,
                                 statusText = "ZERO"
                             };
-                        collectsZero.Add(collect);
+                            collectsZero.Add(collect);
                         }
                     }
-                   
-                }
-                try
-                {
-                    foreach (CollectDTO collectFor in collectsZero)
-                    {
-                        AppServices.CollectServices.save.execute(collectFor.collectId, collectFor.collectorWorkerCode, collectFor.collectDate, collectFor.collectedKilos, collectFor.harvestId, collectFor.paymentId, collectFor.status, collectFor.amountToPaid, collectFor.plotId, collectFor.isCountable);
-                        MessageBox.Show($"Recolector {collectFor.collectorWorkerCode} asociado exitosamente a la cosecha.",
-                                      "Éxito",
-                                      MessageBoxButtons.OK,
-                                      MessageBoxIcon.Information);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error al asociar el recolector : {ex.Message}",
-                                  "Error",
-                                  MessageBoxButtons.OK,
-                                  MessageBoxIcon.Error);
                 }
 
+                // VALIDAR QUE SE HAYAN ENCONTRADO RECOLECTORES VÁLIDOS
+                if (collectsZero.Count == 0)
+                {
+                    MessageBox.Show("No se encontraron recolectores válidos para asociar.",
+                                  "Advertencia",
+                                  MessageBoxButtons.OK,
+                                  MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Listas para clasificar los resultados
+                List<string> exitosos = new List<string>();
+                List<string> fallidos = new List<string>();
+
+                // PROCESAR TODAS LAS ASOCIACIONES
+                foreach (CollectDTO collectFor in collectsZero)
+                {
+                    try
+                    {
+                        AppServices.CollectServices.save.execute(
+                            collectFor.collectId,
+                            collectFor.collectorWorkerCode,
+                            collectFor.collectDate,
+                            collectFor.collectedKilos,
+                            collectFor.harvestId,
+                            collectFor.status,
+                            collectFor.amountToPaid,
+                            collectFor.plotId,
+                            collectFor.isCountable
+                        );
+
+                        exitosos.Add($"✓ Recolector {collectFor.collectorWorkerCode} se asoció exitosamente");
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        // Capturar el mensaje específico del error
+                        string errorMsg = ex.Message;
+
+                        // Identificar si es un error de duplicado ZERO
+                        if (errorMsg.Contains("Ya existe un registro ZERO") ||
+                            errorMsg.Contains("ya está asociado a esta cosecha"))
+                        {
+                            fallidos.Add($"✗ Recolector {collectFor.collectorWorkerCode} no se pudo asociar porque ya existe una asociación");
+                        }
+                        else
+                        {
+                            fallidos.Add($"✗ Recolector {collectFor.collectorWorkerCode} falló: {errorMsg}");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        fallidos.Add($"✗ Recolector {collectFor.collectorWorkerCode} falló: {ex.Message}");
+                    }
+                }
+
+                // CONSTRUIR MENSAJE DETALLADO CON RESULTADOS INDIVIDUALES
+                StringBuilder mensaje = new StringBuilder();
+                mensaje.AppendLine("Resultado de la asociación de recolectores:");
+                mensaje.AppendLine();
+
+                // Agregar exitosos
+                if (exitosos.Count > 0)
+                {
+                    mensaje.AppendLine("EXITOSOS:");
+                    foreach (string msg in exitosos)
+                    {
+                        mensaje.AppendLine(msg);
+                    }
+                    mensaje.AppendLine();
+                }
+
+                // Agregar fallidos
+                if (fallidos.Count > 0)
+                {
+                    mensaje.AppendLine("FALLIDOS:");
+                    foreach (string msg in fallidos)
+                    {
+                        mensaje.AppendLine(msg);
+                    }
+                }
+
+                // DETERMINAR ÍCONO Y TÍTULO SEGÚN RESULTADO
+                MessageBoxIcon icono;
+                string titulo;
+
+                if (fallidos.Count == 0)
+                {
+                    // Todos exitosos
+                    icono = MessageBoxIcon.Information;
+                    titulo = "Éxito";
+                }
+                else if (exitosos.Count == 0)
+                {
+                    // Todos fallaron
+                    icono = MessageBoxIcon.Error;
+                    titulo = "Error";
+                }
+                else
+                {
+                    // Resultado mixto
+                    icono = MessageBoxIcon.Warning;
+                    titulo = "Resultado Parcial";
+                }
+
+                MessageBox.Show(
+                    mensaje.ToString(),
+                    titulo,
+                    MessageBoxButtons.OK,
+                    icono
+                );
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al procesar los recolectores: {ex.Message}",
-                              "Error",
-                              MessageBoxButtons.OK,
-                              MessageBoxIcon.Error);
+                MessageBox.Show(
+                    $"Error al procesar los recolectores: {ex.Message}",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
             }
         }
-
         private void label1_Click(object sender, EventArgs e)
         {
         }

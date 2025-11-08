@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArqHex\Collectors\application\CollectorQueryAll\CollectorQueryAll.cs" />
+    <Compile Include="ArqHex\Collectors\application\CollectorQueryByStatus\CollectorQueryByStatus.cs" />
     <Compile Include="ArqHex\Collectors\application\CollectorSave\CollectorSave.cs" />
     <Compile Include="ArqHex\Collectors\application\CollectUpdate\CollectorUpdate.cs" />
     <Compile Include="ArqHex\Collectors\domain\Collector.cs" />
@@ -112,7 +113,6 @@
     <Compile Include="ArqHex\Collects\domain\CollectAmountToPay.cs" />
     <Compile Include="ArqHex\Collects\domain\CollectRepository.cs" />
     <Compile Include="ArqHex\Collects\domain\CollectStatus.cs" />
-    <Compile Include="ArqHex\Collects\domain\CollectIdPayment.cs" />
     <Compile Include="ArqHex\Collects\infrastructure\CollectController.cs" />
     <Compile Include="ArqHex\Collects\infrastructure\OracleCollectRepository.cs" />
     <Compile Include="ArqHex\Harvests\Application\HarvestUpdate\HarvestUpdate.cs" />

@@ -12,7 +12,6 @@ namespace CAFEPAY.ArqHex.Share.DTO
         public string collectorWorkerCode { get; set; }
         public long plotId { get; set; }
         public long? harvestId { get; set; }
-        public long? paymentId { get; set; }
         public DateTime collectDate { get; set; }
         public decimal collectedKilos { get; set; }
         public long amountToPaid { get; set; }  

@@ -19,7 +19,6 @@ namespace CAFEPAY.ArqHex.Share.Serializers
                 collectId = c.id.collectId,
                 collectorWorkerCode = c.collectorWorkerCode.collectorWorkerCode,
                 plotId = c.plotId.collectIdPlot,
-                paymentId = c.paymentId.collectIdPayment,
                 harvestId = c.harvestId.collectIdHarvest,
                 collectDate = c.date.collectDate,
                 collectedKilos = c.kilos.collectedKilos,

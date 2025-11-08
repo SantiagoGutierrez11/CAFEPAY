@@ -29,12 +29,13 @@ namespace CAFEPAY.Views.ViewCollector
         private Color blackColor = Color.Black;
         private Color darkGrayColor = Color.FromArgb(64, 64, 64); // Gris oscuro para el botón Regresar
 
-        public ViewCollectorModifyId(CollectorDTO newCollector, CollectorDTO oldCollector, System.Windows.Forms.Form _viewCollector, Form viewMain)
+        public ViewCollectorModifyId(CollectorDTO newCollector, CollectorDTO oldCollector, System.Windows.Forms.Form _viewCollector, Form _viewMain)
         {
             InitializeComponent();
             this.oldCollector = oldCollector;
             this.newCollector = newCollector;
             this.viewCollector = _viewCollector;
+            this.viewMain = _viewMain;
             ApplyVisualDesign();
             LoadData();
 

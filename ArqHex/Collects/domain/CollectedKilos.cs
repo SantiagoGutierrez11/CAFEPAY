@@ -24,12 +24,6 @@ namespace CAFEPAY.ArqHex.Collects.domain
                 throw new ArgumentException("Los kilos recolectados no pueden ser negativos");
             }
 
-            // Validar que no sea cero
-            if (kilosValue == 0)
-            {
-                throw new ArgumentException("Los kilos recolectados deben ser mayor a cero");
-            }
-
             // Validar que sea un valor razonable (por ejemplo, máximo 10,000 kg por recolección)
             if (kilosValue > 10000)
             {

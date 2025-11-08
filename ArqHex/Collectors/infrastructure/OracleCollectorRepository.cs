@@ -135,5 +135,33 @@ UPDATE ADMINCAFEPAY.COLLECTOR
 
             return collectors;
         }
+        public List<Collector> queryByStatus(int status)
+        {
+            var collectors = new List<Collector>();
+            using (var connection = new OracleConnection(connectionString))
+            {
+                connection.Open();
+                const string query = "SELECT WORKER_CODE, ID, FIRST_NAME, LAST_NAME, PHONE, STATUS_ID FROM ADMINCAFEPAY.COLLECTOR WHERE STATUS_ID = :p_status_id ORDER BY WORKER_CODE";
+                using (var command = new OracleCommand(query, connection))
+                {
+                    command.Parameters.Add(new OracleParameter("p_status_id", OracleDbType.Int32, status, ParameterDirection.Input));
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var workerCode = new CollectorWorkerCode(reader.GetString(0));
+                            var id = new CollectorId(reader.GetInt64(1));
+                            var firstName = new CollectorFirstName(reader.GetString(2));
+                            var lastName = new CollectorLastName(reader.GetString(3));
+                            var phone = new CollectorPhone(reader.GetString(4));
+                            var statusObj = new CollectorStatus(reader.GetInt32(5));
+                            var collector = new Collector(workerCode, id, firstName, lastName, phone, statusObj);
+                            collectors.Add(collector);
+                        }
+                    }
+                }
+            }
+            return collectors;
+        }
     }
 }
