@@ -6,20 +6,20 @@ using System.Threading.Tasks;
 
 namespace CAFEPAY.ArqHex.Collects.domain
 {
-    public class CollectPaid
+    public class CollectorAmountToPaid
     {
-        public long collectPaid { get; }
+        public long collectAmountToPaidValue { get; }
 
-        public CollectPaid(long _collectPaidValue)
+        public CollectorAmountToPaid(long _collectAmountToPaidValueValue)
         {
-            ValidateFormat(_collectPaidValue);
-            this.collectPaid = _collectPaidValue;
+            ValidateFormat(_collectAmountToPaidValueValue);
+            this.collectAmountToPaidValue = _collectAmountToPaidValueValue;
         }
 
-        private void ValidateFormat(long paidValue)
+        private void ValidateFormat(long amountToPaidValue)
         {
             // Validar que no sea negativo
-            if (paidValue < 0)
+            if (amountToPaidValue < 0)
             {
                 throw new ArgumentException("El monto pagado no puede ser negativo");
             }
@@ -28,33 +28,33 @@ namespace CAFEPAY.ArqHex.Collects.domain
         // Sobrescribir métodos para comparación
         public override bool Equals(object obj)
         {
-            if (obj is CollectPaid other)
+            if (obj is CollectorAmountToPaid other)
             {
-                return collectPaid == other.collectPaid;
+                return collectAmountToPaidValue == other.collectAmountToPaidValue;
             }
             return false;
         }
 
         public override int GetHashCode()
         {
-            return collectPaid.GetHashCode();
+            return collectAmountToPaidValue.GetHashCode();
         }
 
         public override string ToString()
         {
-            return collectPaid.ToString();
+            return collectAmountToPaidValue.ToString();
         }
 
         // Método para acceder al valor
         public long GetValue()
         {
-            return collectPaid;
+            return collectAmountToPaidValue;
         }
 
         // Método para obtener como string
         public string GetValueAsString()
         {
-            return collectPaid.ToString();
+            return collectAmountToPaidValue.ToString();
         }
     }
 }

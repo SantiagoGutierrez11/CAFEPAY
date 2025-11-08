@@ -31,7 +31,6 @@
             this.btnCollectors = new System.Windows.Forms.Button();
             this.btnHarvests = new System.Windows.Forms.Button();
             this.btnCollects = new System.Windows.Forms.Button();
-            this.btnPayments = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnCollectors
@@ -67,22 +66,11 @@
             this.btnCollects.UseVisualStyleBackColor = true;
             this.btnCollects.Click += new System.EventHandler(this.btnCollects_Click);
             // 
-            // btnPayments
-            // 
-            this.btnPayments.Location = new System.Drawing.Point(796, 193);
-            this.btnPayments.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.btnPayments.Name = "btnPayments";
-            this.btnPayments.Size = new System.Drawing.Size(237, 76);
-            this.btnPayments.TabIndex = 3;
-            this.btnPayments.Text = "Pagos";
-            this.btnPayments.UseVisualStyleBackColor = true;
-            // 
             // ViewMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1067, 554);
-            this.Controls.Add(this.btnPayments);
+            this.ClientSize = new System.Drawing.Size(640, 450);
             this.Controls.Add(this.btnCollects);
             this.Controls.Add(this.btnHarvests);
             this.Controls.Add(this.btnCollectors);
@@ -98,6 +86,5 @@
         private System.Windows.Forms.Button btnCollectors;
         private System.Windows.Forms.Button btnHarvests;
         private System.Windows.Forms.Button btnCollects;
-        private System.Windows.Forms.Button btnPayments;
     }
 }

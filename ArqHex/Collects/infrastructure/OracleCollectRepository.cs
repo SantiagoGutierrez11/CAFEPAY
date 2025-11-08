@@ -23,35 +23,146 @@ namespace CAFEPAY.ArqHex.Collects.infrastructure
             if (collect == null) throw new ArgumentNullException(nameof(collect));
 
             const string sql = @"
-        INSERT INTO ADMINCAFEPAY.COLLECT (COLLECT_ID, COLLECTOR_ID, COLLECT_DATE, COLLECTED_KILOS, HARVEST_ID, PAYMENT_ID, STATUS, PAID)
-        VALUES (:p_collect_id, :p_collector_id, :p_collect_date, :p_collected_kilos, :p_harvest_id, :p_payment_id, :p_status_id, :p_paid)";
+        INSERT INTO COLLECT (
+            WORKER_CODE, 
+            IDPLOT, 
+            IDHARVEST, 
+            IDCOLLECT, 
+            COLLECTDATE, 
+            KILOS, 
+            AMOUNT_TO_PAY, 
+            STATUS_ID, 
+            IS_COUNTABLE
+        )
+        VALUES (
+            :p_workerCode, 
+            :p_idPlot, 
+            :p_idHarvest, 
+            :p_idCollect, 
+            :p_collectDate, 
+            :p_Kilos, 
+            :p_amountToPaid, 
+            :p_statusId, 
+            :p_isCountable
+        )";
 
             using (var connection = new OracleConnection(connectionString))
             using (var cmd = new OracleCommand(sql, connection))
             {
                 cmd.BindByName = true;
 
-                cmd.Parameters.Add("p_collect_id", OracleDbType.Int64).Value = collect.id.collectId;
-                cmd.Parameters.Add("p_collector_id", OracleDbType.Int64).Value = collect.collectorId.collectIdCollector;
-                cmd.Parameters.Add("p_collect_date", OracleDbType.Date).Value = collect.date.collectDate;
-                cmd.Parameters.Add("p_collected_kilos", OracleDbType.Decimal).Value = collect.kilos.collectedKilos;
-                cmd.Parameters.Add("p_harvest_id", OracleDbType.Int64).Value = collect.tHarvestId.collectIdHarvest;
-                cmd.Parameters.Add("p_payment_id", OracleDbType.Int64).Value = collect.paymentId.collectIdPayment;
-                cmd.Parameters.Add("p_status_id", OracleDbType.Int32).Value = collect.status.collectStatus;
-                cmd.Parameters.Add("p_paid", OracleDbType.Int64).Value = collect.paid.collectPaid;
+                cmd.Parameters.Add("p_workerCode", OracleDbType.Varchar2).Value =
+                    collect.collectorWorkerCode.collectorWorkerCode;
+                cmd.Parameters.Add("p_idPlot", OracleDbType.Int64).Value =
+                    collect.plotId.collectIdPlot;
+                cmd.Parameters.Add("p_idHarvest", OracleDbType.Int64).Value =
+                    collect.harvestId.collectIdHarvest;
+                cmd.Parameters.Add("p_idCollect", OracleDbType.Int64).Value =
+                    collect.id?.collectId ?? (object)DBNull.Value;
+                cmd.Parameters.Add("p_collectDate", OracleDbType.Date).Value =
+                    collect.date.collectDate;
+                cmd.Parameters.Add("p_Kilos", OracleDbType.Decimal).Value =
+                    collect.kilos.collectedKilos;
+                cmd.Parameters.Add("p_amountToPaid", OracleDbType.Decimal).Value =
+                    collect.amountToPaid.collectAmountToPaidValue;
+                cmd.Parameters.Add("p_statusId", OracleDbType.Int32).Value =
+                    collect.status.collectStatus;
+                cmd.Parameters.Add("p_isCountable", OracleDbType.Int32).Value =
+                    collect.isCountable.isCountableValue;
 
                 connection.Open();
+
                 try
                 {
                     cmd.ExecuteNonQuery();
                 }
-                catch (OracleException ex) when (ex.Number == 1) // ORA-00001 unique constraint violated
+                catch (OracleException ex)
                 {
-                    throw new InvalidOperationException("Ya existe una recolección con ese ID.", ex);
+                    // Mapear errores específicos de Oracle
+                    switch (ex.Number)
+                    {
+                        case 1: // ORA-00001: unique constraint violated
+                            throw new InvalidOperationException(
+                                $"Ya existe un registro ZERO para esta asociación. " +
+                                $"WORKER_CODE={collect.collectorWorkerCode.collectorWorkerCode}, " +
+                                $"IDPLOT={collect.plotId.collectIdPlot}, " +
+                                $"IDHARVEST={collect.harvestId.collectIdHarvest}",
+                                ex);
+
+                        case 2290: // ORA-02290: check constraint violated
+                                   // Determinar qué constraint falló
+                            if (ex.Message.Contains("COLLECT_CHK_ZERO_KILOS"))
+                                throw new InvalidOperationException(
+                                    "Error: Los registros ZERO deben tener KILOS = 0", ex);
+                            else if (ex.Message.Contains("COLLECT_CHK_ZERO_AMOUNT"))
+                                throw new InvalidOperationException(
+                                    "Error: Los registros ZERO deben tener AMOUNT_TO_PAY = 0", ex);
+                            else if (ex.Message.Contains("COLLECT_CHK_ZERO_COUNTABLE"))
+                                throw new InvalidOperationException(
+                                    "Error: Los registros ZERO deben tener IS_COUNTABLE = 0", ex);
+                            else if (ex.Message.Contains("COLLECT_CHK_KILOS"))
+                                throw new InvalidOperationException(
+                                    "Error: Los kilos no pueden ser negativos", ex);
+                            else if (ex.Message.Contains("COLLECT_CHK_AMOUNT"))
+                                throw new InvalidOperationException(
+                                    "Error: El monto no puede ser negativo", ex);
+                            else if (ex.Message.Contains("COLLECT_CHK_STATUS"))
+                                throw new InvalidOperationException(
+                                    "Error: El estado debe ser 0 (ZERO), 1 (REGISTRADO) o 2 (PAGADO)", ex);
+                            else
+                                throw new InvalidOperationException(
+                                    $"Error de validación: {ex.Message}", ex);
+
+                        case 2291: // ORA-02291: integrity constraint (parent key not found)
+                            if (ex.Message.Contains("COLLECT_FK_COLLECTOR"))
+                                throw new InvalidOperationException(
+                                    $"El recolector '{collect.collectorWorkerCode.collectorWorkerCode}' no existe", ex);
+                            else if (ex.Message.Contains("COLLECT_FK_HARVEST"))
+                                throw new InvalidOperationException(
+                                    $"La cosecha (IDPLOT={collect.plotId.collectIdPlot}, " +
+                                    $"IDHARVEST={collect.harvestId.collectIdHarvest}) no existe", ex);
+                            else
+                                throw new InvalidOperationException(
+                                    "Error: No se encontró un registro relacionado requerido", ex);
+
+                        case 20052: // RAISE_APPLICATION_ERROR personalizado (validación ZERO)
+                            throw new InvalidOperationException(
+                                $"Ya existe un registro ZERO para esta asociación. " +
+                                $"WORKER_CODE={collect.collectorWorkerCode.collectorWorkerCode}, " +
+                                $"IDPLOT={collect.plotId.collectIdPlot}, " +
+                                $"IDHARVEST={collect.harvestId.collectIdHarvest}",
+                                ex);
+
+                        case 20053: // Cosecha no encontrada
+                            throw new InvalidOperationException(
+                                $"No se encontró información de la cosecha " +
+                                $"(IDPLOT={collect.plotId.collectIdPlot}, " +
+                                $"IDHARVEST={collect.harvestId.collectIdHarvest})",
+                                ex);
+
+                        case 20054: // No se puede marcar como PAGADO sin detalle
+                            throw new InvalidOperationException(
+                                "No se puede marcar como PAGADO sin detalle de pago asociado",
+                                ex);
+
+                        case 20055: // No se puede cambiar a ZERO con pago asociado
+                            throw new InvalidOperationException(
+                                "No se puede cambiar a ZERO una recolecta con pago asociado",
+                                ex);
+
+                        case 20056: // Recolecta no encontrada en PAYMENTDETAIL
+                            throw new InvalidOperationException(
+                                $"No se encontró la recolecta especificada",
+                                ex);
+
+                        default:
+                            throw new InvalidOperationException(
+                                $"Error al guardar la recolección. Oracle Error {ex.Number}: {ex.Message}",
+                                ex);
+                    }
                 }
             }
         }
-
         public void update(Collect collect, long oldId)
         {
             if (collect == null) throw new ArgumentNullException(nameof(collect));
@@ -63,9 +174,8 @@ UPDATE ADMINCAFEPAY.COLLECT
        COLLECT_DATE = :p_collect_date,
        COLLECTED_KILOS = :p_collected_kilos,
        HARVEST_ID = :p_harvest_id,
-       PAYMENT_ID = :p_payment_id,
        STATUS = :p_status_id,
-       PAID = :p_paid,
+       PAID = :p_amountToPaid,
        COLLECT_ID = :p_new_collect_id
  WHERE COLLECT_ID = :p_old_collect_id";
 
@@ -74,13 +184,12 @@ UPDATE ADMINCAFEPAY.COLLECT
             {
                 cmd.BindByName = true;
 
-                cmd.Parameters.Add("p_collector_id", OracleDbType.Int64).Value = collect.collectorId.collectIdCollector;
+                cmd.Parameters.Add("p_collector_id", OracleDbType.Int64).Value = collect.collectorWorkerCode.collectorWorkerCode;
                 cmd.Parameters.Add("p_collect_date", OracleDbType.Date).Value = collect.date.collectDate;
                 cmd.Parameters.Add("p_collected_kilos", OracleDbType.Decimal).Value = collect.kilos.collectedKilos;
-                cmd.Parameters.Add("p_harvest_id", OracleDbType.Int64).Value = collect.tHarvestId.collectIdHarvest;
-                cmd.Parameters.Add("p_payment_id", OracleDbType.Int64).Value = collect.paymentId.collectIdPayment;
+                cmd.Parameters.Add("p_harvest_id", OracleDbType.Int64).Value = collect.harvestId.collectIdHarvest;
                 cmd.Parameters.Add("p_status_id", OracleDbType.Int32).Value = collect.status.collectStatus;
-                cmd.Parameters.Add("p_paid", OracleDbType.Int64).Value = collect.paid.collectPaid;
+                cmd.Parameters.Add("p_amountToPaid", OracleDbType.Int64).Value = collect.amountToPaid.collectAmountToPaidValue;
                 cmd.Parameters.Add("p_new_collect_id", OracleDbType.Int64).Value = collect.id.collectId;
                 cmd.Parameters.Add("p_old_collect_id", OracleDbType.Int64).Value = oldId;
 
@@ -107,7 +216,7 @@ UPDATE ADMINCAFEPAY.COLLECT
             using (var connection = new OracleConnection(connectionString))
             {
                 connection.Open();
-                const string query = "SELECT COLLECT_ID, COLLECTOR_ID, COLLECT_DATE, COLLECTED_KILOS, HARVEST_ID, PAYMENT_ID, STATUS, PAID FROM ADMINCAFEPAY.COLLECT ORDER BY COLLECT_ID";
+                const string query = "SELECT COLLECT_ID, COLLECTOR_ID, COLLECT_DATE, COLLECTED_KILOS, HARVEST_ID, STATUS, PAID FROM ADMINCAFEPAY.COLLECT ORDER BY COLLECT_ID";
 
                 using (var command = new OracleCommand(query, connection))
                 using (var reader = command.ExecuteReader())
@@ -115,19 +224,18 @@ UPDATE ADMINCAFEPAY.COLLECT
                     while (reader.Read())
                     {
                         var collectId = new CollectId(reader.GetInt64(0));
-                        var collectCollectorId = new CollectIdCollector(reader.GetInt64(1));
+                        var collectCollectorId = new CollectWorkerCode(reader.GetString(0));
                         var collectDate = new CollectDate(reader.GetDateTime(2));
                         var collectedKilos = new CollectedKilos(reader.GetDecimal(3));
                         var collectIdHarvest = new CollectIdHarvest(reader.GetInt64(4));
-                        var collectIdPayment = new CollectIdPayment(reader.GetInt64(5));
                         var collectStatus = new CollectStatus(reader.GetInt32(6));
-                        var collectPaid = new CollectPaid(reader.GetInt64(7));
-                        var collectIsContable = new CollectIsContable(reader.GetInt32(8));
+                        var collectAmountToPaidValue = new CollectorAmountToPaid(reader.GetInt64(7));
+                        var collectIscountable = new CollectIsCountable(reader.GetInt32(8));
                         var collectIdPlot = new CollectIdPlot(reader.GetInt64(9));
 
-                        var collect = new Collect(collectId, collectCollectorId, collectIdPayment,
+                        var collect = new Collect(collectId, collectCollectorId,
                                                   collectIdHarvest, collectDate, collectedKilos,
-                                                  collectStatus, collectPaid, collectIdPlot,collectIsContable );
+                                                  collectStatus, collectAmountToPaidValue, collectIdPlot,collectIscountable );
                         collects.Add(collect);
                     }
                 }

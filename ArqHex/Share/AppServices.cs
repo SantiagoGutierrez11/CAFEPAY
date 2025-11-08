@@ -1,4 +1,5 @@
 ﻿using CAFEPAY.ArqHex.Collectors.application.CollectorQueryAll;
+using CAFEPAY.ArqHex.Collectors.application.CollectorQueryByStatus;
 using CAFEPAY.ArqHex.Collectors.application.CollectorSave;
 using CAFEPAY.ArqHex.Collectors.application.CollectorUpdate;
 using CAFEPAY.ArqHex.Collectors.domain;
@@ -33,13 +34,12 @@ namespace CAFEPAY.ArqHex.Share
         private static readonly PlotRepository plotRepository = new OraclePlotRepository(connectionstring);
         private static readonly CollectRepository collectRepository = new OracleCollectRepository(connectionstring);
 
-        public static object HarvestQueryAll { get; internal set; }
-
         public static class CollectorServices
         {
             public static CollectorUpdate update = new CollectorUpdate(collectorRepository);
             public static CollectorSave save = new CollectorSave(collectorRepository);
             public static CollectorQueryAll query = new CollectorQueryAll(collectorRepository);
+            public static CollectorQueryByStatus queryByStatus= new CollectorQueryByStatus(collectorRepository);
         }
 
         public static class HarvestServices

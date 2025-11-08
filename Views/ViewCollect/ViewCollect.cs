@@ -1,23 +1,37 @@
-﻿using System;
+﻿using CAFEPAY.ArqHex.Harvests.Domain;
+using CAFEPAY.ArqHex.Plots.Domain;
+using CAFEPAY.ArqHex.Share;
+using CAFEPAY.ArqHex.Share.DTO;
+using CAFEPAY.ArqHex.Share.Serializers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using CAFEPAY.ArqHex.Collectors.domain;
-using CAFEPAY.ArqHex.Harvests.Domain;
-using CAFEPAY.ArqHex.Share.DTO;
-using CAFEPAY.ArqHex.Share.Serializers;
-using CAFEPAY.ArqHex.Share;
+using static CAFEPAY.ArqHex.Share.AppServices;
 
 namespace CAFEPAY.Views.ViewCollect
 {
     public partial class ViewCollect : Form
     {
-        private List<Collector> listCollector;
-        private List<CollectorDTO> listDTOCollector;
+        private List<Harvest> harvests;
+        private List<HarvestDTO> harvestDTO;
+        private Plot plot;
+
 
         public ViewCollect()
         {
             InitializeComponent();
+        }
+        public void loadHarvestComboBox()
+        {
+            harvests = AppServices.HarvestServices.query.execute();
+            harvestDTO = HarvestMaper.ToDTOList(harvests); 
+            foreach (var harvest in harvestDTO)
+            {
+                Console.WriteLine("Harvest ID: " + harvest.id + ", Plot Name: " + harvest.plotName);
+            }
+            cmbHarvest.DisplayMember = "plotName";
+            cmbHarvest.ValueMember = "id" + "id lote";
         }
 
         private void ViewCollect_Load(object sender, EventArgs e)
@@ -36,39 +50,12 @@ namespace CAFEPAY.Views.ViewCollect
                 dgCollectors.AutoGenerateColumns = false;
                 dgCollectors.Columns.Clear();
 
-                AddColumn("workerCode", "ID TRABAJADOR");
-                AddColumn("id", "CÉDULA");
-                AddColumn("firstName", "NOMBRES");
-                AddColumn("lastName", "APELLIDOS");
-                AddColumn("phone", "TELÉFONO");
-
-                var statusItems = new[]
-                {
-                    new { Value = 1, Text = "Activo" },
-                    new { Value = 2, Text = "Inactivo" }
-                };
-
-                var colStatus = new DataGridViewComboBoxColumn
-                {
-                    DataPropertyName = "status",
-                    HeaderText = "ESTADO",
-                    DataSource = statusItems,
-                    DisplayMember = "Text",
-                    ValueMember = "Value",
-                    DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing
-                };
-                dgCollectors.Columns.Add(colStatus);
-
-                dgCollectors.DataSource = listDTOCollector;
-                dgCollectors.ClearSelection();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error al cargar los recolectores: {ex.Message}",
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-            }
+        private void button1_Click(object sender, EventArgs e)
+        {
+            ViewCollectDetail viewCollectDetail = new ViewCollectDetail();
+            viewCollectDetail.Owner = this;
+            viewCollectDetail.Show();
+            this.Hide();
         }
 
         // MÉTODO AUXILIAR PARA AGREGAR COLUMNAS AL DATAGRIDVIEW
@@ -91,8 +78,12 @@ namespace CAFEPAY.Views.ViewCollect
         // Botón "Eliminar" (sin lógica aún)
         private void button2_Click(object sender, EventArgs e)
         {
-            // Vacío por ahora
+            this.Owner.Show();
+            this.Close();
         }
+
+        private void cmbHarvest_SelectedIndexChanged(object sender, EventArgs e)
+        {
 
         private void groupBox1_Enter(object sender, EventArgs e)
         {

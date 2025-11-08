@@ -8,7 +8,7 @@ namespace CAFEPAY.ArqHex.Collects.domain
 {
     public class CollectIdPlot
     {
-        private long collectIdPlot { get; }
+        public long collectIdPlot { get; }
         public CollectIdPlot(long _collectIdPlotValue)
         {
             ValidateFormat(_collectIdPlotValue);
