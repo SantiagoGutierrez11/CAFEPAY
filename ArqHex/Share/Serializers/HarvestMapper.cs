@@ -23,7 +23,9 @@ namespace CAFEPAY.ArqHex.Share.Serializers
                 status = h.status.statusValue,
                 statusText = h.status.statusValue == 1 ? "En Proceso" :
                              h.status.statusValue == 2 ? "Finalizado" :
-                             "Desconocido"
+                             "Desconocido",
+                plotName = AppServices.PlotServices.queryById.execute(h.idPlot.idPlotValue).name.plotNameValue
+
             }).ToList();
         }
     }

@@ -205,7 +205,7 @@ namespace CAFEPAY.Views.ViewHarvests
                                 harvestId = harvestDTO.id,
                                 paymentId = null,
                                 collectorWorkerCode = collector.workerCode,
-                                collectedKilos = 0,
+                                collectedKilos = 1,
                                 collectDate = DateTime.Today,
                                 amountToPaid = 0,
                                 isCountable = 0,
@@ -215,6 +215,25 @@ namespace CAFEPAY.Views.ViewHarvests
                         collectsZero.Add(collect);
                         }
                     }
+                   
+                }
+                try
+                {
+                    foreach (CollectDTO collectFor in collectsZero)
+                    {
+                        AppServices.CollectServices.save.execute(collectFor.collectId, collectFor.collectorWorkerCode, collectFor.collectDate, collectFor.collectedKilos, collectFor.harvestId, collectFor.paymentId, collectFor.status, collectFor.amountToPaid, collectFor.plotId, collectFor.isCountable);
+                        MessageBox.Show($"Recolector {collectFor.collectorWorkerCode} asociado exitosamente a la cosecha.",
+                                      "Éxito",
+                                      MessageBoxButtons.OK,
+                                      MessageBoxIcon.Information);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error al asociar el recolector : {ex.Message}",
+                                  "Error",
+                                  MessageBoxButtons.OK,
+                                  MessageBoxIcon.Error);
                 }
 
             }

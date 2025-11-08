@@ -14,22 +14,22 @@ namespace CAFEPAY.ArqHex.Collects.application.CollectSave
             this.collectRepository = _collectRepository;
         }
 
-        public void execute(long _collectId, long _collectCollectorId, DateTime _collectDate,
-                           decimal _collectedKilos, long _collectIdHarvest, long _collectIdPayment,
-                           int _collectStatus, long _collectPaid, long _collectIdPlot, int _collectIscountable){
+        public void execute(long? _collectId, string _collectWorkerCode, DateTime _collectDate,
+                           decimal _collectedKilos, long? _collectIdHarvest, long? _collectIdPayment,
+                           int _collectStatus, long _collectAmountToPaidValue, long _collectIdPlot, int _collectIscountable){
             CollectId collectId = new CollectId(_collectId);
-            CollectWorkerCode collectCollectorId = new CollectWorkerCode(_collectCollectorId);
+            CollectWorkerCode collectCollectorId = new CollectWorkerCode(_collectWorkerCode);
             CollectDate collectDate = new CollectDate(_collectDate);
             CollectedKilos collectedKilos = new CollectedKilos(_collectedKilos);
             CollectIdHarvest collectIdHarvest = new CollectIdHarvest(_collectIdHarvest);
             CollectIdPayment collectIdPayment = new CollectIdPayment(_collectIdPayment);
             CollectStatus collectStatus = new CollectStatus(_collectStatus);
-            CollectorAmountToPaid collectPaid = new CollectorAmountToPaid(_collectPaid);
+            CollectorAmountToPaid collectAmountToPaidValue = new CollectorAmountToPaid(_collectAmountToPaidValue);
             CollectIsCountable collectIscountable = new CollectIsCountable(_collectIscountable);
             CollectIdPlot collectIdPlot = new CollectIdPlot(_collectIdPlot);
 
             Collect collect = new Collect(collectId, collectCollectorId, collectIdPayment,
-                                          collectIdHarvest, collectDate, collectedKilos, collectStatus, collectPaid,
+                                          collectIdHarvest, collectDate, collectedKilos, collectStatus, collectAmountToPaidValue,
                                           collectIdPlot, collectIscountable);
             collectRepository.save(collect);
         }

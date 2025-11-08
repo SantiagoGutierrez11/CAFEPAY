@@ -10,30 +10,30 @@ namespace CAFEPAY.ArqHex.Collects.domain
     public class Collect
     {
         public CollectId id { get; }
-        public CollectWorkerCode collectorId { get; }
+        public CollectWorkerCode collectorWorkerCode { get; }
         public CollectIdPayment paymentId { get; }
         public CollectIdHarvest harvestId { get; }
         public CollectDate date { get; }
         public CollectedKilos kilos { get; }
         public CollectStatus status { get; }
-        public CollectorAmountToPaid paid { get; } 
-        public CollectIsCountable iscountable { get; }
+        public CollectorAmountToPaid amountToPaid { get; } 
+        public CollectIsCountable isCountable { get; }
         public CollectIdPlot plotId { get; }
 
-        public Collect(CollectId _collectId, CollectWorkerCode _collectCollectorId, CollectIdPayment _collectPaymentId,
+        public Collect(CollectId _collectId, CollectWorkerCode _collectWorkerCode, CollectIdPayment _collectPaymentId,
             CollectIdHarvest _collecharvestId, CollectDate _collectDate, CollectedKilos _collectedKilos,
-            CollectStatus collectStatus, CollectorAmountToPaid collectPaid, CollectIdPlot collectIdPlot, CollectIsCountable collectIscountable) 
+            CollectStatus collectStatus, CollectorAmountToPaid collectAmountToPaidValue, CollectIdPlot collectIdPlot, CollectIsCountable collectIscountable) 
         {
             this.id = _collectId;
-            this.collectorId = _collectCollectorId;
+            this.collectorWorkerCode = _collectWorkerCode;
             this.paymentId = _collectPaymentId;
             this.harvestId = _collecharvestId;
             this.date = _collectDate;
             this.kilos = _collectedKilos;
             this.status = collectStatus;
-            this.paid = collectPaid; 
+            this.amountToPaid = collectAmountToPaidValue; 
             this.plotId = collectIdPlot;
-            this.iscountable = collectIscountable;
+            this.isCountable = collectIscountable;
         }
     }
 }

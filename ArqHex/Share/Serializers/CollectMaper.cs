@@ -17,13 +17,17 @@ namespace CAFEPAY.ArqHex.Share.Serializers
             return collects.Select(c => new CollectDTO
             {
                 collectId = c.id.collectId,
-                collectorId = c.collectorId.collectorWorkerCode,
+                collectorWorkerCode = c.collectorWorkerCode.collectorWorkerCode,
+                plotId = c.plotId.collectIdPlot,
                 paymentId = c.paymentId.collectIdPayment,
                 harvestId = c.harvestId.collectIdHarvest,
                 collectDate = c.date.collectDate,
                 collectedKilos = c.kilos.collectedKilos,
                 status = c.status.collectStatus,
-                paid = c.paid.collectPaid
+                statusText = c.status.collectStatus == 0 ? "Zero" :
+                             c.status.collectStatus == 1 ? "Registrado" :
+                             c.status.collectStatus == 2 ? "Pagado"
+                                : "Inactivo",
             }).ToList();
         }
     }
