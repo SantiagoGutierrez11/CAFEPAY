@@ -1,10 +1,4 @@
 --------------------------------------------------------
---  SCRIPT COMPLETO MEJORADO: PAYMENT Y COLLECT
---  - PAYMENT: ID global autoincrementable
---  - COLLECT: IS_COUNTABLE integrado en la tabla
---------------------------------------------------------
-
---------------------------------------------------------
 --  DROPS
 --------------------------------------------------------
 DROP TRIGGER COLLECT_BI_SET_ID;
@@ -548,4 +542,5 @@ COMMIT;
 
 -- Ver todas las facturas (IDs globales: 1, 2, 3, 4...)
 SELECT IDPAYMENT, WORKER_CODE, PAYMENT_DATE, TOTAL_AMOUNT, STATUS_ID, NOTES
+
 FROM PAYMENT
