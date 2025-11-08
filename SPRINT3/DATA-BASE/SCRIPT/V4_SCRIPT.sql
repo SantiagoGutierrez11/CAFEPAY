@@ -1,9 +1,4 @@
 --------------------------------------------------------
---  SCRIPT COMPLETO: PAYMENT Y COLLECT
---  IDs autoincrementables por WORKER_CODE
---------------------------------------------------------
-
---------------------------------------------------------
 --  DROPS
 --------------------------------------------------------
 DROP TRIGGER COLLECT_BI_SET_ID;
@@ -545,4 +540,5 @@ INSERT INTO COLLECT (WORKER_CODE, IDPLOT, IDHARVEST, IDCOLLECT, COLLECTDATE, KIL
 VALUES ('W00004', 2, 3, NULL, DATE '2025-01-08', 44.70, 1);
 
 COMMIT;
+
 
