@@ -26,17 +26,42 @@ namespace CAFEPAY.Views.ViewCollect
         public ViewCollect()
         {
             InitializeComponent();
+            loadHarvestComboBox();
         }
+
         public void loadHarvestComboBox()
         {
-            harvests = AppServices.HarvestServices.query.execute();
-            harvestDTO = HarvestMaper.ToDTOList(harvests);
-            foreach (var harvest in harvestDTO)
+            try
             {
-                Console.WriteLine("Harvest ID: " + harvest.id + ", Plot Name: " + harvest.plotName);
+                // Usar el nuevo caso de uso que ya filtra por status
+                harvests = AppServices.HarvestServices.queryByStatus.execute(1); // 1 = ACTIVO
+
+                if (harvests == null || harvests.Count == 0)
+                {
+                    return;
+                }
+
+                harvestDTO = HarvestMaper.ToDTOList(harvests);
+
+                if (harvestDTO != null && harvestDTO.Count > 0)
+                {
+                    harvestDTO.Insert(0, new HarvestDTO
+                    {
+                        id = null,
+                        plotName = "-- Seleccione una cosecha --"
+                    });
+
+                    cmbHarvest.DataSource = null;
+                    cmbHarvest.DataSource = harvestDTO;
+                    cmbHarvest.DisplayMember = "plotName";
+                    cmbHarvest.ValueMember = "id";
+                    cmbHarvest.SelectedIndex = 0;
+                }
             }
-            cmbHarvest.DisplayMember = "plotName";
-            cmbHarvest.ValueMember = "id" + "id lote";
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar cosechas: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)

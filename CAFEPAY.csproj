@@ -115,6 +115,7 @@
     <Compile Include="ArqHex\Collects\domain\CollectStatus.cs" />
     <Compile Include="ArqHex\Collects\infrastructure\CollectController.cs" />
     <Compile Include="ArqHex\Collects\infrastructure\OracleCollectRepository.cs" />
+    <Compile Include="ArqHex\Harvests\Application\HarvestQueryByStatus\HarvestQueryByStatus.cs" />
     <Compile Include="ArqHex\Harvests\Application\HarvestUpdate\HarvestUpdate.cs" />
     <Compile Include="ArqHex\Harvests\Domain\HarvestStatus.cs" />
     <Compile Include="ArqHex\PaymentsDetails\application\PaymentDetailQueryAll\PaymentDetailQueryAll.cs" />

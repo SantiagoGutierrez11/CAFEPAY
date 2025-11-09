@@ -153,5 +153,48 @@ namespace CAFEPAY.ArqHex.Harvests.Infrastructure
                 }
             }
         }
+        public List<Harvest> queryByStatus(int status)
+        {
+            var harvests = new List<Harvest>();
+
+            using (var connection = new OracleConnection(connectionString))
+            {
+                connection.Open();
+
+                // Consulta filtrada por estado
+                string query = @"
+            SELECT IDHARVEST, IDPLOT, STARTDATE, PRICEPERKILO, STATUS_ID, ENDDATE
+            FROM HARVEST
+            WHERE STATUS_ID = :p_status";
+
+                using (var command = new OracleCommand(query, connection))
+                {
+                    command.Parameters.Add("p_status", OracleDbType.Int32).Value = status;
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            HarvestId id = new HarvestId(reader.GetInt64(0));
+                            HarvestIdPlot idPlot = new HarvestIdPlot(reader.GetInt64(1));
+                            HarvestStartDate startDate = new HarvestStartDate(reader.GetDateTime(2));
+                            HarvestPricePerKilo price = new HarvestPricePerKilo(reader.GetDecimal(3));
+                            HarvestStatus hStatus = new HarvestStatus(reader.GetInt32(4));
+
+                            HarvestEndDate endDate = null;
+                            if (!reader.IsDBNull(5))
+                            {
+                                endDate = new HarvestEndDate(reader.GetDateTime(5));
+                            }
+
+                            Harvest harvest = new Harvest(id, idPlot, startDate, price, hStatus, endDate);
+                            harvests.Add(harvest);
+                        }
+                    }
+                }
+            }
+
+            return harvests;
+        }
     }
 }

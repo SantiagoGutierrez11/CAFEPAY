@@ -20,6 +20,7 @@ using CAFEPAY.ArqHex.Collects.application.CollectSave;
 using CAFEPAY.ArqHex.Collects.application.CollectUpdate;
 using CAFEPAY.ArqHex.Collects.domain;
 using CAFEPAY.ArqHex.Collects.infrastructure;
+using CAFEPAY.ArqHex.Harvests.Application.HarvestQueryByStatus;
 using CAFEPAY.ArqHex.Harvests.Application.HarvestQueryAll;
 using CAFEPAY.ArqHex.Harvests.Application.HarvestSave;
 using CAFEPAY.ArqHex.Harvests.Application.HarvestUpdate;
@@ -59,6 +60,7 @@ namespace CAFEPAY.ArqHex.Share
         {
             public static HarvestSave save = new HarvestSave(harvestRepository);
             public static HarvestQueryAll query = new HarvestQueryAll(harvestRepository);
+            public static HarvestQueryByStatus queryByStatus = new HarvestQueryByStatus(harvestRepository);
             public static HarvestUpdate update = new HarvestUpdate(harvestRepository);
         }
 

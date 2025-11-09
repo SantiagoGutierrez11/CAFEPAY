@@ -13,20 +13,38 @@ namespace CAFEPAY.ArqHex.Share.Serializers
         public static List<HarvestDTO> ToDTOList(IReadOnlyList<Harvest> harvests)
         {
             if (harvests == null) return new List<HarvestDTO>();
-            return harvests.Select(h => new HarvestDTO
-            {
-                id = h.id.idValue,
-                idPlot = h.idPlot.idPlotValue,
-                startDate = h.startDate.startDateValue,
-                endDate = h.endDate?.endDateValue,
-                pricePerKilo = h.pricePerKilo.pricePerKiloValue,
-                status = h.status.statusValue,
-                statusText = h.status.statusValue == 1 ? "En Proceso" :
-                             h.status.statusValue == 2 ? "Finalizado" :
-                             "Desconocido",
-                plotName = AppServices.PlotServices.queryById.execute(h.idPlot.idPlotValue).name.plotNameValue
 
-            }).ToList();
+            var result = new List<HarvestDTO>();
+
+            foreach (var h in harvests)
+            {
+                try
+                {
+                    var plot = AppServices.PlotServices.queryById.execute(h.idPlot.idPlotValue);
+                    var plotName = plot?.name?.plotNameValue ?? $"Lote {h.idPlot.idPlotValue}";
+                    var harvestNumber = h.id?.idValue ?? 0;
+
+                    result.Add(new HarvestDTO
+                    {
+                        id = h.id.idValue,
+                        idPlot = h.idPlot.idPlotValue,
+                        startDate = h.startDate.startDateValue,
+                        endDate = h.endDate?.endDateValue,
+                        pricePerKilo = h.pricePerKilo.pricePerKiloValue,
+                        status = h.status.statusValue,
+                        statusText = h.status.statusValue == 1 ? "En Proceso" :
+                                     h.status.statusValue == 2 ? "Finalizado" :
+                                     "Desconocido",
+                        plotName = $"{plotName} - Cosecha {harvestNumber}"
+                    });
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error mapeando cosecha ID {h.id?.idValue}: {ex.Message}");
+                }
+            }
+
+            return result;
         }
     }
 }
