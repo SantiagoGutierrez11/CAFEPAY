@@ -5,15 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace CAFEPAY.ArqHex.PaymentDetail.domain
+namespace CAFEPAY.ArqHex.PaymentsDetails.domain
 {
-    public class PaymentDetailAmontToPay
+    public class PaymentsDetailsAmountToPay
     {
-        public long paymentDetailAmountToPayValue { get; }
-        public PaymentDetailAmontToPay(long _paymentDetailAmountToPayValue)
+        public long PaymentsDetailsAmountToPayValue { get; }
+        public PaymentsDetailsAmountToPay(long _PaymentsDetailsAmountToPayValue)
         {
-            ValidateFormat(_paymentDetailAmountToPayValue);
-            this.paymentDetailAmountToPayValue = _paymentDetailAmountToPayValue;
+            ValidateFormat(_PaymentsDetailsAmountToPayValue);
+            this.PaymentsDetailsAmountToPayValue = _PaymentsDetailsAmountToPayValue;
         }
         private void ValidateFormat(long amountToPayValue)
         {
@@ -25,27 +25,27 @@ namespace CAFEPAY.ArqHex.PaymentDetail.domain
         }
         public override bool Equals(object obj)
         {
-            if (obj is PaymentDetailAmontToPay other)
+            if (obj is PaymentsDetailsAmountToPay other)
             {
-                return paymentDetailAmountToPayValue == other.paymentDetailAmountToPayValue;
+                return PaymentsDetailsAmountToPayValue == other.PaymentsDetailsAmountToPayValue;
             }
             return false;
         }
         public override int GetHashCode()
         {
-            return paymentDetailAmountToPayValue.GetHashCode();
+            return PaymentsDetailsAmountToPayValue.GetHashCode();
         }
         public override string ToString()
         {
-            return paymentDetailAmountToPayValue.ToString();
+            return PaymentsDetailsAmountToPayValue.ToString();
         }
         public long GetValue()
         {
-            return paymentDetailAmountToPayValue;
+            return PaymentsDetailsAmountToPayValue;
         }
         public string GetValueAsString()
         {
-            return paymentDetailAmountToPayValue.ToString();
+            return PaymentsDetailsAmountToPayValue.ToString();
         }
     }
 }

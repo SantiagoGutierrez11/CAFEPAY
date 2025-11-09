@@ -150,7 +150,7 @@ namespace CAFEPAY.ArqHex.Collects.infrastructure
                                 "No se puede cambiar a ZERO una recolecta con pago asociado",
                                 ex);
 
-                        case 20056: // Recolecta no encontrada en PAYMENTDETAIL
+                        case 20056: // Recolecta no encontrada en PaymentsDetails
                             throw new InvalidOperationException(
                                 $"No se encontró la recolecta especificada",
                                 ex);

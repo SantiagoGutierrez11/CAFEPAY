@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CAFEPAY.ArqHex.PaymentDetail.domain
+namespace CAFEPAY.ArqHex.PaymentsDetails.domain
 {
-    public class PaymentDetailIdPayment
+    public class PaymentsDetailsIdPayment
     {
         public long idPaymentValue { get; }
-        public PaymentDetailIdPayment(long _idPaymentValue)
+        public PaymentsDetailsIdPayment(long _idPaymentValue)
         {
             this.idPaymentValue = _idPaymentValue;
             ValidateFormat();
