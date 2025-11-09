@@ -117,6 +117,14 @@
     <Compile Include="ArqHex\Collects\infrastructure\OracleCollectRepository.cs" />
     <Compile Include="ArqHex\Harvests\Application\HarvestUpdate\HarvestUpdate.cs" />
     <Compile Include="ArqHex\Harvests\Domain\HarvestStatus.cs" />
+    <Compile Include="ArqHex\PaymentDetail\domain\PaymentDetail.cs" />
+    <Compile Include="ArqHex\PaymentDetail\domain\PaymentDetailAmontToPay.cs" />
+    <Compile Include="ArqHex\PaymentDetail\domain\PaymentDetailIdCollect.cs" />
+    <Compile Include="ArqHex\PaymentDetail\domain\PaymentDetailId.cs" />
+    <Compile Include="ArqHex\PaymentDetail\domain\PaymentDetailIdHarvest.cs" />
+    <Compile Include="ArqHex\PaymentDetail\domain\PaymentDetailIdPlot.cs" />
+    <Compile Include="ArqHex\PaymentDetail\domain\PaymentDetailIdPayment.cs" />
+    <Compile Include="ArqHex\PaymentDetail\domain\PaymentDetailWorkerCode.cs" />
     <Compile Include="ArqHex\Plots\Application\PlotQueryAll\PlotQueryAll.cs" />
     <Compile Include="ArqHex\Plots\Application\PlotQueyById\PlotQueryById.cs" />
     <Compile Include="ArqHex\Plots\Domain\Plot.cs" />
@@ -347,9 +355,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ArqHex\Collects\application\CollectQueryIn\" />
-    <Folder Include="ArqHex\Payments\application\PaymentQueryAll\" />
-    <Folder Include="ArqHex\Payments\application\PaymentSave\" />
-    <Folder Include="ArqHex\Payments\application\PaymentUpdate\" />
+    <Folder Include="ArqHex\PaymentDetail\application\" />
+    <Folder Include="ArqHex\PaymentDetail\infrastucture\" />
+    <Folder Include="ArqHex\Payments\application\" />
     <Folder Include="ArqHex\Payments\domain\" />
     <Folder Include="ArqHex\Payments\infrastructure\" />
     <Folder Include="bin\Release\" />
