@@ -8,5 +8,14 @@ namespace CAFEPAY.ArqHex.PaymentDetail.domain
 {
     public class PaymentDetailId
     {
+        public long? idValue { get; }
+        public PaymentDetailId(long? _idValue)
+        {
+            this.idValue = _idValue;
+            validateFormat();
+        }
+        public void validateFormat()
+        {
+        }
     }
 }

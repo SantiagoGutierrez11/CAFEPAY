@@ -21,18 +21,24 @@ namespace CAFEPAY.Views.ViewHarvests
         private List<Collector> listCollector;
         private List<CollectorDTO> listDTOCollector;
 
+        // Colores del diseño
+        private Color darkBlueColor = Color.FromArgb(13, 43, 97);
+        private Color whiteColor = Color.White;
+
         // 🔹 Constructor que recibe el PlotDTO y HarvestDTO
         public ViewHarvestAssociateCollector(PlotDTO plotDTO, HarvestDTO harvestDTO)
         {
             InitializeComponent();
             this.plotDTO = plotDTO;
             this.harvestDTO = harvestDTO;
+            ConfigureDataGridView();
         }
 
         // 🔹 Constructor vacío (por compatibilidad con el diseñador)
         public ViewHarvestAssociateCollector()
         {
             InitializeComponent();
+            ConfigureDataGridView();
         }
 
         private void ViewHarvestAssociateCollector_Load(object sender, EventArgs e)
@@ -45,11 +51,49 @@ namespace CAFEPAY.Views.ViewHarvests
         {
             if (plotDTO != null && harvestDTO != null)
             {
+                // Nombre del lote
                 textBoxPlotName.Text = plotDTO.name;
+                // Número de cosecha (ID)
                 textBoxIdHarvest.Text = harvestDTO.id.ToString();
+                // Precio por kilo
                 textBoxPricePerKilo.Text = harvestDTO.pricePerKilo.ToString("C2");
+                // Fecha de inicio
                 textBoxStartDate.Text = harvestDTO.startDate.ToString("dd/MM/yyyy");
             }
+        }
+
+        // 🔹 CONFIGURAR EL DATAGRIDVIEW CON EL ESTILO
+        private void ConfigureDataGridView()
+        {
+            dgCollectors.BorderStyle = BorderStyle.None;
+            dgCollectors.BackgroundColor = whiteColor;
+            dgCollectors.DefaultCellStyle.SelectionBackColor = Color.FromArgb(230, 240, 250);
+            dgCollectors.DefaultCellStyle.SelectionForeColor = Color.Black;
+            dgCollectors.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 248, 248);
+            dgCollectors.RowHeadersVisible = false;
+            dgCollectors.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgCollectors.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgCollectors.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgCollectors.EnableHeadersVisualStyles = false;
+            dgCollectors.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgCollectors.MultiSelect = true; // Permitir selección múltiple
+            dgCollectors.ReadOnly = true;
+
+            // Estilo de encabezados
+            dgCollectors.ColumnHeadersDefaultCellStyle.BackColor = darkBlueColor;
+            dgCollectors.ColumnHeadersDefaultCellStyle.ForeColor = whiteColor;
+            dgCollectors.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
+            dgCollectors.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dgCollectors.ColumnHeadersDefaultCellStyle.Padding = new Padding(10, 0, 0, 0);
+            dgCollectors.ColumnHeadersHeight = 40;
+
+            // Estilo de celdas
+            dgCollectors.DefaultCellStyle.Font = new Font("Segoe UI", 10);
+            dgCollectors.DefaultCellStyle.BackColor = whiteColor;
+            dgCollectors.DefaultCellStyle.ForeColor = Color.FromArgb(60, 60, 60);
+            dgCollectors.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dgCollectors.DefaultCellStyle.Padding = new Padding(10, 5, 10, 5);
+            dgCollectors.RowTemplate.Height = 40;
         }
 
         // 🔹 CARGAR LOS RECOLECTORES EN EL DATAGRIDVIEW
@@ -94,9 +138,10 @@ namespace CAFEPAY.Views.ViewHarvests
                 };
                 dgCollectors.Columns.Add(colStatus);
 
-                // 5️⃣ Asignar los datos al DataGridView
+                // 5️⃣ ASIGNAR LOS DATOS AL DATAGRIDVIEW ✅
                 dgCollectors.DataSource = listDTOCollector;
 
+                // Limpiar selección inicial
                 dgCollectors.ClearSelection();
             }
             catch (Exception ex)
@@ -145,10 +190,11 @@ namespace CAFEPAY.Views.ViewHarvests
             try
             {
                 // Recuperar el worker code de los recolectores seleccionados usando DataBoundItem
-                List<string> collectorWorkerCodes = new List<string>();
+                List<CollectDTO> collectsZero = new List<CollectDTO>();
 
                 foreach (DataGridViewRow row in dgCollectors.SelectedRows)
                 {
+                    // Obtener el CollectorDTO directamente del item enlazado
                     if (row.DataBoundItem is CollectorDTO collector)
                     {
                         if (!string.IsNullOrWhiteSpace(collector.workerCode))
@@ -171,8 +217,8 @@ namespace CAFEPAY.Views.ViewHarvests
                     }
                 }
 
-                // Validar que se hayan recuperado códigos
-                if (collectorWorkerCodes.Count == 0)
+                // VALIDAR QUE SE HAYAN ENCONTRADO RECOLECTORES VÁLIDOS
+                if (collectsZero.Count == 0)
                 {
                     MessageBox.Show("No se encontraron recolectores válidos para asociar.",
                                   "Advertencia",
@@ -292,7 +338,6 @@ namespace CAFEPAY.Views.ViewHarvests
                 );
             }
         }
-
         private void label1_Click(object sender, EventArgs e)
         {
         }
@@ -304,10 +349,11 @@ namespace CAFEPAY.Views.ViewHarvests
         private void textBoxNombreLote_TextChanged(object sender, EventArgs e)
         {
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
+        }
 
-        private void textBoxNombreLote_TextChanged(object sender, EventArgs e) { }
+        private void textBoxNumeroCosecha_TextChanged(object sender, EventArgs e)
+        {
 
-        private void textBoxNumeroCosecha_TextChanged(object sender, EventArgs e) { }
+        }
     }
 }

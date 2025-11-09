@@ -8,5 +8,10 @@ namespace CAFEPAY.ArqHex.PaymentDetail.domain
 {
     public class PaymentDetailWorkerCode
     {
+        public string paymentDetailWorkerCode { get; }
+        public PaymentDetailWorkerCode(string _paymentDetailWorkerCode)
+        {
+            this.paymentDetailWorkerCode = _paymentDetailWorkerCode;
+        }
     }
 }

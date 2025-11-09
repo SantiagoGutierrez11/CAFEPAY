@@ -34,9 +34,10 @@
             this.cmbCollectors = new System.Windows.Forms.ComboBox();
             this.btnAdd = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgCollectors)).BeginInit();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -44,8 +45,7 @@
             this.groupBox1.Controls.Add(this.cmbHarvest);
             this.groupBox1.Location = new System.Drawing.Point(66, 46);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(357, 60);
+            this.groupBox1.Size = new System.Drawing.Size(268, 49);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Cosecha";
@@ -60,7 +60,7 @@
             this.cmbHarvest.TabIndex = 1;
             this.cmbHarvest.SelectedIndexChanged += new System.EventHandler(this.cmbHarvest_SelectedIndexChanged);
             // 
-            // button1
+            // groupBox2
             // 
             this.groupBox2.Controls.Add(this.cmbCollectors);
             this.groupBox2.Location = new System.Drawing.Point(411, 46);
@@ -90,32 +90,38 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(519, 198);
-            this.button2.Margin = new System.Windows.Forms.Padding(4);
+            this.button2.Location = new System.Drawing.Point(389, 161);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(197, 63);
+            this.button2.Size = new System.Drawing.Size(148, 51);
             this.button2.TabIndex = 3;
             this.button2.Text = "Pagina principal";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(98, 236);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(565, 150);
+            this.dataGridView1.TabIndex = 4;
+            // 
             // ViewCollect
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1067, 554);
-            this.Controls.Add(this.dgCollectors);
+            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ViewCollect";
             this.Text = "ViewCollect";
             this.Load += new System.EventHandler(this.ViewCollect_Load);
             this.groupBox1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgCollectors)).EndInit();
             this.groupBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -128,5 +134,6 @@
         private System.Windows.Forms.ComboBox cmbCollectors;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.DataGridView dataGridView1;
     }
 }

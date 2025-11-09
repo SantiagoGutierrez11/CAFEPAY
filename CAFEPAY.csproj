@@ -124,7 +124,17 @@
     <Compile Include="ArqHex\PaymentDetail\domain\PaymentDetailIdHarvest.cs" />
     <Compile Include="ArqHex\PaymentDetail\domain\PaymentDetailIdPlot.cs" />
     <Compile Include="ArqHex\PaymentDetail\domain\PaymentDetailIdPayment.cs" />
+    <Compile Include="ArqHex\PaymentDetail\domain\PaymentDetailRepository.cs" />
     <Compile Include="ArqHex\PaymentDetail\domain\PaymentDetailWorkerCode.cs" />
+    <Compile Include="ArqHex\PaymentDetail\infrastructure\OraclePaymentDetailRepository.cs" />
+    <Compile Include="ArqHex\PaymentDetail\infrastructure\PaymentDetailController.cs" />
+    <Compile Include="ArqHex\Payments\domain\Payment.cs" />
+    <Compile Include="ArqHex\Payments\domain\PaymentDate.cs" />
+    <Compile Include="ArqHex\Payments\domain\PaymentId.cs" />
+    <Compile Include="ArqHex\Payments\domain\PaymentRepository.cs" />
+    <Compile Include="ArqHex\Payments\domain\PaymentWorkerCode.cs" />
+    <Compile Include="ArqHex\Payments\infrastructure\OraclePaymentRepository.cs" />
+    <Compile Include="ArqHex\Payments\infrastructure\PaymentController.cs" />
     <Compile Include="ArqHex\Plots\Application\PlotQueryAll\PlotQueryAll.cs" />
     <Compile Include="ArqHex\Plots\Application\PlotQueyById\PlotQueryById.cs" />
     <Compile Include="ArqHex\Plots\Domain\Plot.cs" />
@@ -356,10 +366,7 @@
   <ItemGroup>
     <Folder Include="ArqHex\Collects\application\CollectQueryIn\" />
     <Folder Include="ArqHex\PaymentDetail\application\" />
-    <Folder Include="ArqHex\PaymentDetail\infrastucture\" />
     <Folder Include="ArqHex\Payments\application\" />
-    <Folder Include="ArqHex\Payments\domain\" />
-    <Folder Include="ArqHex\Payments\infrastructure\" />
     <Folder Include="bin\Release\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

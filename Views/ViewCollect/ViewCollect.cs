@@ -5,7 +5,12 @@ using CAFEPAY.ArqHex.Share.DTO;
 using CAFEPAY.ArqHex.Share.Serializers;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using static CAFEPAY.ArqHex.Share.AppServices;
 
@@ -25,7 +30,7 @@ namespace CAFEPAY.Views.ViewCollect
         public void loadHarvestComboBox()
         {
             harvests = AppServices.HarvestServices.query.execute();
-            harvestDTO = HarvestMaper.ToDTOList(harvests); 
+            harvestDTO = HarvestMaper.ToDTOList(harvests);
             foreach (var harvest in harvestDTO)
             {
                 Console.WriteLine("Harvest ID: " + harvest.id + ", Plot Name: " + harvest.plotName);
@@ -34,21 +39,15 @@ namespace CAFEPAY.Views.ViewCollect
             cmbHarvest.ValueMember = "id" + "id lote";
         }
 
-        private void ViewCollect_Load(object sender, EventArgs e)
+        private void groupBox1_Enter(object sender, EventArgs e)
         {
-            loadCollectors();
+
         }
 
-        // CARGAR LOS RECOLECTORES
-        private void loadCollectors()
+        private void ViewCollect_Load(object sender, EventArgs e)
         {
-            try
-            {
-                listCollector = AppServices.CollectorServices.query.execute();
-                listDTOCollector = CollectorMaper.ToDTOList(listCollector);
 
-                dgCollectors.AutoGenerateColumns = false;
-                dgCollectors.Columns.Clear();
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -58,24 +57,11 @@ namespace CAFEPAY.Views.ViewCollect
             this.Hide();
         }
 
-        // MÉTODO AUXILIAR PARA AGREGAR COLUMNAS AL DATAGRIDVIEW
-        private void AddColumn(string dataProperty, string headerText)
+        private void button3_Click(object sender, EventArgs e)
         {
-            var column = new DataGridViewTextBoxColumn
-            {
-                DataPropertyName = dataProperty,
-                HeaderText = headerText
-            };
-            dgCollectors.Columns.Add(column);
+
         }
 
-        // Botón "Recargar"
-        private void button1_Click(object sender, EventArgs e)
-        {
-            loadCollectors();
-        }
-
-        // Botón "Eliminar" (sin lógica aún)
         private void button2_Click(object sender, EventArgs e)
         {
             this.Owner.Show();
@@ -85,9 +71,6 @@ namespace CAFEPAY.Views.ViewCollect
         private void cmbHarvest_SelectedIndexChanged(object sender, EventArgs e)
         {
 
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-            // Vacío
         }
     }
 }
