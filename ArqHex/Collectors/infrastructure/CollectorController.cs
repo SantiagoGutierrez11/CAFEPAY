@@ -29,5 +29,9 @@ namespace CAFEPAY.ArqHex.Collectors.infrastructure
         {
             return AppServices.CollectorServices.queryByStatus.execute(status);
         }
+        public List<Collector> listCollectorsByIn(string workerCodes)
+        {
+            return AppServices.CollectorServices.queryByIn.execute(workerCodes);
+        }
     }
 }

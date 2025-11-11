@@ -84,10 +84,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArqHex\Collectors\application\CollectorQueryByIn\CollectorQueryByIn.cs" />
     <Compile Include="ArqHex\Collectors\application\CollectorQueryAll\CollectorQueryAll.cs" />
     <Compile Include="ArqHex\Collectors\application\CollectorQueryByStatus\CollectorQueryByStatus.cs" />
     <Compile Include="ArqHex\Collectors\application\CollectorSave\CollectorSave.cs" />
-    <Compile Include="ArqHex\Collectors\application\CollectUpdate\CollectorUpdate.cs" />
+    <Compile Include="ArqHex\Collectors\application\CollectorUpdate\CollectorUpdate.cs" />
     <Compile Include="ArqHex\Collectors\domain\Collector.cs" />
     <Compile Include="ArqHex\Collectors\domain\CollectorId.cs" />
     <Compile Include="ArqHex\Collectors\domain\CollectorFirstName.cs" />
@@ -100,6 +101,8 @@
     <Compile Include="ArqHex\Collectors\infrastructure\CollectorController.cs" />
     <Compile Include="ArqHex\Collectors\infrastructure\OracleCollectorRepository.cs" />
     <Compile Include="ArqHex\Collects\application\CollectQueryAll\CollectQueryAll.cs" />
+    <Compile Include="ArqHex\Collects\application\CollectQueryByStatus\CollectQueryByStatus.cs" />
+    <Compile Include="ArqHex\Collects\application\CollectQueryByWorkerCode\CollectQueryByWorkerCode.cs" />
     <Compile Include="ArqHex\Collects\application\CollectSave\CollectSave.cs" />
     <Compile Include="ArqHex\Collects\application\CollectUpdate\CollectUpdate.cs" />
     <Compile Include="ArqHex\Collects\domain\Collect.cs" />

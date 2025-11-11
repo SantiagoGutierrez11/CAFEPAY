@@ -35,7 +35,8 @@ namespace CAFEPAY.ArqHex.Share.Serializers
                         statusText = h.status.statusValue == 1 ? "En Proceso" :
                                      h.status.statusValue == 2 ? "Finalizado" :
                                      "Desconocido",
-                        plotName = $"{plotName} - Cosecha {harvestNumber}"
+                        plotName = plotName,
+                        harvestName = $"{plotName} - Cosecha {harvestNumber}"
                     });
                 }
                 catch (Exception ex)

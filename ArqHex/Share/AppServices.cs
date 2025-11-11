@@ -9,6 +9,8 @@ using CAFEPAY.ArqHex.PaymentsDetails.application.PaymentsDetailsUpdate;
 using CAFEPAY.ArqHex.PaymentsDetails.application.PaymentsDetailsQueryById;
 using CAFEPAY.ArqHex.PaymentsDetails.domain;
 using CAFEPAY.ArqHex.PaymentsDetails.infrastructure;
+using CAFEPAY.ArqHex.Collects.application.CollectQueryByStatus;
+using CAFEPAY.ArqHex.Collectors.application.CollectorByIn;
 using CAFEPAY.ArqHex.Collectors.application.CollectorQueryAll;
 using CAFEPAY.ArqHex.Collectors.application.CollectorQueryByStatus;
 using CAFEPAY.ArqHex.Collectors.application.CollectorSave;
@@ -35,6 +37,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CAFEPAY.ArqHex.Collects.application.CollectQueryByWorkerCode;
 
 namespace CAFEPAY.ArqHex.Share
 {
@@ -54,6 +57,7 @@ namespace CAFEPAY.ArqHex.Share
             public static CollectorSave save = new CollectorSave(collectorRepository);
             public static CollectorQueryAll query = new CollectorQueryAll(collectorRepository);
             public static CollectorQueryByStatus queryByStatus = new CollectorQueryByStatus(collectorRepository);
+            public static CollectorQueryByIn queryByIn = new CollectorQueryByIn(collectorRepository);
         }
 
         public static class HarvestServices
@@ -75,6 +79,8 @@ namespace CAFEPAY.ArqHex.Share
             public static CollectSave save = new CollectSave(collectRepository);
             public static CollectQueryAll query = new CollectQueryAll(collectRepository);
             public static CollectUpdate update = new CollectUpdate(collectRepository);
+            public static CollectQueryByStatus queryByStatus = new CollectQueryByStatus(collectRepository);
+            public static CollectQueryByWorkerCode queryByWorkerCode = new CollectQueryByWorkerCode(collectRepository);
         }
 
         public static class PaymentsDetailsServices

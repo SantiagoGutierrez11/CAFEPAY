@@ -13,5 +13,6 @@ namespace CAFEPAY.ArqHex.Collectors.domain
         void update(Collector collector, long oldId); // Update an existing collector
         List<Collector> queryAll(); // List all collectors
         List<Collector> queryByStatus(int status); // List collectors by status
+        List<Collector> queryByIn(string workerCodes);
     }
 }
