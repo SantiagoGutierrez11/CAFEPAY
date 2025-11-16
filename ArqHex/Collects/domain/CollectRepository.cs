@@ -10,6 +10,8 @@ namespace CAFEPAY.ArqHex.Collects.domain
     {
         void save(Collect collect); // Save a new collect, update or insert if not exists
         void update(Collect collect, long oldId); // Update an existing collect
+        List<Collect> queryByStatus(int isCountable, int status, long idPlot, long idHarvest);
         List<Collect> queryAll(); // List all collects
+        List<Collect> queryByWorkerCode(int isCountable, string workerCode, long idPlot, long? idHarvest);
     }
 }

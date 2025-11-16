@@ -84,10 +84,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArqHex\Collectors\application\CollectorQueryByIn\CollectorQueryByIn.cs" />
     <Compile Include="ArqHex\Collectors\application\CollectorQueryAll\CollectorQueryAll.cs" />
     <Compile Include="ArqHex\Collectors\application\CollectorQueryByStatus\CollectorQueryByStatus.cs" />
     <Compile Include="ArqHex\Collectors\application\CollectorSave\CollectorSave.cs" />
-    <Compile Include="ArqHex\Collectors\application\CollectUpdate\CollectorUpdate.cs" />
+    <Compile Include="ArqHex\Collectors\application\CollectorUpdate\CollectorUpdate.cs" />
     <Compile Include="ArqHex\Collectors\domain\Collector.cs" />
     <Compile Include="ArqHex\Collectors\domain\CollectorId.cs" />
     <Compile Include="ArqHex\Collectors\domain\CollectorFirstName.cs" />
@@ -100,6 +101,8 @@
     <Compile Include="ArqHex\Collectors\infrastructure\CollectorController.cs" />
     <Compile Include="ArqHex\Collectors\infrastructure\OracleCollectorRepository.cs" />
     <Compile Include="ArqHex\Collects\application\CollectQueryAll\CollectQueryAll.cs" />
+    <Compile Include="ArqHex\Collects\application\CollectQueryByStatus\CollectQueryByStatus.cs" />
+    <Compile Include="ArqHex\Collects\application\CollectQueryByWorkerCode\CollectQueryByWorkerCode.cs" />
     <Compile Include="ArqHex\Collects\application\CollectSave\CollectSave.cs" />
     <Compile Include="ArqHex\Collects\application\CollectUpdate\CollectUpdate.cs" />
     <Compile Include="ArqHex\Collects\domain\Collect.cs" />
@@ -115,8 +118,34 @@
     <Compile Include="ArqHex\Collects\domain\CollectStatus.cs" />
     <Compile Include="ArqHex\Collects\infrastructure\CollectController.cs" />
     <Compile Include="ArqHex\Collects\infrastructure\OracleCollectRepository.cs" />
+    <Compile Include="ArqHex\Harvests\Application\HarvestQueryByStatus\HarvestQueryByStatus.cs" />
     <Compile Include="ArqHex\Harvests\Application\HarvestUpdate\HarvestUpdate.cs" />
     <Compile Include="ArqHex\Harvests\Domain\HarvestStatus.cs" />
+    <Compile Include="ArqHex\PaymentsDetails\application\PaymentDetailQueryAll\PaymentDetailQueryAll.cs" />
+    <Compile Include="ArqHex\PaymentsDetails\application\PaymentDetailQueryById\PaymentDetailQueryById.cs" />
+    <Compile Include="ArqHex\PaymentsDetails\application\PaymentDetailSave\PaymentDetailSave.cs" />
+    <Compile Include="ArqHex\PaymentsDetails\application\PaymentDetailUpdate\PaymentDetailUpdate.cs" />
+    <Compile Include="ArqHex\PaymentsDetails\domain\PaymentDetailEntity.cs" />
+    <Compile Include="ArqHex\PaymentsDetails\domain\PaymentDetailAmountToPay.cs" />
+    <Compile Include="ArqHex\PaymentsDetails\domain\PaymentDetailIdCollect.cs" />
+    <Compile Include="ArqHex\PaymentsDetails\domain\PaymentDetailId.cs" />
+    <Compile Include="ArqHex\PaymentsDetails\domain\PaymentDetailIdHarvest.cs" />
+    <Compile Include="ArqHex\PaymentsDetails\domain\PaymentDetailIdPlot.cs" />
+    <Compile Include="ArqHex\PaymentsDetails\domain\PaymentDetailIdPayment.cs" />
+    <Compile Include="ArqHex\PaymentsDetails\domain\PaymentDetailRepository.cs" />
+    <Compile Include="ArqHex\PaymentsDetails\domain\PaymentDetailWorkerCode.cs" />
+    <Compile Include="ArqHex\PaymentsDetails\infrastructure\OraclePaymentDetailRepository.cs" />
+    <Compile Include="ArqHex\PaymentsDetails\infrastructure\PaymentDetailController.cs" />
+    <Compile Include="ArqHex\Payments\application\PaymentQueryAll\PaymentQueryAll.cs" />
+    <Compile Include="ArqHex\Payments\application\PaymentSave\PaymentSave.cs" />
+    <Compile Include="ArqHex\Payments\application\PaymentUpdate\PaymentUpdate.cs" />
+    <Compile Include="ArqHex\Payments\domain\Payment.cs" />
+    <Compile Include="ArqHex\Payments\domain\PaymentDate.cs" />
+    <Compile Include="ArqHex\Payments\domain\PaymentId.cs" />
+    <Compile Include="ArqHex\Payments\domain\PaymentRepository.cs" />
+    <Compile Include="ArqHex\Payments\domain\PaymentWorkerCode.cs" />
+    <Compile Include="ArqHex\Payments\infrastructure\OraclePaymentRepository.cs" />
+    <Compile Include="ArqHex\Payments\infrastructure\PaymentController.cs" />
     <Compile Include="ArqHex\Plots\Application\PlotQueryAll\PlotQueryAll.cs" />
     <Compile Include="ArqHex\Plots\Application\PlotQueyById\PlotQueryById.cs" />
     <Compile Include="ArqHex\Plots\Domain\Plot.cs" />
@@ -142,10 +171,14 @@
     <Compile Include="ArqHex\Harvests\Infrastructure\HarvestController.cs" />
     <Compile Include="ArqHex\Harvests\Infrastructure\OracleHarvestRepository.cs" />
     <Compile Include="ArqHex\Share\DTO\HarvestDTO.cs" />
+    <Compile Include="ArqHex\Share\DTO\PaymentDetailDTO.cs" />
+    <Compile Include="ArqHex\Share\DTO\PaymentDTO.cs" />
     <Compile Include="ArqHex\Share\DTO\PlotDTO.cs" />
     <Compile Include="ArqHex\Share\Serializers\CollectMaper.cs" />
     <Compile Include="ArqHex\Share\Serializers\CollectorMaper.cs" />
-    <Compile Include="ArqHex\Share\Serializers\HarvestMapper.cs" />
+    <Compile Include="ArqHex\Share\Serializers\HarvestMaper.cs" />
+    <Compile Include="ArqHex\Share\Serializers\PaymentDetailMaper.cs" />
+    <Compile Include="ArqHex\Share\Serializers\PaymentMaper.cs" />
     <Compile Include="ArqHex\Share\Serializers\PlotMapper.cs" />
     <Compile Include="Views\ViewCollector\ViewCollector.cs">
       <SubType>Form</SubType>
@@ -347,11 +380,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ArqHex\Collects\application\CollectQueryIn\" />
-    <Folder Include="ArqHex\Payments\application\PaymentQueryAll\" />
-    <Folder Include="ArqHex\Payments\application\PaymentSave\" />
-    <Folder Include="ArqHex\Payments\application\PaymentUpdate\" />
-    <Folder Include="ArqHex\Payments\domain\" />
-    <Folder Include="ArqHex\Payments\infrastructure\" />
     <Folder Include="bin\Release\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

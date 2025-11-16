@@ -1,4 +1,5 @@
-﻿using CAFEPAY.ArqHex.Collects.domain;
+﻿using CAFEPAY.ArqHex.Collectors.domain;
+using CAFEPAY.ArqHex.Collects.domain;
 using CAFEPAY.ArqHex.Share;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,14 @@ namespace CAFEPAY.ArqHex.Collects.infrastructure
         public List<Collect> listCollects()
         {
             return AppServices.CollectServices.query.execute();
+        }
+        public List<Collect> listCollectByStatus(int isCountable, int status, long idPlot, long idHarvest)
+        {
+            return AppServices.CollectServices.queryByStatus.execute(isCountable, status, idPlot, idHarvest);
+        }
+        public List<Collect> listCollectByWorkerCode(int isCountable, string workerCode, long idPlot, long idHarvest)
+        {
+            return AppServices.CollectServices.queryByWorkerCode.execute(isCountable, workerCode, idPlot, idHarvest);
         }
     }
 }

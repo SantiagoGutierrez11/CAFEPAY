@@ -9,7 +9,7 @@ namespace CAFEPAY.ArqHex.Collectors.application.CollectorQueryByStatus
 {
     public class CollectorQueryByStatus
     {
-        private readonly domain.CollectorRepository collectorRepository;
+        private readonly CollectorRepository collectorRepository;
         public CollectorQueryByStatus(CollectorRepository _collectorRepository)
         {
             collectorRepository = _collectorRepository;

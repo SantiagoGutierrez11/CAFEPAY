@@ -15,13 +15,13 @@ namespace CAFEPAY.ArqHex.Collects.domain
         public CollectDate date { get; }
         public CollectedKilos kilos { get; }
         public CollectStatus status { get; }
-        public CollectorAmountToPaid amountToPaid { get; } 
+        public CollectAmountToPaid amountToPaid { get; } 
         public CollectIsCountable isCountable { get; }
         public CollectIdPlot plotId { get; }
 
         public Collect(CollectId _collectId, CollectWorkerCode _collectWorkerCode,
             CollectIdHarvest _collecharvestId, CollectDate _collectDate, CollectedKilos _collectedKilos,
-            CollectStatus collectStatus, CollectorAmountToPaid collectAmountToPaidValue, CollectIdPlot collectIdPlot, CollectIsCountable collectIscountable) 
+            CollectStatus collectStatus, CollectAmountToPaid collectAmountToPaidValue, CollectIdPlot collectIdPlot, CollectIsCountable collectIscountable) 
         {
             this.id = _collectId;
             this.collectorWorkerCode = _collectWorkerCode;

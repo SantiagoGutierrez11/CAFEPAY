@@ -23,7 +23,7 @@ namespace CAFEPAY.ArqHex.Collects.application.CollectSave
             CollectedKilos collectedKilos = new CollectedKilos(_collectedKilos);
             CollectIdHarvest collectIdHarvest = new CollectIdHarvest(_collectIdHarvest);
             CollectStatus collectStatus = new CollectStatus(_collectStatus);
-            CollectorAmountToPaid collectAmountToPaidValue = new CollectorAmountToPaid(_collectAmountToPaidValue);
+            CollectAmountToPaid collectAmountToPaidValue = new CollectAmountToPaid(_collectAmountToPaidValue);
             CollectIsCountable collectIscountable = new CollectIsCountable(_collectIsCountable);
             CollectIdPlot collectIdPlot = new CollectIdPlot(_collectIdPlot);
 
