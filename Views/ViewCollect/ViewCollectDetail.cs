@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CAFEPAY.ArqHex.Share.DTO;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,12 +13,31 @@ namespace CAFEPAY.Views.ViewCollect
 {
     public partial class ViewCollectDetail : Form
     {
-        public ViewCollectDetail()
+        private CollectorDTO collectorRegister;
+        private HarvestDTO harvestRegister;
+        public ViewCollectDetail(HarvestDTO _harvestRegister, CollectorDTO _collectorRegister)
         {
             InitializeComponent();
+            this.harvestRegister = _harvestRegister;
+            this.collectorRegister = _collectorRegister;
+            loadData();
+        }
+
+        public void loadData()
+        {
+            textBoxIdHarvest.Text = harvestRegister.id.ToString();
+            textBoxPlotName.Text = harvestRegister.plotName;
+            textBoxWorkerName.Text = collectorRegister.firstName + " " + collectorRegister.lastName;
+            textBoxWorkerCode.Text = collectorRegister.workerCode;
+            textBoxIdWorker.Text = collectorRegister.id.ToString();
         }
 
         private void ViewCollectDetail_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label10_Click(object sender, EventArgs e)
         {
 
         }

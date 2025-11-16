@@ -18,10 +18,10 @@ namespace CAFEPAY.ArqHex.Collects.application.CollectUpdate
 
         public void execute(long _oldId, long _collectId, string _collectWorkerCode, DateTime _collectDate,
                            decimal _collectedKilos, long _collectIdHarvest, 
-                           int _collectStatus, long _collectAmountToPaidValue, long _collectIdPlot, int _collectIsCountable)
+                           int _collectStatus, decimal _collectAmountToPaidValue, long _collectIdPlot, int _collectIsCountable)
         {
             CollectId collectId = new CollectId(_collectId);
-            CollectWorkerCode collectCollectorId = new CollectWorkerCode(_collectWorkerCode);
+            CollectWorkerCode collectWorkerCode = new CollectWorkerCode(_collectWorkerCode);
             CollectDate collectDate = new CollectDate(_collectDate);
             CollectedKilos collectedKilos = new CollectedKilos(_collectedKilos);
             CollectIdHarvest collectIdHarvest = new CollectIdHarvest(_collectIdHarvest);
@@ -31,7 +31,7 @@ namespace CAFEPAY.ArqHex.Collects.application.CollectUpdate
             CollectIsCountable collectIscountable = new CollectIsCountable(_collectIsCountable); 
             
 
-            Collect collect = new Collect(collectId, collectCollectorId,
+            Collect collect = new Collect(collectId, collectWorkerCode,
                                           collectIdHarvest, collectDate, collectedKilos,
                                           collectStatus, collectAmountToPaidValue, collectIdPlot, collectIscountable);
 

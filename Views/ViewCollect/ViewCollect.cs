@@ -25,6 +25,8 @@ namespace CAFEPAY.Views.ViewCollect
         private Plot plot;
         private List<Collect> collects;
         private List<CollectDTO> collectsDTO;
+        private HarvestDTO harvestRegister;
+        private CollectorDTO collectorRegister;
 
         public ViewCollect()
         {
@@ -105,7 +107,7 @@ namespace CAFEPAY.Views.ViewCollect
                     HeaderText = "Monto a Pagar",
                     DataPropertyName = "amountToPaid",
                     Width = 120,
-                    DefaultCellStyle = new DataGridViewCellStyle { Alignment = DataGridViewContentAlignment.MiddleRight, Format = "C0" }
+                    DefaultCellStyle = new DataGridViewCellStyle { Alignment = DataGridViewContentAlignment.MiddleRight, Format = "C2" }
                 });
 
                 dgvCollects.Columns.Add(new DataGridViewTextBoxColumn
@@ -133,7 +135,7 @@ namespace CAFEPAY.Views.ViewCollect
 
         private void button1_Click(object sender, EventArgs e)
         {
-            ViewCollectDetail viewCollectDetail = new ViewCollectDetail();
+            ViewCollectDetail viewCollectDetail = new ViewCollectDetail(harvestRegister, collectorRegister);
             viewCollectDetail.Owner = this;
             viewCollectDetail.Show();
             this.Hide();
@@ -156,6 +158,7 @@ namespace CAFEPAY.Views.ViewCollect
             if (cmbHarvest.SelectedItem is HarvestDTO selectedHarvest && selectedHarvest.id != null)
             {
                 loadCollectors(selectedHarvest.idPlot, selectedHarvest.id.Value);
+                harvestRegister = selectedHarvest;
             }
             else
             {
@@ -258,6 +261,7 @@ namespace CAFEPAY.Views.ViewCollect
                     collects = AppServices.CollectServices.queryByWorkerCode.execute(1, selectedCollector.workerCode, selectedHarvest.idPlot, selectedHarvest.id);
                     collectsDTO = CollectMaper.ToDTOList(collects);
                     dgvCollects.DataSource = collectsDTO;
+                    collectorRegister = selectedCollector;
                 }
             }
         }

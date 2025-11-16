@@ -22,6 +22,7 @@ namespace CAFEPAY.ArqHex.Share.Serializers
                 harvestId = c.harvestId.collectIdHarvest,
                 collectDate = c.date.collectDate,
                 collectedKilos = c.kilos.collectedKilos,
+                amountToPaid = c.amountToPaid.collectAmountToPaidValue,
                 status = c.status.collectStatus,
                 statusText = c.status.collectStatus == 0 ? "Zero" :
                              c.status.collectStatus == 1 ? "Registrado" :

@@ -216,7 +216,7 @@ UPDATE COLLECT
             using (var connection = new OracleConnection(connectionString))
             {
                 connection.Open();
-                const string query = "SELECT COLLECT_ID, COLLECTOR_ID, COLLECT_DATE, COLLECTED_KILOS, HARVEST_ID, STATUS, PAID FROM COLLECT ORDER BY COLLECT_ID";
+                const string query = "SELECT COLLECT_ID, WORKER_CODE, COLLECTDATE, KILOS, IDHARVEST, STATUS_ID, AMOUNT_TO_PAY, IS_COUNTABLE, IDPLOT FROM COLLECT ";
 
                 using (var command = new OracleCommand(query, connection))
                 using (var reader = command.ExecuteReader())
@@ -224,7 +224,7 @@ UPDATE COLLECT
                     while (reader.Read())
                     {
                         var collectId = new CollectId(reader.GetInt64(0));
-                        var collectCollectorId = new CollectWorkerCode(reader.GetString(0));
+                        var collectWorkerCode = new CollectWorkerCode(reader.GetString(0));
                         var collectDate = new CollectDate(reader.GetDateTime(2));
                         var collectedKilos = new CollectedKilos(reader.GetDecimal(3));
                         var collectIdHarvest = new CollectIdHarvest(reader.GetInt64(4));
@@ -233,7 +233,7 @@ UPDATE COLLECT
                         var collectIscountable = new CollectIsCountable(reader.GetInt32(8));
                         var collectIdPlot = new CollectIdPlot(reader.GetInt64(9));
 
-                        var collect = new Collect(collectId, collectCollectorId,
+                        var collect = new Collect(collectId, collectWorkerCode,
                                                   collectIdHarvest, collectDate, collectedKilos,
                                                   collectStatus, collectAmountToPaidValue, collectIdPlot,collectIscountable );
                         collects.Add(collect);
