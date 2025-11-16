@@ -20,7 +20,7 @@ namespace CAFEPAY.ArqHex.Collectors.infrastructure
             if (collector == null) throw new ArgumentNullException(nameof(collector));
 
             const string sql = @"
-        INSERT INTO ADMINCAFEPAY.COLLECTOR (WORKER_CODE, ID, FIRST_NAME, LAST_NAME, PHONE, STATUS_ID)
+        INSERT INTO COLLECTOR (WORKER_CODE, ID, FIRST_NAME, LAST_NAME, PHONE, STATUS_ID)
         VALUES (:p_worker_code, :p_id, :p_first_name, :p_last_name, :p_phone, :p_status_id)";
 
             using (var connection = new OracleConnection(connectionString))
@@ -58,7 +58,7 @@ namespace CAFEPAY.ArqHex.Collectors.infrastructure
             if (collector == null) throw new ArgumentNullException(nameof(collector));
             if (string.IsNullOrWhiteSpace(oldId.ToString())) throw new ArgumentException("oldId es requerido", nameof(oldId));
             const string sql = @"
-UPDATE ADMINCAFEPAY.COLLECTOR
+UPDATE COLLECTOR
    SET FIRST_NAME = :p_first_name,
        LAST_NAME  = :p_last_name,
        PHONE      = :p_phone,
@@ -113,7 +113,7 @@ UPDATE ADMINCAFEPAY.COLLECTOR
             using (var connection = new OracleConnection(connectionString))
             {
                 connection.Open();
-                const string query = "SELECT WORKER_CODE, ID, FIRST_NAME, LAST_NAME, PHONE, STATUS_ID FROM ADMINCAFEPAY.COLLECTOR ORDER BY WORKER_CODE";
+                const string query = "SELECT WORKER_CODE, ID, FIRST_NAME, LAST_NAME, PHONE, STATUS_ID FROM COLLECTOR ORDER BY WORKER_CODE";
 
                 using (var command = new OracleCommand(query, connection))
                 using (var reader = command.ExecuteReader())
@@ -141,7 +141,7 @@ UPDATE ADMINCAFEPAY.COLLECTOR
             using (var connection = new OracleConnection(connectionString))
             {
                 connection.Open();
-                const string query = "SELECT WORKER_CODE, ID, FIRST_NAME, LAST_NAME, PHONE, STATUS_ID FROM ADMINCAFEPAY.COLLECTOR WHERE STATUS_ID = :p_status_id ORDER BY WORKER_CODE";
+                const string query = "SELECT WORKER_CODE, ID, FIRST_NAME, LAST_NAME, PHONE, STATUS_ID FROM COLLECTOR WHERE STATUS_ID = :p_status_id ORDER BY WORKER_CODE";
                 using (var command = new OracleCommand(query, connection))
                 {
                     command.Parameters.Add(new OracleParameter("p_status_id", OracleDbType.Int32, status, ParameterDirection.Input));

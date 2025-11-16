@@ -23,9 +23,9 @@ namespace CAFEPAY.ArqHex.Harvests.Domain
                 throw new ArgumentException("Harvest price per kilo must be greater than zero");
             }
 
-            if (this.pricePerKiloValue > 999999.99m)
+            if (this.pricePerKiloValue > 3000 || this.pricePerKiloValue < 700)
             {
-                throw new ArgumentException("Harvest price per kilo is unrealistically high");
+                throw new ArgumentException("El precio debe estar entre los 700 - 3000 COP");
             }
         }
 

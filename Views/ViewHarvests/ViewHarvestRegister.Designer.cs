@@ -36,6 +36,7 @@
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnDecline = new System.Windows.Forms.Button();
             this.cmbIdPlot = new System.Windows.Forms.ComboBox();
+            this.btnBack = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -112,11 +113,22 @@
             this.cmbIdPlot.TabIndex = 8;
             this.cmbIdPlot.SelectedIndexChanged += new System.EventHandler(this.cmbIdPlot_SelectedIndexChanged);
             // 
+            // btnBack
+            // 
+            this.btnBack.Location = new System.Drawing.Point(12, 12);
+            this.btnBack.Name = "btnBack";
+            this.btnBack.Size = new System.Drawing.Size(75, 23);
+            this.btnBack.TabIndex = 9;
+            this.btnBack.Text = "Regresar";
+            this.btnBack.UseVisualStyleBackColor = true;
+            this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
+            // 
             // ViewHarvestRegister
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(416, 279);
+            this.Controls.Add(this.btnBack);
             this.Controls.Add(this.cmbIdPlot);
             this.Controls.Add(this.btnDecline);
             this.Controls.Add(this.btnAdd);
@@ -143,5 +155,6 @@
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Button btnDecline;
         private System.Windows.Forms.ComboBox cmbIdPlot;
+        private System.Windows.Forms.Button btnBack;
     }
 }

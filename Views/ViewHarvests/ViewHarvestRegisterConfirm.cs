@@ -51,7 +51,7 @@ namespace CAFEPAY.Views.ViewHarvest
                 MessageBox.Show($"Cosecha numero: {idHarvest}  registrada", "Confirmación", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 viewHarvest.loadHarvests();
                 viewHarvest.Show();
-                
+
                 this.Owner.Close();
                 this.Close();
             }
@@ -59,9 +59,18 @@ namespace CAFEPAY.Views.ViewHarvest
             {
                 MessageBox.Show(ex.Message, "Regla de negocio", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+            catch (ArgumentException argumentException)
+            {
+                MessageBox.Show(argumentException.Message, "Error de validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al registrar la cosecha: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
 
 
+            }
         }
     }
 }

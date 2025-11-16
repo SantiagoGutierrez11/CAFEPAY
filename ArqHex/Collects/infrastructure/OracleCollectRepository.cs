@@ -169,7 +169,7 @@ namespace CAFEPAY.ArqHex.Collects.infrastructure
             if (string.IsNullOrWhiteSpace(oldId.ToString())) throw new ArgumentException("oldId es requerido", nameof(oldId));
 
             const string sql = @"
-UPDATE ADMINCAFEPAY.COLLECT
+UPDATE COLLECT
    SET COLLECTOR_ID = :p_collector_id,
        COLLECT_DATE = :p_collect_date,
        COLLECTED_KILOS = :p_collected_kilos,
@@ -216,7 +216,7 @@ UPDATE ADMINCAFEPAY.COLLECT
             using (var connection = new OracleConnection(connectionString))
             {
                 connection.Open();
-                const string query = "SELECT COLLECT_ID, COLLECTOR_ID, COLLECT_DATE, COLLECTED_KILOS, HARVEST_ID, STATUS, PAID FROM ADMINCAFEPAY.COLLECT ORDER BY COLLECT_ID";
+                const string query = "SELECT COLLECT_ID, COLLECTOR_ID, COLLECT_DATE, COLLECTED_KILOS, HARVEST_ID, STATUS, PAID FROM COLLECT ORDER BY COLLECT_ID";
 
                 using (var command = new OracleCommand(query, connection))
                 using (var reader = command.ExecuteReader())
