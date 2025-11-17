@@ -273,6 +273,12 @@
     <Compile Include="Views\ViewOrigin\ViewMain.Designer.cs">
       <DependentUpon>ViewMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\ViewPayment\ViewMenuPayment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ViewPayment\ViewMenuPayment.Designer.cs">
+      <DependentUpon>ViewMenuPayment.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\ViewPayment\ViewPayment.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -339,6 +345,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\ViewOrigin\ViewMain.resx">
       <DependentUpon>ViewMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ViewPayment\ViewMenuPayment.resx">
+      <DependentUpon>ViewMenuPayment.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\ViewPayment\ViewPayment.resx">
       <DependentUpon>ViewPayment.cs</DependentUpon>

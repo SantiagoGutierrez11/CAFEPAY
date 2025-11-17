@@ -26,11 +26,13 @@ namespace CAFEPAY.Views.ViewPayment
         private CollectorDTO collectorPayment; // Recolector seleccionado para el pago
         private List<Collect> collects; // Lista de recolectas del dominio
         private List<CollectDTO> collectsDTO; // Lista de recolectas en formato DTO
-        public ViewPayment()
+        private Form viewMenuPayment; // Referencia al formulario del menú de pagos
+        public ViewPayment(Form _viewMenuPayment)
         {
             InitializeComponent(); // Inicializa los componentes del formulario
             loadHarvestComboBox(); // Carga el ComboBox de cosechas
             loadDgvCollects(); // Configura el DataGridView para mostrar las recolectas
+            this.viewMenuPayment = _viewMenuPayment;
         }
         public void loadDgvCollects()
         {
@@ -42,14 +44,15 @@ namespace CAFEPAY.Views.ViewPayment
                 dgvCollects.AllowUserToAddRows = false;
                 dgvCollects.ReadOnly = true;
                 dgvCollects.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-                dgvCollects.MultiSelect = false;
+ 
 
                 // === Configurar columnas manualmente ===
                 dgvCollects.Columns.Add(new DataGridViewTextBoxColumn
                 {
                     HeaderText = "Numero de recolecta",
                     DataPropertyName = "collectId",
-                    Width = 90
+                    Width = 90,
+                    SortMode = DataGridViewColumnSortMode.Automatic
                 });
 
                 dgvCollects.Columns.Add(new DataGridViewTextBoxColumn
@@ -57,7 +60,8 @@ namespace CAFEPAY.Views.ViewPayment
                     HeaderText = "Fecha Recolecta",
                     DataPropertyName = "collectDate",
                     Width = 120,
-                    DefaultCellStyle = new DataGridViewCellStyle { Format = "dd/MM/yyyy" }
+                    DefaultCellStyle = new DataGridViewCellStyle { Format = "dd/MM/yyyy" },
+                    SortMode = DataGridViewColumnSortMode.Automatic
                 });
 
                 dgvCollects.Columns.Add(new DataGridViewTextBoxColumn
@@ -65,7 +69,8 @@ namespace CAFEPAY.Views.ViewPayment
                     HeaderText = "Kilos Recolectados",
                     DataPropertyName = "collectedKilos",
                     Width = 130,
-                    DefaultCellStyle = new DataGridViewCellStyle { Alignment = DataGridViewContentAlignment.MiddleRight, Format = "N2" }
+                    DefaultCellStyle = new DataGridViewCellStyle { Alignment = DataGridViewContentAlignment.MiddleRight, Format = "N2" },
+                    SortMode = DataGridViewColumnSortMode.Automatic
                 });
 
                 dgvCollects.Columns.Add(new DataGridViewTextBoxColumn
@@ -73,14 +78,16 @@ namespace CAFEPAY.Views.ViewPayment
                     HeaderText = "Monto a Pagar",
                     DataPropertyName = "amountToPaid",
                     Width = 120,
-                    DefaultCellStyle = new DataGridViewCellStyle { Alignment = DataGridViewContentAlignment.MiddleRight, Format = "C2" }
+                    DefaultCellStyle = new DataGridViewCellStyle { Alignment = DataGridViewContentAlignment.MiddleRight, Format = "C2" },
+                    SortMode = DataGridViewColumnSortMode.Automatic
                 });
 
                 dgvCollects.Columns.Add(new DataGridViewTextBoxColumn
                 {
                     HeaderText = "Estado",
                     DataPropertyName = "statusText",
-                    Width = 100
+                    Width = 100,
+                    SortMode = DataGridViewColumnSortMode.Automatic
                 });
             }
             catch (Exception ex)
@@ -205,6 +212,7 @@ namespace CAFEPAY.Views.ViewPayment
             {
                 loadCollectors(selectedHarvest.idPlot, selectedHarvest.id.Value);
                 harvestPayment = selectedHarvest;
+                dgvCollects.DataSource = null;
             }
             else
             {
@@ -231,10 +239,80 @@ namespace CAFEPAY.Views.ViewPayment
                 {
                     collects = AppServices.CollectServices.queryByStatusAndWorkerCode.execute(1, selectedCollector.workerCode, 1, selectedHarvest.idPlot, selectedHarvest.id.Value);
                     collectsDTO = CollectMaper.ToDTOList(collects);
-                    dgvCollects.DataSource = collectsDTO;
+                    var sortableList = new BindingList<CollectDTO>(collectsDTO);
+                    dgvCollects.DataSource = sortableList;
+                    dgvCollects.ClearSelection();
+                    ReEnableSorting();
+                    dgvCollects.CurrentCell = null;
                     collectorPayment = selectedCollector;
                 }
             }
         }
+
+        private void btnCalculateTotalPayment_Click(object sender, EventArgs e)
+        {
+            if (harvestPayment == null)
+            {
+                MessageBox.Show("Debe seleccionar una cosecha antes de calcular el pago.",
+                                "Advertencia",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                return;
+            }
+            if (collectorPayment == null)
+            {
+                MessageBox.Show("Debe seleccionar un recolector antes de calcular el pago.",
+                                "Advertencia",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                return;
+            }
+
+            ViewPaymentConfirm viewPaymentConfirm = new ViewPaymentConfirm(harvestPayment, collectorPayment, collectsDTO);
+            viewPaymentConfirm.Owner = this;
+            viewPaymentConfirm.Show();
+            this.Hide();
+        }
+
+        private void btnPaymentPartial_Click(object sender, EventArgs e)
+        {
+            List<CollectDTO> collectsSelected = new List<CollectDTO>();
+            foreach (DataGridViewRow row in dgvCollects.SelectedRows)
+            {
+                // Obtener el CollectDTO directamente del item enlazado
+                if (row.DataBoundItem is CollectDTO collect)
+                {
+                    CollectDTO collectItem = new CollectDTO()
+                    {
+                        collectDate = collect.collectDate,
+                        collectedKilos = collect.collectedKilos,
+                        collectId = collect.collectId,
+                        collectorWorkerCode = collect.collectorWorkerCode,
+                        isCountable = collect.isCountable,
+                        amountToPaid = collect.amountToPaid,
+                        harvestId = collect.harvestId,
+                        plotId = collect.plotId,
+                        status = collect.status,
+                        statusText = collect.statusText
+                    };
+                    collectsSelected.Add(collectItem);
+                }
+            }
+            ViewPaymentConfirm viewPaymentConfirm = new ViewPaymentConfirm(harvestPayment, collectorPayment, collectsSelected);
+            viewPaymentConfirm.Owner = this;
+            this.Hide();
+            viewPaymentConfirm.Show();
+            
+        }
+        private void ReEnableSorting() // Rehabilita la funcionalidad de ordenamiento en las columnas del DataGridView
+        {
+            foreach (DataGridViewColumn column in dgvCollects.Columns)
+            {
+                column.SortMode = DataGridViewColumnSortMode.Automatic;
+            }
+        }
+
     }
+
 }
+

@@ -1,4 +1,5 @@
 ﻿using CAFEPAY.Views.ViewCollector;
+using CAFEPAY.Views.ViewPayment;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -44,11 +45,10 @@ namespace CAFEPAY.Views.ViewOrigin
 
         private void btnPayments_Click(object sender, EventArgs e)
         {
-            ViewPayment.ViewPayment viewPayment = new ViewPayment.ViewPayment();
+            ViewMenuPayment viewMenuPayment = new ViewMenuPayment();
+            viewMenuPayment.Owner = this;
+            viewMenuPayment.Show();
             this.Hide();
-            viewPayment.Owner = this;
-            viewPayment.Show();
-
         }
     }
 }

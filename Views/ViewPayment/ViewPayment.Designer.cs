@@ -30,7 +30,7 @@
         {
             this.dgvCollects = new System.Windows.Forms.DataGridView();
             this.btnCalculateTotalPayment = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnPaymentPartial = new System.Windows.Forms.Button();
             this.cmbHarvests = new System.Windows.Forms.ComboBox();
             this.lbHarvest = new System.Windows.Forms.Label();
             this.lbCollector = new System.Windows.Forms.Label();
@@ -40,9 +40,16 @@
             // 
             // dgvCollects
             // 
+            this.dgvCollects.AllowUserToAddRows = false;
+            this.dgvCollects.AllowUserToDeleteRows = false;
+            this.dgvCollects.AllowUserToOrderColumns = true;
+            this.dgvCollects.AllowUserToResizeColumns = false;
+            this.dgvCollects.AllowUserToResizeRows = false;
             this.dgvCollects.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvCollects.Location = new System.Drawing.Point(27, 118);
             this.dgvCollects.Name = "dgvCollects";
+            this.dgvCollects.ReadOnly = true;
+            this.dgvCollects.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvCollects.Size = new System.Drawing.Size(740, 290);
             this.dgvCollects.TabIndex = 0;
             // 
@@ -54,15 +61,17 @@
             this.btnCalculateTotalPayment.TabIndex = 1;
             this.btnCalculateTotalPayment.Text = "Cacular pago total";
             this.btnCalculateTotalPayment.UseVisualStyleBackColor = true;
+            this.btnCalculateTotalPayment.Click += new System.EventHandler(this.btnCalculateTotalPayment_Click);
             // 
-            // button1
+            // btnPaymentPartial
             // 
-            this.button1.Location = new System.Drawing.Point(189, 76);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(146, 36);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "Calcular Pago Seleccionado";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnPaymentPartial.Location = new System.Drawing.Point(189, 76);
+            this.btnPaymentPartial.Name = "btnPaymentPartial";
+            this.btnPaymentPartial.Size = new System.Drawing.Size(146, 36);
+            this.btnPaymentPartial.TabIndex = 2;
+            this.btnPaymentPartial.Text = "Calcular Pago Seleccionado";
+            this.btnPaymentPartial.UseVisualStyleBackColor = true;
+            this.btnPaymentPartial.Click += new System.EventHandler(this.btnPaymentPartial_Click);
             // 
             // cmbHarvests
             // 
@@ -109,7 +118,7 @@
             this.Controls.Add(this.lbCollector);
             this.Controls.Add(this.lbHarvest);
             this.Controls.Add(this.cmbHarvests);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnPaymentPartial);
             this.Controls.Add(this.btnCalculateTotalPayment);
             this.Controls.Add(this.dgvCollects);
             this.Name = "ViewPayment";
@@ -125,7 +134,7 @@
 
         private System.Windows.Forms.DataGridView dgvCollects;
         private System.Windows.Forms.Button btnCalculateTotalPayment;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnPaymentPartial;
         private System.Windows.Forms.ComboBox cmbHarvests;
         private System.Windows.Forms.Label lbHarvest;
         private System.Windows.Forms.Label lbCollector;
