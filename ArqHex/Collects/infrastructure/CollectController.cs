@@ -41,5 +41,9 @@ namespace CAFEPAY.ArqHex.Collects.infrastructure
         {
             return AppServices.CollectServices.queryByWorkerCode.execute(isCountable, workerCode, idPlot, idHarvest);
         }
+        public List<Collect> listCollectByStatusAndWorkerCode(int isCountable, string workerCode,  int status, long idPlot, long? idHarvest)
+        {
+            return AppServices.CollectServices.queryByStatusAndWorkerCode.execute(isCountable, workerCode, status, idPlot, idHarvest);
+        }
     }
 }

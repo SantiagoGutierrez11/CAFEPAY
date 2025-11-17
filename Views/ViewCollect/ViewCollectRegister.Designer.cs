@@ -1,6 +1,6 @@
 ﻿namespace CAFEPAY.Views.ViewCollect
 {
-    partial class ViewCollectDetail
+    partial class ViewCollectRegister
     {
         /// <summary>
         /// Required designer variable.
@@ -28,12 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.dtpCollectDate = new System.Windows.Forms.DateTimePicker();
             this.lb = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBoxKilos = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -47,14 +45,19 @@
             this.textBoxIdWorker = new System.Windows.Forms.TextBox();
             this.textBoxWorkerName = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
+            this.btnRegister = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.textBoxIdPlot = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // dateTimePicker1
+            // dtpCollectDate
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(233, 246);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
-            this.dateTimePicker1.TabIndex = 1;
+            this.dtpCollectDate.Enabled = false;
+            this.dtpCollectDate.Location = new System.Drawing.Point(233, 246);
+            this.dtpCollectDate.Name = "dtpCollectDate";
+            this.dtpCollectDate.Size = new System.Drawing.Size(200, 20);
+            this.dtpCollectDate.TabIndex = 1;
             // 
             // lb
             // 
@@ -65,12 +68,12 @@
             this.lb.TabIndex = 2;
             this.lb.Text = "Fecha de recolección";
             // 
-            // textBox1
+            // textBoxKilos
             // 
-            this.textBox1.Location = new System.Drawing.Point(233, 288);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(200, 20);
-            this.textBox1.TabIndex = 3;
+            this.textBoxKilos.Location = new System.Drawing.Point(233, 288);
+            this.textBoxKilos.Name = "textBoxKilos";
+            this.textBoxKilos.Size = new System.Drawing.Size(200, 20);
+            this.textBoxKilos.TabIndex = 3;
             // 
             // label1
             // 
@@ -80,23 +83,6 @@
             this.label1.Size = new System.Drawing.Size(98, 13);
             this.label1.TabIndex = 4;
             this.label1.Text = "Kilos Recolectados";
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(233, 327);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 5;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(117, 330);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(108, 13);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "Pagado / No pagado";
             // 
             // label3
             // 
@@ -130,7 +116,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(44, 116);
+            this.label6.Location = new System.Drawing.Point(44, 142);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(103, 13);
             this.label6.TabIndex = 10;
@@ -148,7 +134,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(319, 111);
+            this.label8.Location = new System.Drawing.Point(319, 116);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(94, 13);
             this.label8.TabIndex = 12;
@@ -157,7 +143,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(319, 136);
+            this.label9.Location = new System.Drawing.Point(319, 141);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(47, 13);
             this.label9.TabIndex = 13;
@@ -172,7 +158,7 @@
             // 
             // textBoxIdHarvest
             // 
-            this.textBoxIdHarvest.Location = new System.Drawing.Point(153, 113);
+            this.textBoxIdHarvest.Location = new System.Drawing.Point(153, 139);
             this.textBoxIdHarvest.Name = "textBoxIdHarvest";
             this.textBoxIdHarvest.Size = new System.Drawing.Size(137, 20);
             this.textBoxIdHarvest.TabIndex = 15;
@@ -186,14 +172,14 @@
             // 
             // textBoxIdWorker
             // 
-            this.textBoxIdWorker.Location = new System.Drawing.Point(419, 108);
+            this.textBoxIdWorker.Location = new System.Drawing.Point(419, 113);
             this.textBoxIdWorker.Name = "textBoxIdWorker";
             this.textBoxIdWorker.Size = new System.Drawing.Size(137, 20);
             this.textBoxIdWorker.TabIndex = 17;
             // 
             // textBoxWorkerName
             // 
-            this.textBoxWorkerName.Location = new System.Drawing.Point(372, 133);
+            this.textBoxWorkerName.Location = new System.Drawing.Point(372, 138);
             this.textBoxWorkerName.Name = "textBoxWorkerName";
             this.textBoxWorkerName.Size = new System.Drawing.Size(137, 20);
             this.textBoxWorkerName.TabIndex = 18;
@@ -202,18 +188,57 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(230, 205);
+            this.label10.Location = new System.Drawing.Point(230, 214);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(120, 13);
-            this.label10.TabIndex = 19;
+            this.label10.TabIndex = 20;
             this.label10.Text = "Registrar Recolecta";
-            this.label10.Click += new System.EventHandler(this.label10_Click);
             // 
-            // ViewCollectDetail
+            // btnRegister
+            // 
+            this.btnRegister.Location = new System.Drawing.Point(215, 325);
+            this.btnRegister.Name = "btnRegister";
+            this.btnRegister.Size = new System.Drawing.Size(75, 23);
+            this.btnRegister.TabIndex = 21;
+            this.btnRegister.Text = "Registar";
+            this.btnRegister.UseVisualStyleBackColor = true;
+            this.btnRegister.Click += new System.EventHandler(this.btnRegister_Click);
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.Location = new System.Drawing.Point(349, 325);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.TabIndex = 22;
+            this.btnCancel.Text = "Cancelar";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // textBoxIdPlot
+            // 
+            this.textBoxIdPlot.Location = new System.Drawing.Point(100, 114);
+            this.textBoxIdPlot.Name = "textBoxIdPlot";
+            this.textBoxIdPlot.Size = new System.Drawing.Size(137, 20);
+            this.textBoxIdPlot.TabIndex = 24;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(43, 117);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(51, 13);
+            this.label2.TabIndex = 23;
+            this.label2.Text = "Id de lote";
+            // 
+            // ViewCollectRegister
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(597, 401);
+            this.Controls.Add(this.textBoxIdPlot);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.btnRegister);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.textBoxWorkerName);
             this.Controls.Add(this.textBoxIdWorker);
@@ -227,13 +252,11 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.textBoxKilos);
             this.Controls.Add(this.lb);
-            this.Controls.Add(this.dateTimePicker1);
-            this.Name = "ViewCollectDetail";
+            this.Controls.Add(this.dtpCollectDate);
+            this.Name = "ViewCollectRegister";
             this.Text = "ViewCollectDetail";
             this.Load += new System.EventHandler(this.ViewCollectDetail_Load);
             this.ResumeLayout(false);
@@ -243,12 +266,10 @@
 
         #endregion
 
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.DateTimePicker dtpCollectDate;
         private System.Windows.Forms.Label lb;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textBoxKilos;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
@@ -262,5 +283,9 @@
         private System.Windows.Forms.TextBox textBoxIdWorker;
         private System.Windows.Forms.TextBox textBoxWorkerName;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button btnRegister;
+        private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.TextBox textBoxIdPlot;
+        private System.Windows.Forms.Label label2;
     }
 }

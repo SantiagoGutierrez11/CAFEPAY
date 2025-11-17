@@ -38,18 +38,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CAFEPAY.ArqHex.Collects.application.CollectQueryByWorkerCode;
+using CAFEPAY.ArqHex.Collects.application.CollectQueryByStatusAndWorkerCode;
 
 namespace CAFEPAY.ArqHex.Share
 {
     public class AppServices
     {
-        private static readonly string connectionstring = "User Id=adminCAFEPAY;Password=adminCAFEPAY;Data Source=localhost:1521/xe;";
-        private static readonly CollectorRepository collectorRepository = new OracleCollectorRepository(connectionstring);
-        private static readonly HarvestRepository harvestRepository = new OracleHarvestRepository(connectionstring);
-        private static readonly PlotRepository plotRepository = new OraclePlotRepository(connectionstring);
-        private static readonly CollectRepository collectRepository = new OracleCollectRepository(connectionstring);
-        private static readonly PaymentsDetailsRepository PaymentsDetailsRepository = new OraclePaymentsDetailsRepository(connectionstring);
-        private static readonly PaymentRepository paymentRepository = new OraclePaymentRepository(connectionstring);
+        private static readonly string connectionString = "User Id=adminCAFEPAY;Password=adminCAFEPAY;Data Source=localhost:1521/xe;";
+        private static readonly CollectorRepository collectorRepository = new OracleCollectorRepository(connectionString);
+        private static readonly HarvestRepository harvestRepository = new OracleHarvestRepository(connectionString);
+        private static readonly PlotRepository plotRepository = new OraclePlotRepository(connectionString);
+        private static readonly CollectRepository collectRepository = new OracleCollectRepository(connectionString);
+        private static readonly PaymentsDetailsRepository PaymentsDetailsRepository = new OraclePaymentsDetailsRepository(connectionString);
+        private static readonly PaymentRepository paymentRepository = new OraclePaymentRepository(connectionString);
 
         public static class CollectorServices
         {
@@ -81,6 +82,7 @@ namespace CAFEPAY.ArqHex.Share
             public static CollectUpdate update = new CollectUpdate(collectRepository);
             public static CollectQueryByStatus queryByStatus = new CollectQueryByStatus(collectRepository);
             public static CollectQueryByWorkerCode queryByWorkerCode = new CollectQueryByWorkerCode(collectRepository);
+            public static CollectQueryByStatusAndWorkerCode queryByStatusAndWorkerCode = new CollectQueryByStatusAndWorkerCode(collectRepository);
         }
 
         public static class PaymentsDetailsServices

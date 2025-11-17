@@ -1,4 +1,10 @@
-﻿using System;
+﻿using CAFEPAY.ArqHex.Collectors.domain;
+using CAFEPAY.ArqHex.Collects.domain;
+using CAFEPAY.ArqHex.Harvests.Domain;
+using CAFEPAY.ArqHex.Share;
+using CAFEPAY.ArqHex.Share.DTO;
+using CAFEPAY.ArqHex.Share.Serializers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,14 +18,223 @@ namespace CAFEPAY.Views.ViewPayment
 {
     public partial class ViewPayment : Form
     {
+        private List<Harvest> harvests; // Lista de cosechas del dominio
+        private List<HarvestDTO> harvestsDTO; // Lista de cosechas en formato DTO
+        private List<Collector> collectors; // Lista de recolectores del dominio
+        private List<CollectorDTO> collectorsDTO; // Lista de recolectores en formato DTO
+        private HarvestDTO harvestPayment; // Cosecha seleccionada para el pago
+        private CollectorDTO collectorPayment; // Recolector seleccionado para el pago
+        private List<Collect> collects; // Lista de recolectas del dominio
+        private List<CollectDTO> collectsDTO; // Lista de recolectas en formato DTO
         public ViewPayment()
         {
-            InitializeComponent();
+            InitializeComponent(); // Inicializa los componentes del formulario
+            loadHarvestComboBox(); // Carga el ComboBox de cosechas
+            loadDgvCollects(); // Configura el DataGridView para mostrar las recolectas
         }
+        public void loadDgvCollects()
+        {
+            try
+            {
+                // Limpiar configuración previa
+                dgvCollects.Columns.Clear();
+                dgvCollects.AutoGenerateColumns = false;
+                dgvCollects.AllowUserToAddRows = false;
+                dgvCollects.ReadOnly = true;
+                dgvCollects.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                dgvCollects.MultiSelect = false;
 
+                // === Configurar columnas manualmente ===
+                dgvCollects.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    HeaderText = "Numero de recolecta",
+                    DataPropertyName = "collectId",
+                    Width = 90
+                });
+
+                dgvCollects.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    HeaderText = "Fecha Recolecta",
+                    DataPropertyName = "collectDate",
+                    Width = 120,
+                    DefaultCellStyle = new DataGridViewCellStyle { Format = "dd/MM/yyyy" }
+                });
+
+                dgvCollects.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    HeaderText = "Kilos Recolectados",
+                    DataPropertyName = "collectedKilos",
+                    Width = 130,
+                    DefaultCellStyle = new DataGridViewCellStyle { Alignment = DataGridViewContentAlignment.MiddleRight, Format = "N2" }
+                });
+
+                dgvCollects.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    HeaderText = "Monto a Pagar",
+                    DataPropertyName = "amountToPaid",
+                    Width = 120,
+                    DefaultCellStyle = new DataGridViewCellStyle { Alignment = DataGridViewContentAlignment.MiddleRight, Format = "C2" }
+                });
+
+                dgvCollects.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    HeaderText = "Estado",
+                    DataPropertyName = "statusText",
+                    Width = 100
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al configurar columnas del DataGridView: {ex.Message}",
+                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        public void loadCollectors(long idPlot, long idHarvest)
+        {
+
+            try
+            {
+                // 1. Obtener las recolectas zero (asociaciones primarias)
+                var collectsZero = AppServices.CollectServices.queryByStatus.execute(0, 0, idPlot, idHarvest);
+
+                if (collectsZero == null || collectsZero.Count == 0)
+                {
+                    cmbCollectors.DataSource = null;
+                    MessageBox.Show("No hay recolectores asociados a esta cosecha.",
+                                   "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                // 2. Extraer los workerCode de las recolectas
+                List<string> workerCodes = new List<string>();
+                foreach (var collect in collectsZero)
+                {
+                    if (!string.IsNullOrEmpty(collect.collectorWorkerCode.collectorWorkerCode))
+                    {
+                        workerCodes.Add(collect.collectorWorkerCode.collectorWorkerCode);
+                    }
+                }
+
+                // Verificar si hay códigos válidos
+                if (workerCodes.Count == 0)
+                {
+                    cmbCollectors.DataSource = null;
+                    MessageBox.Show("No se encontraron códigos de trabajadores válidos.",
+                                   "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                // 3. Crear string con los workerCodes (formato depende de tu queryIn)
+                // Asumiendo que necesitas algo como: "'CODE1','CODE2','CODE3'"
+                string workerCodesString = string.Join(",", workerCodes.Select(code => $"'{code}'"));
+
+                // 4. Consultar los recolectores
+                var collectors = AppServices.CollectorServices.queryByIn.execute(workerCodesString);
+
+                if (collectors == null || collectors.Count == 0)
+                {
+                    cmbCollectors.DataSource = null;
+                    MessageBox.Show("No se encontraron recolectores.",
+                                   "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+
+                // 5. Mapear a DTO si es necesario
+                var collectorsDTO = CollectorMaper.ToDTOList(collectors);
+
+                // Agregar opción por defecto
+                collectorsDTO.Insert(0, new CollectorDTO
+                {
+                    displayName = "-- Seleccione un recolector --",
+
+                });
+
+                //Mostrar ID + nombre + apellido
+                cmbCollectors.DataSource = null;
+                cmbCollectors.DataSource = collectorsDTO;
+                cmbCollectors.DisplayMember = "displayName";
+                cmbCollectors.ValueMember = null;
+                cmbCollectors.SelectedIndex = 0;
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar recolectores: {ex.Message}",
+                               "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        public void loadHarvestComboBox()
+        {
+            try
+            {
+                // Usar el nuevo caso de uso que ya filtra por status
+                harvests = AppServices.HarvestServices.queryByStatus.execute(1); // 1 = ACTIVO
+                if (harvests == null || harvests.Count == 0)
+                {
+                    return;
+                }
+                harvestsDTO = HarvestMaper.ToDTOList(harvests);
+                if (harvestsDTO != null && harvestsDTO.Count > 0)
+                {
+                    harvestsDTO.Insert(0, new HarvestDTO
+                    {
+                        harvestName = "-- Seleccione una cosecha --"
+                    });
+                    cmbHarvests.DataSource = null;
+                    cmbHarvests.DataSource = harvestsDTO;
+                    cmbHarvests.DisplayMember = "harvestName";
+                    cmbHarvests.ValueMember = null; // No se usa ValueMember
+                    cmbHarvests.SelectedIndex = 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar cosechas: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
         private void ViewPayment_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void cmbHarvests_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Obtener la cosecha seleccionada
+            if (cmbHarvests.SelectedItem is HarvestDTO selectedHarvest && selectedHarvest.id != null)
+            {
+                loadCollectors(selectedHarvest.idPlot, selectedHarvest.id.Value);
+                harvestPayment = selectedHarvest;
+            }
+            else
+            {
+                // Si seleccionó "-- Seleccione una cosecha --", limpiar el combo de recolectores
+                cmbCollectors.DataSource = null;
+            }
+        }
+
+        private void cmbCollectors_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (collects != null)
+            {
+                collects.Clear();
+            }
+            if (collectsDTO != null)
+            {
+                collectsDTO.Clear();
+            }
+
+            // agrega logica para cargar el dataGridView
+            if (cmbHarvests.SelectedItem is HarvestDTO selectedHarvest && selectedHarvest.harvestName != "-- Seleccione una cosecha --")
+            {
+                if (cmbCollectors.SelectedItem is CollectorDTO selectedCollector && selectedCollector.displayName != "-- Seleccione un recolector --")
+                {
+                    collects = AppServices.CollectServices.queryByStatusAndWorkerCode.execute(1, selectedCollector.workerCode, 1, selectedHarvest.idPlot, selectedHarvest.id.Value);
+                    collectsDTO = CollectMaper.ToDTOList(collects);
+                    dgvCollects.DataSource = collectsDTO;
+                    collectorPayment = selectedCollector;
+                }
+            }
         }
     }
 }

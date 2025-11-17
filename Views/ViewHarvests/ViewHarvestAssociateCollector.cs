@@ -59,6 +59,7 @@ namespace CAFEPAY.Views.ViewHarvests
                 textBoxPricePerKilo.Text = harvestDTO.pricePerKilo.ToString("C2");
                 // Fecha de inicio
                 textBoxStartDate.Text = harvestDTO.startDate.ToString("dd/MM/yyyy");
+                textBoxIdPlot.Text = plotDTO.idPlot.ToString();
             }
         }
 

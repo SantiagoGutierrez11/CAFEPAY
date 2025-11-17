@@ -18,7 +18,7 @@ namespace CAFEPAY.ArqHex.Collects.application.CollectUpdate
 
         public void execute(long _oldId, long _collectId, string _collectWorkerCode, DateTime _collectDate,
                            decimal _collectedKilos, long _collectIdHarvest, 
-                           int _collectStatus, decimal _collectAmountToPaidValue, long _collectIdPlot, int _collectIsCountable)
+                           int _collectStatus, decimal? _collectAmountToPaidValue, long _collectIdPlot, int _collectIsCountable)
         {
             CollectId collectId = new CollectId(_collectId);
             CollectWorkerCode collectWorkerCode = new CollectWorkerCode(_collectWorkerCode);

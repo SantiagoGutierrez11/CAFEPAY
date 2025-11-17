@@ -41,13 +41,15 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.btnBack = new System.Windows.Forms.Button();
+            this.textBoxIdPlot = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgCollectors)).BeginInit();
             this.SuspendLayout();
             // 
             // btnAssociate
             // 
             this.btnAssociate.Location = new System.Drawing.Point(292, 457);
-            this.btnAssociate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnAssociate.Margin = new System.Windows.Forms.Padding(2);
             this.btnAssociate.Name = "btnAssociate";
             this.btnAssociate.Size = new System.Drawing.Size(162, 46);
             this.btnAssociate.TabIndex = 0;
@@ -59,7 +61,7 @@
             // 
             this.dgCollectors.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgCollectors.Location = new System.Drawing.Point(20, 218);
-            this.dgCollectors.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dgCollectors.Margin = new System.Windows.Forms.Padding(2);
             this.dgCollectors.Name = "dgCollectors";
             this.dgCollectors.RowHeadersWidth = 51;
             this.dgCollectors.RowTemplate.Height = 24;
@@ -70,7 +72,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(58, 109);
+            this.label1.Location = new System.Drawing.Point(19, 109);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(67, 13);
@@ -81,7 +83,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(218, 109);
+            this.label2.Location = new System.Drawing.Point(274, 109);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(106, 13);
@@ -91,7 +93,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(552, 109);
+            this.label3.Location = new System.Drawing.Point(584, 109);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(82, 13);
@@ -101,7 +103,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(382, 109);
+            this.label4.Location = new System.Drawing.Point(438, 109);
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(77, 13);
@@ -110,17 +112,17 @@
             // 
             // textBoxPlotName
             // 
-            this.textBoxPlotName.Location = new System.Drawing.Point(59, 124);
-            this.textBoxPlotName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBoxPlotName.Location = new System.Drawing.Point(20, 124);
+            this.textBoxPlotName.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxPlotName.Name = "textBoxPlotName";
-            this.textBoxPlotName.Size = new System.Drawing.Size(120, 20);
+            this.textBoxPlotName.Size = new System.Drawing.Size(102, 20);
             this.textBoxPlotName.TabIndex = 6;
             this.textBoxPlotName.TextChanged += new System.EventHandler(this.textBoxNombreLote_TextChanged);
             // 
             // textBoxIdHarvest
             // 
-            this.textBoxIdHarvest.Location = new System.Drawing.Point(385, 124);
-            this.textBoxIdHarvest.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBoxIdHarvest.Location = new System.Drawing.Point(441, 124);
+            this.textBoxIdHarvest.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxIdHarvest.Name = "textBoxIdHarvest";
             this.textBoxIdHarvest.Size = new System.Drawing.Size(120, 20);
             this.textBoxIdHarvest.TabIndex = 7;
@@ -128,16 +130,16 @@
             // 
             // textBoxPricePerKilo
             // 
-            this.textBoxPricePerKilo.Location = new System.Drawing.Point(554, 124);
-            this.textBoxPricePerKilo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBoxPricePerKilo.Location = new System.Drawing.Point(586, 124);
+            this.textBoxPricePerKilo.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxPricePerKilo.Name = "textBoxPricePerKilo";
             this.textBoxPricePerKilo.Size = new System.Drawing.Size(120, 20);
             this.textBoxPricePerKilo.TabIndex = 8;
             // 
             // textBoxStartDate
             // 
-            this.textBoxStartDate.Location = new System.Drawing.Point(220, 124);
-            this.textBoxStartDate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBoxStartDate.Location = new System.Drawing.Point(276, 124);
+            this.textBoxStartDate.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxStartDate.Name = "textBoxStartDate";
             this.textBoxStartDate.Size = new System.Drawing.Size(120, 20);
             this.textBoxStartDate.TabIndex = 9;
@@ -174,11 +176,31 @@
             this.btnBack.UseVisualStyleBackColor = true;
             this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
             // 
+            // textBoxIdPlot
+            // 
+            this.textBoxIdPlot.Location = new System.Drawing.Point(146, 124);
+            this.textBoxIdPlot.Margin = new System.Windows.Forms.Padding(2);
+            this.textBoxIdPlot.Name = "textBoxIdPlot";
+            this.textBoxIdPlot.Size = new System.Drawing.Size(102, 20);
+            this.textBoxIdPlot.TabIndex = 14;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(145, 109);
+            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(39, 13);
+            this.label7.TabIndex = 13;
+            this.label7.Text = "Id lote:";
+            // 
             // ViewHarvestAssociateCollector
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(725, 529);
+            this.Controls.Add(this.textBoxIdPlot);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.btnBack);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
@@ -192,7 +214,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dgCollectors);
             this.Controls.Add(this.btnAssociate);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "ViewHarvestAssociateCollector";
             this.Text = "ViewHarvestAssociateCollector";
             this.Load += new System.EventHandler(this.ViewHarvestAssociateCollector_Load);
@@ -217,5 +239,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button btnBack;
+        private System.Windows.Forms.TextBox textBoxIdPlot;
+        private System.Windows.Forms.Label label7;
     }
 }

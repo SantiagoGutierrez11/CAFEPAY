@@ -28,9 +28,10 @@ namespace CAFEPAY.Views.ViewHarvest
         }
         void loadComponets()
         {
-            lbIdPlot.Text = plotInfomation;
-            lbStartDate.Text = harvestDTO.startDate.ToShortDateString();
-            lbPricePerKilo.Text = harvestDTO.pricePerKilo.ToString("C2");
+            textBoxIdPlot.Text = harvestDTO.idPlot.ToString();
+            textBoxPlotName.Text = harvestDTO.plotName;
+            textBoxDate.Text = harvestDTO.startDate.ToString("yyyy-MM-dd");
+            textBoxPricePerKilo.Text = harvestDTO.pricePerKilo.ToString("C2") + " $";
         }
         private void ViewRegisterConfirm_Load(object sender, EventArgs e)
         {

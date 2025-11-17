@@ -8,9 +8,9 @@ namespace CAFEPAY.ArqHex.Collects.domain
 {
     public class CollectAmountToPaid
     {
-        public decimal collectAmountToPaidValue { get; }
+        public decimal? collectAmountToPaidValue { get; }
 
-        public CollectAmountToPaid(decimal _collectAmountToPaidValueValue)
+        public CollectAmountToPaid(decimal? _collectAmountToPaidValueValue)
         {
             this.collectAmountToPaidValue = _collectAmountToPaidValueValue;
         }

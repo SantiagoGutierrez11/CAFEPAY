@@ -13,9 +13,9 @@ namespace CAFEPAY.ArqHex.Collects.infrastructure
     {
         private readonly string connectionString;
 
-        public OracleCollectRepository(string _connectionstring)
+        public OracleCollectRepository(string _connectionString)
         {
-            this.connectionString = _connectionstring;
+            this.connectionString = _connectionString;
         }
 
         public void save(Collect collect)
@@ -64,7 +64,7 @@ namespace CAFEPAY.ArqHex.Collects.infrastructure
                 cmd.Parameters.Add("p_Kilos", OracleDbType.Decimal).Value =
                     collect.kilos.collectedKilos;
                 cmd.Parameters.Add("p_amountToPaid", OracleDbType.Decimal).Value =
-                    collect.amountToPaid.collectAmountToPaidValue;
+                    collect.amountToPaid.collectAmountToPaidValue ?? (object)DBNull.Value;
                 cmd.Parameters.Add("p_statusId", OracleDbType.Int32).Value =
                     collect.status.collectStatus;
                 cmd.Parameters.Add("p_isCountable", OracleDbType.Int32).Value =
@@ -154,6 +154,9 @@ namespace CAFEPAY.ArqHex.Collects.infrastructure
                             throw new InvalidOperationException(
                                 $"No se encontró la recolecta especificada",
                                 ex);
+                        case 20072: // Recolecta ya registrada
+                            throw new InvalidOperationException(
+                                $"El recolector ya ha registrado una recolecta para esta cosecha", ex);
 
                         default:
                             throw new InvalidOperationException(
@@ -235,7 +238,7 @@ UPDATE COLLECT
 
                         var collect = new Collect(collectId, collectWorkerCode,
                                                   collectIdHarvest, collectDate, collectedKilos,
-                                                  collectStatus, collectAmountToPaidValue, collectIdPlot,collectIscountable );
+                                                  collectStatus, collectAmountToPaidValue, collectIdPlot, collectIscountable);
                         collects.Add(collect);
                     }
                 }
@@ -387,5 +390,79 @@ UPDATE COLLECT
             return collects;
         }
 
+        public List<Collect> queryByStatusAndWorkerCode(int isCountable, string workerCode, int status, long idPlot, long? idHarvest)
+        {
+            var collects = new List<Collect>();
+
+            const string sql = @"
+        SELECT 
+            WORKER_CODE, 
+            IDPLOT, 
+            IDHARVEST, 
+            IDCOLLECT, 
+            COLLECTDATE, 
+            KILOS, 
+            AMOUNT_TO_PAY, 
+            STATUS_ID, 
+            IS_COUNTABLE
+        FROM COLLECT
+        WHERE IS_COUNTABLE = :p_isCountable
+          AND WORKER_CODE = :p_workerCode
+          AND STATUS_ID = :p_status
+          AND IDPLOT = :p_idPlot
+          AND IDHARVEST = :p_idHarvest
+        ORDER BY COLLECTDATE";
+
+            using (var connection = new OracleConnection(connectionString))
+            using (var cmd = new OracleCommand(sql, connection))
+            {
+                cmd.BindByName = true;
+
+                cmd.Parameters.Add("p_isCountable", OracleDbType.Int32).Value = isCountable;
+                cmd.Parameters.Add("p_workerCode", OracleDbType.Varchar2).Value = workerCode;
+                cmd.Parameters.Add("p_status", OracleDbType.Int32).Value = status;
+                cmd.Parameters.Add("p_idPlot", OracleDbType.Int64).Value = idPlot;
+                cmd.Parameters.Add("p_idHarvest", OracleDbType.Int64).Value = idHarvest;
+
+                connection.Open();
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var collectCollectorWorkerCode = new CollectWorkerCode(reader.GetString(0));
+                        var collectIdPlot = new CollectIdPlot(reader.GetInt64(1));
+                        var collectIdHarvest = new CollectIdHarvest(reader.GetInt64(2));
+
+                        // IDCOLLECT puede ser NULL para registros ZERO
+                        var collectId = reader.IsDBNull(3)
+                            ? null
+                            : new CollectId(reader.GetInt64(3));
+
+                        var collectDate = new CollectDate(reader.GetDateTime(4));
+                        var collectedKilos = new CollectedKilos(reader.GetDecimal(5));
+                        var collectAmountToPaidValue = new CollectAmountToPaid(reader.GetDecimal(6));
+                        var collectStatus = new CollectStatus(reader.GetInt32(7));
+                        var collectIsCountable = new CollectIsCountable(reader.GetInt32(8));
+
+                        var collect = new Collect(
+                            collectId,
+                            collectCollectorWorkerCode,
+                            collectIdHarvest,
+                            collectDate,
+                            collectedKilos,
+                            collectStatus,
+                            collectAmountToPaidValue,
+                            collectIdPlot,
+                            collectIsCountable
+                        );
+
+                        collects.Add(collect);
+                    }
+                }
+            }
+
+            return collects;
+        }
     }
 }

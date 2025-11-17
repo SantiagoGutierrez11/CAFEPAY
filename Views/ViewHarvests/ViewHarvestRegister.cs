@@ -92,7 +92,9 @@ namespace CAFEPAY.Views.ViewHarvest
                 startDate = _startDate,
                 pricePerKilo = decimal.Parse(_pricePerKilo),
                 status = 1,
-                statusText = "ACTIVO"
+                statusText = "ACTIVO",
+                plotName = AppServices.PlotServices.queryById.execute(_idPlot).name.plotNameValue
+               
             };
 
             ViewHarvestRegisterConfirm viewHarvestRegisterConfirm = new ViewHarvestRegisterConfirm( saveHarvest, cmbIdPlot.Text, (ViewHarvest)this.Owner);

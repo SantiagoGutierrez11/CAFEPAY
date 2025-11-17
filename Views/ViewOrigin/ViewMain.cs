@@ -41,5 +41,14 @@ namespace CAFEPAY.Views.ViewOrigin
             viewCollect.Show();
             this.Hide();
         }
+
+        private void btnPayments_Click(object sender, EventArgs e)
+        {
+            ViewPayment.ViewPayment viewPayment = new ViewPayment.ViewPayment();
+            this.Hide();
+            viewPayment.Owner = this;
+            viewPayment.Show();
+
+        }
     }
 }

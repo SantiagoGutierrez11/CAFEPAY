@@ -13,5 +13,6 @@ namespace CAFEPAY.ArqHex.Collects.domain
         List<Collect> queryByStatus(int isCountable, int status, long idPlot, long idHarvest);
         List<Collect> queryAll(); // List all collects
         List<Collect> queryByWorkerCode(int isCountable, string workerCode, long idPlot, long? idHarvest);
+        List<Collect> queryByStatusAndWorkerCode(int isCountable, string workerCode, int status, long idPlot, long? idHarvest);
     }
 }

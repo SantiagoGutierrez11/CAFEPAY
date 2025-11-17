@@ -22,7 +22,6 @@ namespace CAFEPAY.Views.ViewCollect
     {
         private List<Harvest> harvests;
         private List<HarvestDTO> harvestDTO;
-        private Plot plot;
         private List<Collect> collects;
         private List<CollectDTO> collectsDTO;
         private HarvestDTO harvestRegister;
@@ -33,6 +32,13 @@ namespace CAFEPAY.Views.ViewCollect
             InitializeComponent();
             loadHarvestComboBox();
             loadDgvCollects();
+        }
+
+        public void loadLastDataGridView()
+        {
+            collects = AppServices.CollectServices.queryByWorkerCode.execute(1, collectorRegister.workerCode, harvestRegister.idPlot, harvestRegister.id);
+            collectsDTO = CollectMaper.ToDTOList(collects);
+            dgvCollects.DataSource = collectsDTO;
         }
 
         public void loadHarvestComboBox()
@@ -135,9 +141,9 @@ namespace CAFEPAY.Views.ViewCollect
 
         private void button1_Click(object sender, EventArgs e)
         {
-            ViewCollectDetail viewCollectDetail = new ViewCollectDetail(harvestRegister, collectorRegister);
-            viewCollectDetail.Owner = this;
-            viewCollectDetail.Show();
+            ViewCollectRegister viewCollectRegister = new ViewCollectRegister(harvestRegister, collectorRegister);
+            viewCollectRegister.Owner = this;
+            viewCollectRegister.Show();
             this.Hide();
         }
 

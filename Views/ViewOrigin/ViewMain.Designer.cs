@@ -31,14 +31,14 @@
             this.btnCollectors = new System.Windows.Forms.Button();
             this.btnHarvests = new System.Windows.Forms.Button();
             this.btnCollects = new System.Windows.Forms.Button();
+            this.btnPayments = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnCollectors
             // 
-            this.btnCollectors.Location = new System.Drawing.Point(16, 193);
-            this.btnCollectors.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnCollectors.Location = new System.Drawing.Point(12, 157);
             this.btnCollectors.Name = "btnCollectors";
-            this.btnCollectors.Size = new System.Drawing.Size(237, 76);
+            this.btnCollectors.Size = new System.Drawing.Size(178, 62);
             this.btnCollectors.TabIndex = 0;
             this.btnCollectors.Text = "Recolectores";
             this.btnCollectors.UseVisualStyleBackColor = true;
@@ -46,10 +46,9 @@
             // 
             // btnHarvests
             // 
-            this.btnHarvests.Location = new System.Drawing.Point(273, 193);
-            this.btnHarvests.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnHarvests.Location = new System.Drawing.Point(205, 157);
             this.btnHarvests.Name = "btnHarvests";
-            this.btnHarvests.Size = new System.Drawing.Size(237, 76);
+            this.btnHarvests.Size = new System.Drawing.Size(178, 62);
             this.btnHarvests.TabIndex = 1;
             this.btnHarvests.Text = "Cosechas";
             this.btnHarvests.UseVisualStyleBackColor = true;
@@ -57,24 +56,33 @@
             // 
             // btnCollects
             // 
-            this.btnCollects.Location = new System.Drawing.Point(535, 193);
-            this.btnCollects.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnCollects.Location = new System.Drawing.Point(401, 157);
             this.btnCollects.Name = "btnCollects";
-            this.btnCollects.Size = new System.Drawing.Size(237, 76);
+            this.btnCollects.Size = new System.Drawing.Size(178, 62);
             this.btnCollects.TabIndex = 2;
             this.btnCollects.Text = "Recolectas";
             this.btnCollects.UseVisualStyleBackColor = true;
             this.btnCollects.Click += new System.EventHandler(this.btnCollects_Click);
             // 
+            // btnPayments
+            // 
+            this.btnPayments.Location = new System.Drawing.Point(609, 157);
+            this.btnPayments.Name = "btnPayments";
+            this.btnPayments.Size = new System.Drawing.Size(178, 62);
+            this.btnPayments.TabIndex = 3;
+            this.btnPayments.Text = "Pagos";
+            this.btnPayments.UseVisualStyleBackColor = true;
+            this.btnPayments.Click += new System.EventHandler(this.btnPayments_Click);
+            // 
             // ViewMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(640, 450);
+            this.ClientSize = new System.Drawing.Size(826, 366);
+            this.Controls.Add(this.btnPayments);
             this.Controls.Add(this.btnCollects);
             this.Controls.Add(this.btnHarvests);
             this.Controls.Add(this.btnCollectors);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "ViewMain";
             this.Text = "ViewMain";
             this.ResumeLayout(false);
@@ -86,5 +94,6 @@
         private System.Windows.Forms.Button btnCollectors;
         private System.Windows.Forms.Button btnHarvests;
         private System.Windows.Forms.Button btnCollects;
+        private System.Windows.Forms.Button btnPayments;
     }
 }
