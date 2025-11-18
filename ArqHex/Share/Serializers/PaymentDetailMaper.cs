@@ -1,4 +1,4 @@
-﻿using CAFEPAY.ArqHex.PaymentsDetails.domain;
+﻿using CAFEPAY.ArqHex.PaymentDetails.domain;
 using CAFEPAY.ArqHex.Share.DTO;
 using System;
 using System.Collections.Generic;
@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace CAFEPAY.ArqHex.Share.Serializers
 {
-    public class PaymentsDetailsMapper
+    public class PaymentDetailMaper
     {
-        public static List<PaymentsDetailsDTO> ToDTOList(List<PaymentsDetailsEntity> PaymentsDetailss)
+        public static List<PaymentDetailDTO> ToDTOList(List<PaymentDetails.domain.PaymentDetail> PaymentDetails)
         {
-            if (PaymentsDetailss == null) return new List<PaymentsDetailsDTO>();
+            if (PaymentDetails == null) return new List<PaymentDetailDTO>();
 
-            return PaymentsDetailss.Select(p => new PaymentsDetailsDTO
+            return PaymentDetails.Select(p => new PaymentDetailDTO
             {
-                AmountToPay = p.amountToPay.PaymentsDetailsAmountToPayValue,
+                AmountToPay = p.amountToPay.amountToPayValue,
                 Id = p.id.idValue ?? 0,
                 CollectId = p.collectId.idCollectValue,
                 HarvestId = p.harvestId.idHarvestValue,

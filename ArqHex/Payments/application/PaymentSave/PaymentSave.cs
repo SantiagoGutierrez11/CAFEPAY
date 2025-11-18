@@ -15,13 +15,13 @@ namespace CAFEPAY.ArqHex.Payments.application.PaymentSave
             paymentRepository = _paymentRepository;
         }
 
-        public void execute(long _oldId, long _paymentId, DateTime _paymentDate, String _paymentWorkerCode)
+        public long execute(long? _paymentId, DateTime _paymentDate, String _paymentWorkerCode)
         {
             PaymentId paymentId = new PaymentId(_paymentId);
             PaymentDate paymentDate = new PaymentDate(_paymentDate);
             PaymentWorkerCode paymentWorkerCode = new PaymentWorkerCode(_paymentWorkerCode);
             Payment payment = new Payment(paymentId, paymentDate, paymentWorkerCode);
-            paymentRepository.update(payment, _oldId);
+            return paymentRepository.save(payment);
         }
     }
 }

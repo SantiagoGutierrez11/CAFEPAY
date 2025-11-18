@@ -1,4 +1,6 @@
-﻿using CAFEPAY.ArqHex.Share.DTO;
+﻿using CAFEPAY.ArqHex.Payments.domain;
+using CAFEPAY.ArqHex.Share;
+using CAFEPAY.ArqHex.Share.DTO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,11 +24,11 @@ namespace CAFEPAY.Views.ViewPayment
             this.harvestPayment = _harvestPayment;
             this.collectorPayment = _collectorPayment;
             this.collectsPayment = _collectsPayment;
-            loadDgvCollects();
+            loadDgvCollectsToPayment();
             loadData();
        
         }
-        public void loadDgvCollects()
+        public void loadDgvCollectsToPayment()
         {
             try
             {
@@ -37,6 +39,12 @@ namespace CAFEPAY.Views.ViewPayment
                 dgvCollectsToPayment.ReadOnly = true;
                 dgvCollectsToPayment.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
                 dgvCollectsToPayment.MultiSelect = false;
+                dgvCollectsToPayment.RowHeadersVisible = false; // Ocultar selector de filas
+
+                // Hacer la selección invisible
+                dgvCollectsToPayment.DefaultCellStyle.SelectionBackColor = dgvCollectsToPayment.DefaultCellStyle.BackColor;
+                dgvCollectsToPayment.DefaultCellStyle.SelectionForeColor = dgvCollectsToPayment.DefaultCellStyle.ForeColor;
+
 
                 // evita seleccion automatica
                 dgvCollectsToPayment.CurrentCell = null; 
@@ -118,9 +126,45 @@ namespace CAFEPAY.Views.ViewPayment
 
         }
 
+
         private void button1_Click(object sender, EventArgs e) //buton confirm
         {
-           
+            try
+            {
+                long paymentID = AppServices.PaymentServices.save.execute(
+                    null,
+                    DateTime.Today,
+                    collectorPayment.workerCode
+                );
+                List<long> paymentDetailIDS = new List<long>();
+                foreach (var collect in collectsPayment)
+                {
+                    paymentDetailIDS.Add(AppServices.PaymentDetailServices.save.execute(
+                        collect.amountToPaid.Value,
+                        null,
+                        collect.collectId,
+                        harvestPayment.id,
+                        paymentID,
+                        harvestPayment.idPlot,
+                        collectorPayment.workerCode
+                    ));
+                }
+                MessageBox.Show("Pago confirmado exitosamente.\n" +
+                                $"ID de Pago: {paymentID}\n" +
+                                $"Detalles de Pago creados: {string.Join(", ", paymentDetailIDS)}",
+                                "Confirmación", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if(this.Owner is ViewPayment viewPayment)
+                {
+                    viewPayment.loadDataGridView(); // Recargar datos en la vista principal de pagos
+                }
+                this.Owner.Show();
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al confirmar el pago: {ex.Message}",
+                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

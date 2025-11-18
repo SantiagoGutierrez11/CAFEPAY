@@ -21,7 +21,10 @@ namespace CAFEPAY.ArqHex.Share.Serializers
                 firstName = c.firstName.collectorFirstName,
                 lastName = c.lastName.collectorLastName,
                 phone = c.phone.collectorPhone,
-                status = c.status.collectorStatus
+                status = c.status.collectorStatus,
+                statusText = c.status.collectorStatus == 1 ? "Activo" :
+                             c.status.collectorStatus == 2 ? "Inactivo"
+                                : "Desconocido"
             }).ToList();
         }
     }

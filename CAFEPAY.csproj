@@ -122,21 +122,23 @@
     <Compile Include="ArqHex\Harvests\Application\HarvestQueryByStatus\HarvestQueryByStatus.cs" />
     <Compile Include="ArqHex\Harvests\Application\HarvestUpdate\HarvestUpdate.cs" />
     <Compile Include="ArqHex\Harvests\Domain\HarvestStatus.cs" />
-    <Compile Include="ArqHex\PaymentsDetails\application\PaymentDetailQueryAll\PaymentDetailQueryAll.cs" />
-    <Compile Include="ArqHex\PaymentsDetails\application\PaymentDetailQueryById\PaymentDetailQueryById.cs" />
-    <Compile Include="ArqHex\PaymentsDetails\application\PaymentDetailSave\PaymentDetailSave.cs" />
-    <Compile Include="ArqHex\PaymentsDetails\application\PaymentDetailUpdate\PaymentDetailUpdate.cs" />
-    <Compile Include="ArqHex\PaymentsDetails\domain\PaymentDetailEntity.cs" />
-    <Compile Include="ArqHex\PaymentsDetails\domain\PaymentDetailAmountToPay.cs" />
-    <Compile Include="ArqHex\PaymentsDetails\domain\PaymentDetailIdCollect.cs" />
-    <Compile Include="ArqHex\PaymentsDetails\domain\PaymentDetailId.cs" />
-    <Compile Include="ArqHex\PaymentsDetails\domain\PaymentDetailIdHarvest.cs" />
-    <Compile Include="ArqHex\PaymentsDetails\domain\PaymentDetailIdPlot.cs" />
-    <Compile Include="ArqHex\PaymentsDetails\domain\PaymentDetailIdPayment.cs" />
-    <Compile Include="ArqHex\PaymentsDetails\domain\PaymentDetailRepository.cs" />
-    <Compile Include="ArqHex\PaymentsDetails\domain\PaymentDetailWorkerCode.cs" />
-    <Compile Include="ArqHex\PaymentsDetails\infrastructure\OraclePaymentDetailRepository.cs" />
-    <Compile Include="ArqHex\PaymentsDetails\infrastructure\PaymentDetailController.cs" />
+    <Compile Include="ArqHex\PaymentDetails\application\PaymentDetailQueryAll\PaymentDetailQueryAll.cs" />
+    <Compile Include="ArqHex\PaymentDetails\application\PaymentDetailQueryByPaymentId\QueryByPaymentId.cs" />
+    <Compile Include="ArqHex\PaymentDetails\application\PaymentDetailSave\PaymentDetailSave.cs" />
+    <Compile Include="ArqHex\PaymentDetails\application\PaymentDetailUpdate\PaymentDetailUpdate.cs" />
+    <Compile Include="ArqHex\Payments\application\PaymentGetTotalAmountByWorkerCodeAndPaymentId\GetTotalAmountByWorkerCodeAndPaymentId.cs" />
+    <Compile Include="ArqHex\Payments\application\PaymentQueryByWorkerCode\QueryByWorkerCode.cs" />
+    <Compile Include="ArqHex\PaymentDetails\domain\PaymentDetail.cs" />
+    <Compile Include="ArqHex\PaymentDetails\domain\PaymentDetailAmountToPay.cs" />
+    <Compile Include="ArqHex\PaymentDetails\domain\PaymentDetailIdCollect.cs" />
+    <Compile Include="ArqHex\PaymentDetails\domain\PaymentDetailId.cs" />
+    <Compile Include="ArqHex\PaymentDetails\domain\PaymentDetailIdHarvest.cs" />
+    <Compile Include="ArqHex\PaymentDetails\domain\PaymentDetailIdPlot.cs" />
+    <Compile Include="ArqHex\PaymentDetails\domain\PaymentDetailIdPayment.cs" />
+    <Compile Include="ArqHex\PaymentDetails\domain\PaymentDetailRepository.cs" />
+    <Compile Include="ArqHex\PaymentDetails\domain\PaymentDetailWorkerCode.cs" />
+    <Compile Include="ArqHex\PaymentDetails\infrastructure\OraclePaymentDetailRepository.cs" />
+    <Compile Include="ArqHex\PaymentDetails\infrastructure\PaymentDetailController.cs" />
     <Compile Include="ArqHex\Payments\application\PaymentQueryAll\PaymentQueryAll.cs" />
     <Compile Include="ArqHex\Payments\application\PaymentSave\PaymentSave.cs" />
     <Compile Include="ArqHex\Payments\application\PaymentUpdate\PaymentUpdate.cs" />
@@ -291,6 +293,24 @@
     <Compile Include="Views\ViewPayment\ViewPaymentConfirm.Designer.cs">
       <DependentUpon>ViewPaymentConfirm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\ViewPayment\ViewPaymentConsult.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ViewPayment\ViewPaymentConsult.Designer.cs">
+      <DependentUpon>ViewPaymentConsult.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewPayment\ViewPaymentConsultWorkerPayments.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ViewPayment\ViewPaymentConsultWorkerPayments.Designer.cs">
+      <DependentUpon>ViewPaymentConsultWorkerPayments.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewPayment\ViewPaymentConsultWorkerPaymentsDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ViewPayment\ViewPaymentConsultWorkerPaymentsDetails.Designer.cs">
+      <DependentUpon>ViewPaymentConsultWorkerPaymentsDetails.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Views\ViewCollector\ViewCollector.resx">
       <DependentUpon>ViewCollector.cs</DependentUpon>
     </EmbeddedResource>
@@ -354,6 +374,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\ViewPayment\ViewPaymentConfirm.resx">
       <DependentUpon>ViewPaymentConfirm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ViewPayment\ViewPaymentConsult.resx">
+      <DependentUpon>ViewPaymentConsult.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ViewPayment\ViewPaymentConsultWorkerPayments.resx">
+      <DependentUpon>ViewPaymentConsultWorkerPayments.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ViewPayment\ViewPaymentConsultWorkerPaymentsDetails.resx">
+      <DependentUpon>ViewPaymentConsultWorkerPaymentsDetails.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="bin\Debug\CAFEPAY.exe.config" />
     <None Include="Oracle.DataAccess.Common.Configuration.Section.xsd">

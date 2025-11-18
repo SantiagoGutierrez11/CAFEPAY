@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace CAFEPAY.ArqHex.Share.Serializers
 {
-    public class PaymentMapper
+    public class PaymentMaper
     {
         public static List<PaymentDTO> ToDTOList(List<Payment> Payments)
         {
@@ -15,7 +15,8 @@ namespace CAFEPAY.ArqHex.Share.Serializers
             {
                 Id = p.id.id ?? 0,
                 Date = p.date.paymentDate,
-                WorkerCode = p.workerCode.workerCodeValue
+                WorkerCode = p.workerCode.workerCodeValue,
+                TotalAmount = AppServices.PaymentServices.getTotalAmountByWorkerCodeAndPaymentId.execute(p.workerCode.workerCodeValue, p.id.id ?? 0)
             }).ToList();
         }
     }

@@ -35,6 +35,7 @@
             this.lbHarvest = new System.Windows.Forms.Label();
             this.lbCollector = new System.Windows.Forms.Label();
             this.cmbCollectors = new System.Windows.Forms.ComboBox();
+            this.btnBack = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCollects)).BeginInit();
             this.SuspendLayout();
             // 
@@ -109,11 +110,22 @@
             this.cmbCollectors.TabIndex = 7;
             this.cmbCollectors.SelectedIndexChanged += new System.EventHandler(this.cmbCollectors_SelectedIndexChanged);
             // 
+            // btnBack
+            // 
+            this.btnBack.Location = new System.Drawing.Point(34, 12);
+            this.btnBack.Name = "btnBack";
+            this.btnBack.Size = new System.Drawing.Size(146, 36);
+            this.btnBack.TabIndex = 8;
+            this.btnBack.Text = "Pagina Pricipal";
+            this.btnBack.UseVisualStyleBackColor = true;
+            this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
+            // 
             // ViewPayment
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnBack);
             this.Controls.Add(this.cmbCollectors);
             this.Controls.Add(this.lbCollector);
             this.Controls.Add(this.lbHarvest);
@@ -139,5 +151,6 @@
         private System.Windows.Forms.Label lbHarvest;
         private System.Windows.Forms.Label lbCollector;
         private System.Windows.Forms.ComboBox cmbCollectors;
+        private System.Windows.Forms.Button btnBack;
     }
 }

@@ -7,5 +7,7 @@ namespace CAFEPAY.ArqHex.Share.DTO
         public long? Id { get; set; }
         public DateTime Date { get; set; }
         public string WorkerCode { get; set; }
+
+        public decimal TotalAmount { get; set; }
     }
 }

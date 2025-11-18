@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CAFEPAY.ArqHex.PaymentsDetails.domain
+namespace CAFEPAY.ArqHex.PaymentDetails.domain
 {
-    public class PaymentsDetailsWorkerCode
+    public class PaymentDetailWorkerCode
     {
         public string Value { get; }
-        public PaymentsDetailsWorkerCode(string value)
+        public PaymentDetailWorkerCode(string value)
         {
             this.Value = value;
         }

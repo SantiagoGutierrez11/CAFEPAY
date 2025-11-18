@@ -107,6 +107,9 @@ namespace CAFEPAY.Views.ViewPayment
                 if (collectsZero == null || collectsZero.Count == 0)
                 {
                     cmbCollectors.DataSource = null;
+                    cmbCollectors.Items.Clear(); // Limpiar items
+                    cmbCollectors.Text = string.Empty; // Limpiar texto
+                    dgvCollects.DataSource = null; // Limpiar DataGridView
                     MessageBox.Show("No hay recolectores asociados a esta cosecha.",
                                    "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
@@ -126,13 +129,15 @@ namespace CAFEPAY.Views.ViewPayment
                 if (workerCodes.Count == 0)
                 {
                     cmbCollectors.DataSource = null;
+                    cmbCollectors.Items.Clear();
+                    cmbCollectors.Text = string.Empty;
+                    dgvCollects.DataSource = null;
                     MessageBox.Show("No se encontraron códigos de trabajadores válidos.",
                                    "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
 
-                // 3. Crear string con los workerCodes (formato depende de tu queryIn)
-                // Asumiendo que necesitas algo como: "'CODE1','CODE2','CODE3'"
+                // 3. Crear string con los workerCodes 
                 string workerCodesString = string.Join(",", workerCodes.Select(code => $"'{code}'"));
 
                 // 4. Consultar los recolectores
@@ -169,6 +174,10 @@ namespace CAFEPAY.Views.ViewPayment
             {
                 MessageBox.Show($"Error al cargar recolectores: {ex.Message}",
                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                cmbCollectors.DataSource = null;
+                cmbCollectors.Items.Clear();
+                cmbCollectors.Text = string.Empty;
+                dgvCollects.DataSource = null;
             }
         }
         public void loadHarvestComboBox()
@@ -232,23 +241,86 @@ namespace CAFEPAY.Views.ViewPayment
                 collectsDTO.Clear();
             }
 
-            // agrega logica para cargar el dataGridView
-            if (cmbHarvests.SelectedItem is HarvestDTO selectedHarvest && selectedHarvest.harvestName != "-- Seleccione una cosecha --")
+            // Verificar si hay una cosecha seleccionada válida
+            if (!(cmbHarvests.SelectedItem is HarvestDTO selectedHarvest) ||
+                selectedHarvest.harvestName == "-- Seleccione una cosecha --")
             {
-                if (cmbCollectors.SelectedItem is CollectorDTO selectedCollector && selectedCollector.displayName != "-- Seleccione un recolector --")
-                {
-                    collects = AppServices.CollectServices.queryByStatusAndWorkerCode.execute(1, selectedCollector.workerCode, 1, selectedHarvest.idPlot, selectedHarvest.id.Value);
-                    collectsDTO = CollectMaper.ToDTOList(collects);
-                    var sortableList = new BindingList<CollectDTO>(collectsDTO);
-                    dgvCollects.DataSource = sortableList;
-                    dgvCollects.ClearSelection();
-                    ReEnableSorting();
-                    dgvCollects.CurrentCell = null;
-                    collectorPayment = selectedCollector;
-                }
+                dgvCollects.DataSource = null;
+                return;
+            }
+
+            // Verificar si hay un recolector seleccionado válido
+            if (!(cmbCollectors.SelectedItem is CollectorDTO selectedCollector) ||
+                selectedCollector.displayName == "-- Seleccione un recolector --")
+            {
+                // Limpiar el DataGridView cuando se selecciona la opción por defecto
+                dgvCollects.DataSource = null;
+                dgvCollects.Refresh();
+                collectorPayment = null; // Limpiar el recolector de pago
+                return;
+            }
+
+            try
+            {
+                // Cargar las recolectas del recolector seleccionado
+                collects = AppServices.CollectServices.queryByStatusAndWorkerCode.execute(
+                    1,
+                    selectedCollector.workerCode,
+                    1,
+                    selectedHarvest.idPlot,
+                    selectedHarvest.id.Value);
+
+                collectsDTO = CollectMaper.ToDTOList(collects);
+                var sortableList = new BindingList<CollectDTO>(collectsDTO);
+
+                dgvCollects.DataSource = sortableList;
+                dgvCollects.ClearSelection();
+                ReEnableSorting();
+                dgvCollects.CurrentCell = null;
+
+                collectorPayment = selectedCollector;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar las recolectas: {ex.Message}",
+                               "Error",
+                               MessageBoxButtons.OK,
+                               MessageBoxIcon.Error);
+                dgvCollects.DataSource = null;
+                collectorPayment = null;
             }
         }
 
+        public void loadDataGridView()
+        {
+            try
+            {
+                // Cargar las recolectas del recolector seleccionado
+                collects = AppServices.CollectServices.queryByStatusAndWorkerCode.execute(
+                    1,
+                    collectorPayment.workerCode,
+                    1,
+                    harvestPayment.idPlot,
+                    harvestPayment.id.Value);
+
+                collectsDTO = CollectMaper.ToDTOList(collects);
+                var sortableList = new BindingList<CollectDTO>(collectsDTO);
+
+                dgvCollects.DataSource = sortableList;
+                dgvCollects.ClearSelection();
+                ReEnableSorting();
+                dgvCollects.CurrentCell = null;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar las recolectas: {ex.Message}",
+                               "Error",
+                               MessageBoxButtons.OK,
+                               MessageBoxIcon.Error);
+                dgvCollects.DataSource = null;
+                collectorPayment = null;
+            }
+        }
         private void btnCalculateTotalPayment_Click(object sender, EventArgs e)
         {
             if (harvestPayment == null)
@@ -276,6 +348,30 @@ namespace CAFEPAY.Views.ViewPayment
 
         private void btnPaymentPartial_Click(object sender, EventArgs e)
         {
+            if (harvestPayment == null)
+            {
+                MessageBox.Show("Debe seleccionar una cosecha antes de calcular el pago.",
+                                "Advertencia",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                return;
+            }
+            if (collectorPayment == null)
+            {
+                MessageBox.Show("Debe seleccionar un recolector antes de calcular el pago.",
+                                "Advertencia",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                return;
+            }
+            if(dgvCollects.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Debe seleccionar al menos una recolecta para el pago parcial.",
+                                "Advertencia",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                return;
+            }
             List<CollectDTO> collectsSelected = new List<CollectDTO>();
             foreach (DataGridViewRow row in dgvCollects.SelectedRows)
             {
@@ -312,6 +408,11 @@ namespace CAFEPAY.Views.ViewPayment
             }
         }
 
+        private void btnBack_Click(object sender, EventArgs e)
+        {
+            this.Owner.Show();
+            this.Close();
+        }
     }
 
 }

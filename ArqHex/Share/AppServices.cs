@@ -3,12 +3,12 @@ using CAFEPAY.ArqHex.Payments.application.PaymentUpdate;
 using CAFEPAY.ArqHex.Payments.application.PaymentSave;
 using CAFEPAY.ArqHex.Payments.domain;
 using CAFEPAY.ArqHex.Payments.infrastructure;
-using CAFEPAY.ArqHex.PaymentsDetails.application.PaymentsDetailsQueryAll;
-using CAFEPAY.ArqHex.PaymentsDetails.application.PaymentsDetailsSave;
-using CAFEPAY.ArqHex.PaymentsDetails.application.PaymentsDetailsUpdate;
-using CAFEPAY.ArqHex.PaymentsDetails.application.PaymentsDetailsQueryById;
-using CAFEPAY.ArqHex.PaymentsDetails.domain;
-using CAFEPAY.ArqHex.PaymentsDetails.infrastructure;
+using CAFEPAY.ArqHex.PaymentDetails.application.PaymentDetailQueryAll;
+using CAFEPAY.ArqHex.PaymentDetails.application.PaymentDetailSave;
+using CAFEPAY.ArqHex.PaymentDetails.application.PaymentDetailUpdate;
+using CAFEPAY.ArqHex.PaymentDetails.application.PaymentQueryByWorkerCode;
+using CAFEPAY.ArqHex.PaymentDetails.domain;
+using CAFEPAY.ArqHex.PaymentDetails.infrastructure;
 using CAFEPAY.ArqHex.Collects.application.CollectQueryByStatus;
 using CAFEPAY.ArqHex.Collectors.application.CollectorByIn;
 using CAFEPAY.ArqHex.Collectors.application.CollectorQueryAll;
@@ -39,6 +39,9 @@ using System.Text;
 using System.Threading.Tasks;
 using CAFEPAY.ArqHex.Collects.application.CollectQueryByWorkerCode;
 using CAFEPAY.ArqHex.Collects.application.CollectQueryByStatusAndWorkerCode;
+using CAFEPAY.ArqHex.Payments.application.PaymentGetTotalAmountByWorkerCodeAndPaymentId;
+using CAFEPAY.ArqHex.PaymentDetails.application.PaymentDetailQueryByPaymentId;
+
 
 namespace CAFEPAY.ArqHex.Share
 {
@@ -49,7 +52,7 @@ namespace CAFEPAY.ArqHex.Share
         private static readonly HarvestRepository harvestRepository = new OracleHarvestRepository(connectionString);
         private static readonly PlotRepository plotRepository = new OraclePlotRepository(connectionString);
         private static readonly CollectRepository collectRepository = new OracleCollectRepository(connectionString);
-        private static readonly PaymentsDetailsRepository PaymentsDetailsRepository = new OraclePaymentsDetailsRepository(connectionString);
+        private static readonly PaymentDetailRepository PaymentDetailRepository = new OraclePaymentDetailRepository(connectionString);
         private static readonly PaymentRepository paymentRepository = new OraclePaymentRepository(connectionString);
 
         public static class CollectorServices
@@ -85,12 +88,12 @@ namespace CAFEPAY.ArqHex.Share
             public static CollectQueryByStatusAndWorkerCode queryByStatusAndWorkerCode = new CollectQueryByStatusAndWorkerCode(collectRepository);
         }
 
-        public static class PaymentsDetailsServices
+        public static class PaymentDetailServices
         {
-            public static PaymentsDetailsSave save = new PaymentsDetailsSave(PaymentsDetailsRepository);
-            public static PaymentsDetailsQueryAll query = new PaymentsDetailsQueryAll(PaymentsDetailsRepository);
-            public static PaymentsDetailsUpdate update = new PaymentsDetailsUpdate(PaymentsDetailsRepository);
-            public static PaymentsDetailsQueryById queryById = new PaymentsDetailsQueryById(PaymentsDetailsRepository);
+            public static PaymentDetailSave save = new PaymentDetailSave(PaymentDetailRepository);
+            public static PaymentDetailQueryAll query = new PaymentDetailQueryAll(PaymentDetailRepository);
+            public static PaymentDetailUpdate update = new PaymentDetailUpdate(PaymentDetailRepository);
+            public static QueryByPaymentId queryByPaymentId = new QueryByPaymentId(PaymentDetailRepository);
         }
 
         public static class PaymentServices
@@ -98,6 +101,8 @@ namespace CAFEPAY.ArqHex.Share
             public static PaymentQueryAll query = new PaymentQueryAll(paymentRepository);
             public static PaymentSave save = new PaymentSave(paymentRepository);
             public static PaymentUpdate update = new PaymentUpdate(paymentRepository);
+            public static QueryByWorkerCode queryByWorkerCode = new QueryByWorkerCode(paymentRepository);
+            public static GetTotalAmountByWorkerCodeAndPaymentId getTotalAmountByWorkerCodeAndPaymentId = new GetTotalAmountByWorkerCodeAndPaymentId(paymentRepository);
         }
     }
 }

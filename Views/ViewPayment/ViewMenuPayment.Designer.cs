@@ -41,6 +41,7 @@
             this.btnConsult.TabIndex = 1;
             this.btnConsult.Text = "Consultar";
             this.btnConsult.UseVisualStyleBackColor = true;
+            this.btnConsult.Click += new System.EventHandler(this.btnConsult_Click);
             // 
             // btnPayment
             // 

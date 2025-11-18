@@ -1,4 +1,5 @@
 ﻿using CAFEPAY.ArqHex.Harvests.Domain;
+using CAFEPAY.ArqHex.Harvests.Infrastructure;
 using CAFEPAY.ArqHex.Share;
 using CAFEPAY.ArqHex.Share.DTO;
 using System;
@@ -67,10 +68,61 @@ namespace CAFEPAY.Views.ViewHarvest
                     this.Close();
                 }
             }
+            catch (HarvestHasPendingCollectsException ex)
+            {
+                MessageBox.Show(
+                    "No se puede finalizar la cosecha porque tiene recolecciones pendientes de pago.\n\n" +
+                    "Por favor, complete o elimine todas las recolecciones antes de finalizar.",
+                    "No se puede finalizar",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+            catch (InvalidHarvestDurationException ex)
+            {
+                MessageBox.Show(
+                    "La fecha de finalización no es válida.\n\n" +
+                    "Debe ser posterior a la fecha de inicio de la cosecha.",
+                    "Fecha inválida",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+            catch (HarvestNotFoundException ex)
+            {
+                MessageBox.Show(
+                    "No se encontró la cosecha seleccionada.\n\n" +
+                    "Es posible que ya haya sido eliminada.",
+                    "Cosecha no encontrada",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+            catch (HarvestOperationException ex)
+            {
+                // Remover el código de error ORA-XXXXX del mensaje
+                string mensaje = ex.Message;
+                if (mensaje.Contains("ORA-"))
+                {
+                    int index = mensaje.IndexOf("ORA-");
+                    int endIndex = mensaje.IndexOf(':', index);
+                    if (endIndex > index)
+                    {
+                        mensaje = mensaje.Substring(endIndex + 1).Trim();
+                    }
+                }
+
+                MessageBox.Show(
+                    $"Error al finalizar la cosecha:\n\n{mensaje}",
+                    "Error de operación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
             catch (Exception ex)
             {
-                MessageBox.Show("Error finishing harvest: " + ex.Message);
-                return;
+                MessageBox.Show(
+                    "Ocurrió un error inesperado al finalizar la cosecha.\n\n" +
+                    "Por favor, intente nuevamente o contacte al administrador.",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
     }
