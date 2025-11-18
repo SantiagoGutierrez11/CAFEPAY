@@ -126,7 +126,7 @@ namespace CAFEPAY.Views.ViewPayment
 
         }
 
-
+        // 
         private void button1_Click(object sender, EventArgs e) //buton confirm
         {
             try

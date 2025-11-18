@@ -269,6 +269,14 @@ namespace CAFEPAY.Views.ViewPayment
                     1,
                     selectedHarvest.idPlot,
                     selectedHarvest.id.Value);
+                if (collects == null || collects.Count == 0)
+                {
+                    dgvCollects.DataSource = null;
+                    MessageBox.Show("No hay recolectas a pagar para este recolector en la cosecha seleccionada.",
+                                   "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    collectorPayment = null;
+                    return;
+                }
 
                 collectsDTO = CollectMaper.ToDTOList(collects);
                 var sortableList = new BindingList<CollectDTO>(collectsDTO);
