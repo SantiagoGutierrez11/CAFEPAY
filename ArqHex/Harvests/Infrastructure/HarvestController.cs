@@ -14,10 +14,6 @@ namespace CAFEPAY.ArqHex.Harvests.Infrastucture
         {
             return AppServices.HarvestServices.save.execute( _idPlot, _startDate, _pricePerKilo);
         }
-        public List<Harvest> listHarvestsByStatus(int status)
-        {
-            return AppServices.HarvestServices.queryByStatus.execute(status);
-        }
         public List<Harvest>listHarvests(){
             return AppServices.HarvestServices.query.execute();
         }

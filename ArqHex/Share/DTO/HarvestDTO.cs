@@ -17,6 +17,5 @@ namespace CAFEPAY.ArqHex.Share.DTO
         public decimal pricePerKilo { get; set; }
         public int status { get; set; }
         public string statusText { get; set; }
-        public string harvestName { get; set; }
     }
 }

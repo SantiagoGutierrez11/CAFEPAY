@@ -15,7 +15,7 @@ namespace CAFEPAY.ArqHex.Harvests.Application.HarvestUpdate
         {
             this.harvestRepository = _harvestRepository;
         }
-        public void execute(long? _idHarvest, long _idPlot, DateTime _startDate, DateTime? _endDate, decimal _pricePerKilo, int _status)
+        public void execute(long _idHarvest, long _idPlot, DateTime _startDate, DateTime? _endDate, decimal _pricePerKilo, int _status)
         {
             HarvestId idHarvest = new HarvestId(_idHarvest);
             HarvestIdPlot idPlot = new HarvestIdPlot(_idPlot);
@@ -23,7 +23,7 @@ namespace CAFEPAY.ArqHex.Harvests.Application.HarvestUpdate
             HarvestPricePerKilo pricePerKilo = new HarvestPricePerKilo(_pricePerKilo);
             HarvestStatus status = new HarvestStatus(_status);
             HarvestEndDate endDate = new HarvestEndDate(_endDate);
-            Harvest harvest = new Harvest(idHarvest, idPlot, startDate, pricePerKilo, status, endDate);
+            Harvest harvest = new Harvest(null, idPlot, startDate, pricePerKilo, status, null);
             harvestRepository.update(harvest);
         }
 

@@ -11,18 +11,19 @@ namespace CAFEPAY.ArqHex.Harvests.Domain
     {
         public DateTime startDateValue { get; }
 
-        public  HarvestStartDate(DateTime _startDateValue)
+        public HarvestStartDate(DateTime _startDateValue)
         {
             this.startDateValue = _startDateValue;
-            validateFormat();
+            // validateFormat(); // ← COMENTA O ELIMINA ESTA LLAMADA
         }
-        public void validateFormat()
-        {
-            DateTime currentDate = DateTime.Now;
-            if (this.startDateValue > currentDate)
-            {
-                throw new ArgumentException("Harvest start date cannot be in the future");
-            }
-        }
+
+        // public void validateFormat() // ← COMENTA O ELIMINA ESTE MÉTODO COMPLETO
+        // {
+        //     DateTime currentDate = DateTime.Now;
+        //     if (this.startDateValue > currentDate)
+        //     {
+        //         throw new ArgumentException("Harvest start date cannot be in the future");
+        //     }
+        // }
     }
 }

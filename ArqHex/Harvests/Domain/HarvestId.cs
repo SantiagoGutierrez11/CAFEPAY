@@ -8,7 +8,7 @@ namespace CAFEPAY.ArqHex.Harvests.Domain
 {
     public class HarvestId
     {
-        public long? idValue { get; }
+        public long? idValue;
         public HarvestId(long? _idValue) { 
             this.idValue = _idValue;
             validateFormat();
