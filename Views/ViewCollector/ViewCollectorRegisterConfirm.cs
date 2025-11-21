@@ -17,14 +17,14 @@ namespace CAFEPAY.Views.ViewCollector
     public partial class ViewCollectorRegisterConfirm : Form
     {
         private CollectorDTO collectorDTO;
-
+        private Form ViewMain;
         // Colores exactos del diseño (igual que ViewCollectorRegister)
         private Color darkBlueColor = Color.FromArgb(13, 43, 97);  // #0D2B61 - Azul oscuro del formulario
         private Color lightBlueColor = Color.FromArgb(100, 149, 237); // #6495ED - Azul claro del contorno
         private Color greenColor = Color.FromArgb(11, 110, 51);    // #0B6E33 - Verde del botón Aceptar
         private Color whiteColor = Color.White;
 
-        public ViewCollectorRegisterConfirm(CollectorDTO _collectorDTO)
+        public ViewCollectorRegisterConfirm(CollectorDTO _collectorDTO, Form _viewMain)
         {
             this.collectorDTO = _collectorDTO;
             InitializeComponent();
@@ -32,6 +32,7 @@ namespace CAFEPAY.Views.ViewCollector
 
             // Pantalla completa
             this.WindowState = FormWindowState.Maximized;
+            ViewMain = _viewMain;
         }
 
         private void ApplyVisualDesign()

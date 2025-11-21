@@ -1,0 +1,49 @@
+﻿using CAFEPAY.ArqHex.Collectors.domain;
+using CAFEPAY.ArqHex.Collects.domain;
+using CAFEPAY.ArqHex.Share;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CAFEPAY.ArqHex.Collects.infrastructure
+{
+    public class CollectController
+    {
+        public void saveCollect(long _collectId, string _collectWorkerCode, DateTime _collectDate,
+                               decimal _collectedKilos, long _collectIdHarvest,
+                               int _collectStatus, long _collectAmountToPaidValue, long _collectIdPlot, int _collectIsCountable)
+        {
+            AppServices.CollectServices.save.execute(_collectId, _collectWorkerCode, _collectDate,
+                                                     _collectedKilos, _collectIdHarvest,
+                                                     _collectStatus, _collectAmountToPaidValue, _collectIdPlot, _collectIsCountable);
+        }
+
+        public void updateCollect(long _oldId, long _collectId, string _collectWorkerCode, DateTime _collectDate,
+                                 decimal _collectedKilos, long _collectIdHarvest,
+                                 int _collectStatus, long _collectAmountToPaidValue, long _collectIdPlot, int _collectIsCountable)
+        {
+            AppServices.CollectServices.update.execute(_oldId, _collectId, _collectWorkerCode, _collectDate,
+                                                       _collectedKilos, _collectIdHarvest,
+                                                       _collectStatus, _collectAmountToPaidValue, _collectIdPlot, _collectIsCountable);
+        }
+
+        public List<Collect> listCollects()
+        {
+            return AppServices.CollectServices.query.execute();
+        }
+        public List<Collect> listCollectByStatus(int isCountable, int status, long idPlot, long idHarvest)
+        {
+            return AppServices.CollectServices.queryByStatus.execute(isCountable, status, idPlot, idHarvest);
+        }
+        public List<Collect> listCollectByWorkerCode(int isCountable, string workerCode, long idPlot, long idHarvest)
+        {
+            return AppServices.CollectServices.queryByWorkerCode.execute(isCountable, workerCode, idPlot, idHarvest);
+        }
+        public List<Collect> listCollectByStatusAndWorkerCode(int isCountable, string workerCode,  int status, long idPlot, long? idHarvest)
+        {
+            return AppServices.CollectServices.queryByStatusAndWorkerCode.execute(isCountable, workerCode, status, idPlot, idHarvest);
+        }
+    }
+}

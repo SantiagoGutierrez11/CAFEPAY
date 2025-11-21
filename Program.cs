@@ -1,4 +1,7 @@
-﻿using CAFEPAY.Views.ViewMain;
+﻿
+using CAFEPAY.Views.ViewCollector;
+using CAFEPAY.Views.ViewHarvest;
+using CAFEPAY.Views.ViewOrigin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,9 +20,17 @@ namespace CAFEPAY
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
-            // ← CAMBIO PRINCIPAL: Cambiar ViewCollector por ViewMain
             Application.Run(new ViewMain());
+            /*
+                        ViewCollector viewCollector = new ViewCollector();
+            viewCollector.Show();
+            */
+
+            //)FJnTmGvIIkti?L]
+            //ViewCollector viewCollector = new ViewCollector();
+            //viewCollector.Show();
+            ViewHarvest viewHarvest = new ViewHarvest();   
+            viewHarvest.Show();
         }
     }
 }

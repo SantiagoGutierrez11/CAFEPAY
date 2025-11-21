@@ -20,6 +20,7 @@ namespace CAFEPAY.Views.ViewCollector
         private CollectorDTO newCollector;
         private CollectorDTO oldCollector;
         private Form viewCollector;
+        private Form viewMain;
 
         // Colores exactos del diseño
         private Color darkBlueColor = Color.FromArgb(13, 43, 97);  // #0D2B61 - Azul oscuro del formulario
@@ -28,16 +29,18 @@ namespace CAFEPAY.Views.ViewCollector
         private Color whiteColor = Color.White;
         private Color successGreen = Color.FromArgb(46, 125, 50); // Verde éxito
 
-        public ViewCollectorModifyConfirm_(CollectorDTO _newCollectorDTO, CollectorDTO _oldCollectorDTO, Form viewCollector)
+        public ViewCollectorModifyConfirm_(CollectorDTO _newCollectorDTO, CollectorDTO _oldCollectorDTO, Form _viewCollector, Form _viewMain)
         {
             this.oldCollector = _oldCollectorDTO;
             this.newCollector = _newCollectorDTO;
-            this.viewCollector = viewCollector;
+            this.viewCollector = _viewCollector;
+            this.viewMain = _viewMain;
             InitializeComponent();
             ApplyVisualDesign();
 
             // Pantalla completa
             this.WindowState = FormWindowState.Maximized;
+            
         }
 
         private void ApplyVisualDesign()
@@ -95,7 +98,7 @@ namespace CAFEPAY.Views.ViewCollector
             // ✅ ICONO DE CONFIRMACIÓN
             var confirmIcon = new Label
             {
-                Text = "?",
+                Text = "✓",
                 Font = new Font("Segoe UI", 36, FontStyle.Bold),
                 ForeColor = successGreen,
                 Dock = DockStyle.Top,
@@ -108,7 +111,7 @@ namespace CAFEPAY.Views.ViewCollector
             // 🏷️ TÍTULO PRINCIPAL
             var titleLabel = new Label
             {
-                Text = "¿ESTAS SEGURO?",
+                Text = "MODIFICACIÓN EXITOSA",
                 Font = new Font("Segoe UI", 18, FontStyle.Bold),
                 ForeColor = whiteColor,
                 Dock = DockStyle.Top,
@@ -120,7 +123,7 @@ namespace CAFEPAY.Views.ViewCollector
 
             var subtitleLabel = new Label
             {
-                Text = "El recolector se modificará con esta información",
+                Text = "El recolector ha sido modificado correctamente",
                 Font = new Font("Segoe UI", 11, FontStyle.Regular),
                 ForeColor = Color.FromArgb(200, 200, 200),
                 Dock = DockStyle.Top,

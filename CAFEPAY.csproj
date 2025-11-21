@@ -84,7 +84,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArqHex\Collectors\application\CollectorQueryByIn\CollectorQueryByIn.cs" />
     <Compile Include="ArqHex\Collectors\application\CollectorQueryAll\CollectorQueryAll.cs" />
+    <Compile Include="ArqHex\Collectors\application\CollectorQueryByStatus\CollectorQueryByStatus.cs" />
     <Compile Include="ArqHex\Collectors\application\CollectorSave\CollectorSave.cs" />
     <Compile Include="ArqHex\Collectors\application\CollectorUpdate\CollectorUpdate.cs" />
     <Compile Include="ArqHex\Collectors\domain\Collector.cs" />
@@ -98,9 +100,57 @@
     <Compile Include="ArqHex\Collectors\domain\HarvestActiveExistsException.cs" />
     <Compile Include="ArqHex\Collectors\infrastructure\CollectorController.cs" />
     <Compile Include="ArqHex\Collectors\infrastructure\OracleCollectorRepository.cs" />
+    <Compile Include="ArqHex\Collects\application\CollectQueryAll\CollectQueryAll.cs" />
+    <Compile Include="ArqHex\Collects\application\CollectQueryByStatusAndWorkerCode\CollectQueryByStatusAndWorkerCode.cs" />
+    <Compile Include="ArqHex\Collects\application\CollectQueryByStatus\CollectQueryByStatus.cs" />
+    <Compile Include="ArqHex\Collects\application\CollectQueryByWorkerCode\CollectQueryByWorkerCode.cs" />
+    <Compile Include="ArqHex\Collects\application\CollectSave\CollectSave.cs" />
+    <Compile Include="ArqHex\Collects\application\CollectUpdate\CollectUpdate.cs" />
+    <Compile Include="ArqHex\Collects\domain\Collect.cs" />
+    <Compile Include="ArqHex\Collects\domain\CollectDate.cs" />
+    <Compile Include="ArqHex\Collects\domain\CollectedKilos.cs" />
+    <Compile Include="ArqHex\Collects\domain\CollectIdHarvest.cs" />
+    <Compile Include="ArqHex\Collects\domain\CollectId.cs" />
+    <Compile Include="ArqHex\Collects\domain\CollectWorkerCode.cs" />
+    <Compile Include="ArqHex\Collects\domain\CollectIdPlot.cs" />
+    <Compile Include="ArqHex\Collects\domain\CollectIsCountable.cs" />
+    <Compile Include="ArqHex\Collects\domain\CollectAmountToPay.cs" />
+    <Compile Include="ArqHex\Collects\domain\CollectRepository.cs" />
+    <Compile Include="ArqHex\Collects\domain\CollectStatus.cs" />
+    <Compile Include="ArqHex\Collects\infrastructure\CollectController.cs" />
+    <Compile Include="ArqHex\Collects\infrastructure\OracleCollectRepository.cs" />
+    <Compile Include="ArqHex\Harvests\Application\HarvestQueryByStatus\HarvestQueryByStatus.cs" />
     <Compile Include="ArqHex\Harvests\Application\HarvestUpdate\HarvestUpdate.cs" />
     <Compile Include="ArqHex\Harvests\Domain\HarvestStatus.cs" />
+    <Compile Include="ArqHex\PaymentDetails\application\PaymentDetailQueryAll\PaymentDetailQueryAll.cs" />
+    <Compile Include="ArqHex\PaymentDetails\application\PaymentDetailQueryByPaymentId\QueryByPaymentId.cs" />
+    <Compile Include="ArqHex\PaymentDetails\application\PaymentDetailSave\PaymentDetailSave.cs" />
+    <Compile Include="ArqHex\PaymentDetails\application\PaymentDetailUpdate\PaymentDetailUpdate.cs" />
+    <Compile Include="ArqHex\Payments\application\PaymentGetTotalAmountByWorkerCodeAndPaymentId\GetTotalAmountByWorkerCodeAndPaymentId.cs" />
+    <Compile Include="ArqHex\Payments\application\PaymentQueryByWorkerCode\QueryByWorkerCode.cs" />
+    <Compile Include="ArqHex\PaymentDetails\domain\PaymentDetail.cs" />
+    <Compile Include="ArqHex\PaymentDetails\domain\PaymentDetailAmountToPay.cs" />
+    <Compile Include="ArqHex\PaymentDetails\domain\PaymentDetailIdCollect.cs" />
+    <Compile Include="ArqHex\PaymentDetails\domain\PaymentDetailId.cs" />
+    <Compile Include="ArqHex\PaymentDetails\domain\PaymentDetailIdHarvest.cs" />
+    <Compile Include="ArqHex\PaymentDetails\domain\PaymentDetailIdPlot.cs" />
+    <Compile Include="ArqHex\PaymentDetails\domain\PaymentDetailIdPayment.cs" />
+    <Compile Include="ArqHex\PaymentDetails\domain\PaymentDetailRepository.cs" />
+    <Compile Include="ArqHex\PaymentDetails\domain\PaymentDetailWorkerCode.cs" />
+    <Compile Include="ArqHex\PaymentDetails\infrastructure\OraclePaymentDetailRepository.cs" />
+    <Compile Include="ArqHex\PaymentDetails\infrastructure\PaymentDetailController.cs" />
+    <Compile Include="ArqHex\Payments\application\PaymentQueryAll\PaymentQueryAll.cs" />
+    <Compile Include="ArqHex\Payments\application\PaymentSave\PaymentSave.cs" />
+    <Compile Include="ArqHex\Payments\application\PaymentUpdate\PaymentUpdate.cs" />
+    <Compile Include="ArqHex\Payments\domain\Payment.cs" />
+    <Compile Include="ArqHex\Payments\domain\PaymentDate.cs" />
+    <Compile Include="ArqHex\Payments\domain\PaymentId.cs" />
+    <Compile Include="ArqHex\Payments\domain\PaymentRepository.cs" />
+    <Compile Include="ArqHex\Payments\domain\PaymentWorkerCode.cs" />
+    <Compile Include="ArqHex\Payments\infrastructure\OraclePaymentRepository.cs" />
+    <Compile Include="ArqHex\Payments\infrastructure\PaymentController.cs" />
     <Compile Include="ArqHex\Plots\Application\PlotQueryAll\PlotQueryAll.cs" />
+    <Compile Include="ArqHex\Plots\Application\PlotQueyById\PlotQueryById.cs" />
     <Compile Include="ArqHex\Plots\Domain\Plot.cs" />
     <Compile Include="ArqHex\Plots\Domain\PlotId.cs" />
     <Compile Include="ArqHex\Plots\Domain\PlotName.cs" />
@@ -109,6 +159,7 @@
     <Compile Include="ArqHex\Plots\Domain\PlotStatus.cs" />
     <Compile Include="ArqHex\Plots\Infrastructure\OraclePlotRepository.cs" />
     <Compile Include="ArqHex\Plots\Infrastructure\PlotController.cs" />
+    <Compile Include="ArqHex\Share\DTO\CollectDTO.cs" />
     <Compile Include="ArqHex\Share\DTO\CollectorDTO.cs" />
     <Compile Include="ArqHex\Share\AppServices.cs" />
     <Compile Include="ArqHex\Harvests\Application\HarvestQueryAll\HarvestQueryAll.cs" />
@@ -123,9 +174,14 @@
     <Compile Include="ArqHex\Harvests\Infrastructure\HarvestController.cs" />
     <Compile Include="ArqHex\Harvests\Infrastructure\OracleHarvestRepository.cs" />
     <Compile Include="ArqHex\Share\DTO\HarvestDTO.cs" />
+    <Compile Include="ArqHex\Share\DTO\PaymentDetailDTO.cs" />
+    <Compile Include="ArqHex\Share\DTO\PaymentDTO.cs" />
     <Compile Include="ArqHex\Share\DTO\PlotDTO.cs" />
+    <Compile Include="ArqHex\Share\Serializers\CollectMaper.cs" />
     <Compile Include="ArqHex\Share\Serializers\CollectorMaper.cs" />
-    <Compile Include="ArqHex\Share\Serializers\HarvestMapper.cs" />
+    <Compile Include="ArqHex\Share\Serializers\HarvestMaper.cs" />
+    <Compile Include="ArqHex\Share\Serializers\PaymentDetailMaper.cs" />
+    <Compile Include="ArqHex\Share\Serializers\PaymentMaper.cs" />
     <Compile Include="ArqHex\Share\Serializers\PlotMapper.cs" />
     <Compile Include="Views\ViewCollector\ViewCollector.cs">
       <SubType>Form</SubType>
@@ -169,49 +225,91 @@
     <Compile Include="Views\ViewCollect\ViewCollect.Designer.cs">
       <DependentUpon>ViewCollect.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\ViewCollect\ViewCollectDetail.cs">
+    <Compile Include="Views\ViewCollect\ViewCollectRegister.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\ViewCollect\ViewCollectDetail.Designer.cs">
-      <DependentUpon>ViewCollectDetail.cs</DependentUpon>
+    <Compile Include="Views\ViewCollect\ViewCollectRegister.Designer.cs">
+      <DependentUpon>ViewCollectRegister.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\ViewHarvest\ViewHarvest.cs">
+    <Compile Include="Views\ViewCollect\ViewCollectRegisterConfirm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\ViewHarvest\ViewHarvest.Designer.cs">
+    <Compile Include="Views\ViewCollect\ViewCollectRegisterConfirm.Designer.cs">
+      <DependentUpon>ViewCollectRegisterConfirm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewHarvests\ViewHarvest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ViewHarvests\ViewHarvest.Designer.cs">
       <DependentUpon>ViewHarvest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\ViewHarvest\ViewHarvestFinishConfirm.cs">
+    <Compile Include="Views\ViewHarvests\ViewHarvestAssociateCollector.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\ViewHarvest\ViewHarvestFinishConfirm.Designer.cs">
+    <Compile Include="Views\ViewHarvests\ViewHarvestAssociateCollector.Designer.cs">
+      <DependentUpon>ViewHarvestAssociateCollector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewHarvests\ViewHarvestFinishConfirm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ViewHarvests\ViewHarvestFinishConfirm.Designer.cs">
       <DependentUpon>ViewHarvestFinishConfirm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\ViewHarvest\ViewHarvestRegister.cs">
+    <Compile Include="Views\ViewHarvests\ViewHarvestRegister.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\ViewHarvest\ViewHarvestRegister.Designer.cs">
+    <Compile Include="Views\ViewHarvests\ViewHarvestRegister.Designer.cs">
       <DependentUpon>ViewHarvestRegister.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\ViewHarvest\ViewHarvestRegisterConfirm.cs">
+    <Compile Include="Views\ViewHarvests\ViewHarvestRegisterConfirm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\ViewHarvest\ViewHarvestRegisterConfirm.Designer.cs">
+    <Compile Include="Views\ViewHarvests\ViewHarvestRegisterConfirm.Designer.cs">
       <DependentUpon>ViewHarvestRegisterConfirm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\ViewMain\ViewMain.cs">
+    <Compile Include="Views\ViewOrigin\ViewMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\ViewMain\ViewMain.Designer.cs">
+    <Compile Include="Views\ViewOrigin\ViewMain.Designer.cs">
       <DependentUpon>ViewMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewPayment\ViewMenuPayment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ViewPayment\ViewMenuPayment.Designer.cs">
+      <DependentUpon>ViewMenuPayment.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\ViewPayment\ViewPayment.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\ViewPayment\ViewPayment.Designer.cs">
       <DependentUpon>ViewPayment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewPayment\ViewPaymentConfirm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ViewPayment\ViewPaymentConfirm.Designer.cs">
+      <DependentUpon>ViewPaymentConfirm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewPayment\ViewPaymentConsult.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ViewPayment\ViewPaymentConsult.Designer.cs">
+      <DependentUpon>ViewPaymentConsult.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewPayment\ViewPaymentConsultWorkerPayments.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ViewPayment\ViewPaymentConsultWorkerPayments.Designer.cs">
+      <DependentUpon>ViewPaymentConsultWorkerPayments.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewPayment\ViewPaymentConsultWorkerPaymentsDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ViewPayment\ViewPaymentConsultWorkerPaymentsDetails.Designer.cs">
+      <DependentUpon>ViewPaymentConsultWorkerPaymentsDetails.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Views\ViewCollector\ViewCollector.resx">
       <DependentUpon>ViewCollector.cs</DependentUpon>
@@ -234,8 +332,8 @@
     <EmbeddedResource Include="Views\ViewCollect\ViewCollect.resx">
       <DependentUpon>ViewCollect.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\ViewCollect\ViewCollectDetail.resx">
-      <DependentUpon>ViewCollectDetail.cs</DependentUpon>
+    <EmbeddedResource Include="Views\ViewCollect\ViewCollectRegister.resx">
+      <DependentUpon>ViewCollectRegister.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -247,20 +345,44 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Views\ViewHarvest\ViewHarvest.resx">
+    <EmbeddedResource Include="Views\ViewCollect\ViewCollectRegisterConfirm.resx">
+      <DependentUpon>ViewCollectRegisterConfirm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ViewHarvests\ViewHarvest.resx">
       <DependentUpon>ViewHarvest.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\ViewHarvest\ViewHarvestFinishConfirm.resx">
+    <EmbeddedResource Include="Views\ViewHarvests\ViewHarvestAssociateCollector.resx">
+      <DependentUpon>ViewHarvestAssociateCollector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ViewHarvests\ViewHarvestFinishConfirm.resx">
       <DependentUpon>ViewHarvestFinishConfirm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\ViewHarvest\ViewHarvestRegister.resx">
+    <EmbeddedResource Include="Views\ViewHarvests\ViewHarvestRegister.resx">
       <DependentUpon>ViewHarvestRegister.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\ViewHarvest\ViewHarvestRegisterConfirm.resx">
+    <EmbeddedResource Include="Views\ViewHarvests\ViewHarvestRegisterConfirm.resx">
       <DependentUpon>ViewHarvestRegisterConfirm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ViewOrigin\ViewMain.resx">
+      <DependentUpon>ViewMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ViewPayment\ViewMenuPayment.resx">
+      <DependentUpon>ViewMenuPayment.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\ViewPayment\ViewPayment.resx">
       <DependentUpon>ViewPayment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ViewPayment\ViewPaymentConfirm.resx">
+      <DependentUpon>ViewPaymentConfirm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ViewPayment\ViewPaymentConsult.resx">
+      <DependentUpon>ViewPaymentConsult.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ViewPayment\ViewPaymentConsultWorkerPayments.resx">
+      <DependentUpon>ViewPaymentConsultWorkerPayments.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ViewPayment\ViewPaymentConsultWorkerPaymentsDetails.resx">
+      <DependentUpon>ViewPaymentConsultWorkerPaymentsDetails.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="bin\Debug\CAFEPAY.exe.config" />
     <None Include="Oracle.DataAccess.Common.Configuration.Section.xsd">
@@ -314,6 +436,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ArqHex\Collects\application\CollectQueryIn\" />
     <Folder Include="bin\Release\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
