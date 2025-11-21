@@ -1,11 +1,10 @@
-﻿using CAFEPAY.ArqHex.Collectors.domain;
+﻿using CAFEPAY.ArqHex.Harvests.Domain;
 using CAFEPAY.ArqHex.Share;
 using CAFEPAY.ArqHex.Share.DTO;
 using CAFEPAY.ArqHex.Share.Serializers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.Design;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -16,34 +15,38 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using CAFEPAY.Views.ViewMain;
 
-namespace CAFEPAY.Views.ViewCollector
+namespace CAFEPAY.Views.ViewHarvest
 {
-    public partial class ViewCollector : Form
+    public partial class ViewHarvest : Form
     {
-        private List<Collector> listCollector;
-        private List<CollectorDTO> listDTOCollector;
+        private string _lastSortProp;
+        private bool _sortAsc = true;
+        List<Harvest> listHarvest = new List<Harvest>();
+        List<HarvestDTO> listHarvestDTO = new List<HarvestDTO>();
 
-        // Colores exactos del FIGMA
+        // Colores exactos del FIGMA (igual que ViewCollector)
         private Color redColor = Color.FromArgb(183, 32, 46);     // #B7202E
         private Color darkBlueColor = Color.FromArgb(13, 43, 97); // #0D2B61
         private Color whiteColor = Color.White;
         private Color darkGrayColor = Color.FromArgb(64, 64, 64);
         private Color lightGrayColor = Color.FromArgb(240, 240, 240);
 
-        public ViewCollector()
+       
+
+        public ViewHarvest()
         {
             InitializeComponent();
             ApplyExactFigmaDesign();
-            loadCollectors();
+            loadHarvests();
 
             // Pantalla completa
             this.WindowState = FormWindowState.Maximized;
 
             // Conectar eventos
-            dgCollector.SelectionChanged += dgCollector_SelectionChanged;
-
+            dgHarvest.SelectionChanged += dgHarvest_SelectionChanged;
+            dgHarvest.ColumnHeaderMouseClick += dgHarvest_ColumnHeaderMouseClick;
         }
-            
+
         private void ApplyExactFigmaDesign()
         {
             // Configuración principal del formulario
@@ -52,31 +55,30 @@ namespace CAFEPAY.Views.ViewCollector
             this.Padding = new Padding(0);
             this.StartPosition = FormStartPosition.CenterScreen;
             this.MinimumSize = new Size(1200, 800);
-            this.Text = "CAFICAUCA - Consulta de Datos de Recolectores";
+            this.Text = "CAFICAUCA - Consulta de Datos de Cosechas";
 
             // 🔝 ENCABEZADO SUPERIOR - Logo CAFICAUCA
             var topHeaderPanel = new Panel
             {
                 Dock = DockStyle.Top,
-                Height = 90, // Un poco más alto para la imagen más grande
+                Height = 90,
                 BackColor = whiteColor,
-                Padding = new Padding(20, 10, 40, 10) // Menos padding izquierdo para más a la esquina
+                Padding = new Padding(20, 10, 40, 10)
             };
 
-            // Panel del logo - MÁS GRANDE y MÁS A LA ESQUINA
+            // Panel del logo
             var logoPanel = new Panel
             {
                 Dock = DockStyle.Left,
-                Width = 350, // Más ancho para imagen más grande
+                Width = 350,
                 BackColor = Color.Transparent,
                 Height = 70,
-                Padding = new Padding(10, 0, 0, 0) // Pegado a la izquierda
+                Padding = new Padding(10, 0, 0, 0)
             };
 
-            // 🖼️ CARGAR IMAGEN DESDE CARPETA RESOURCES - MÁS GRANDE
+            // 🖼️ CARGAR IMAGEN DESDE CARPETA RESOURCES
             try
             {
-                // Ruta de la imagen en la carpeta Resources
                 string imagePath = Path.Combine(Application.StartupPath, "Resources", "LOGO-CAFICAUCA.png");
 
                 if (File.Exists(imagePath))
@@ -84,11 +86,10 @@ namespace CAFEPAY.Views.ViewCollector
                     PictureBox logoPicture = new PictureBox();
                     logoPicture.Image = Image.FromFile(imagePath);
                     logoPicture.SizeMode = PictureBoxSizeMode.Zoom;
-                    logoPicture.Size = new Size(320, 70); // MÁS GRANDE: 320x70
-                    logoPicture.Location = new Point(5, 5); // MÁS PEGADO A LA ESQUINA
+                    logoPicture.Size = new Size(320, 70);
+                    logoPicture.Location = new Point(5, 5);
                     logoPicture.Cursor = Cursors.Hand;
 
-                    // Tooltip para la imagen
                     ToolTip toolTip = new ToolTip();
                     toolTip.SetToolTip(logoPicture, "CAFICAUCA - Cooperativa de Caficultores del Cauca");
 
@@ -96,13 +97,11 @@ namespace CAFEPAY.Views.ViewCollector
                 }
                 else
                 {
-                    // Si no encuentra la imagen, mostrar simulación
                     CreateSimulatedLogo(logoPanel);
                 }
             }
             catch (Exception)
             {
-                // 🖼️ SIMULACIÓN DEL LOGO en caso de error
                 CreateSimulatedLogo(logoPanel);
             }
 
@@ -110,7 +109,7 @@ namespace CAFEPAY.Views.ViewCollector
             var homeButton = new Button
             {
                 Size = new Size(40, 40),
-                Location = new Point(topHeaderPanel.Width - 60, 25), // Más a la esquina
+                Location = new Point(topHeaderPanel.Width - 60, 25),
                 Anchor = AnchorStyles.Top | AnchorStyles.Right,
                 FlatStyle = FlatStyle.Flat,
                 BackColor = darkGrayColor,
@@ -127,7 +126,6 @@ namespace CAFEPAY.Views.ViewCollector
             homeButton.Region = new Region(homePath);
 
             homeButton.Click += (s, e) => {
-                // Volver al menú principal
                 var viewMain = new ViewMain.ViewMain();
                 viewMain.Show();
                 this.Close();
@@ -136,7 +134,7 @@ namespace CAFEPAY.Views.ViewCollector
             topHeaderPanel.Controls.Add(homeButton);
             topHeaderPanel.Controls.Add(logoPanel);
 
-            // 🏷️ TÍTULO PRINCIPAL - "CONSULTA DE DATOS DE RECOLECTORES" (EN ESPAÑOL)
+            // 🏷️ TÍTULO PRINCIPAL - "CONSULTA DE DATOS DE COSECHAS"
             var titleContainerPanel = new Panel
             {
                 Dock = DockStyle.Top,
@@ -162,10 +160,10 @@ namespace CAFEPAY.Views.ViewCollector
                 BackColor = whiteColor
             };
 
-            // Label del título EN ESPAÑOL
+            // Label del título
             var mainTitleLabel = new Label
             {
-                Text = "CONSULTA DE DATOS DE RECOLECTORES",
+                Text = "CONSULTA DE DATOS DE COSECHAS",
                 Font = new Font("Segoe UI", 18, FontStyle.Bold),
                 ForeColor = Color.Black,
                 Dock = DockStyle.Fill,
@@ -176,7 +174,7 @@ namespace CAFEPAY.Views.ViewCollector
             blueOuterPanel.Controls.Add(whiteInnerPanel);
             titleContainerPanel.Controls.Add(blueOuterPanel);
 
-            // 🔘 PANEL DE BOTONES SUPERIORES (ARRIBA DEL DATAGRIDVIEW)
+            // 🔘 PANEL DE BOTONES SUPERIORES - CON BOTONES MODIFICADOS
             var buttonContainerPanel = new Panel
             {
                 Dock = DockStyle.Top,
@@ -185,39 +183,41 @@ namespace CAFEPAY.Views.ViewCollector
                 Padding = new Padding(40, 20, 40, 20)
             };
 
-            // Botón AZUL - "Registrar Recolector"
+            // Botón AZUL - "Agregar"
             btnAdd.FlatStyle = FlatStyle.Flat;
             btnAdd.BackColor = darkBlueColor;
             btnAdd.ForeColor = whiteColor;
             btnAdd.Font = new Font("Segoe UI", 12, FontStyle.Bold);
-            btnAdd.Text = "Registrar Recolector";
+            btnAdd.Text = "Agregar";
             btnAdd.Size = new Size(200, 50);
             btnAdd.Location = new Point(buttonContainerPanel.Width / 4 - 100, 25);
             btnAdd.Anchor = AnchorStyles.None;
             btnAdd.Cursor = Cursors.Hand;
             btnAdd.FlatAppearance.BorderSize = 0;
+            
 
-            // Botón ROJO - "Modificar"
-            btnModify.FlatStyle = FlatStyle.Flat;
-            btnModify.BackColor = redColor;
-            btnModify.ForeColor = whiteColor;
-            btnModify.Font = new Font("Segoe UI", 12, FontStyle.Bold);
-            btnModify.Text = "Modificar";
-            btnModify.Size = new Size(200, 50);
-            btnModify.Location = new Point(3 * buttonContainerPanel.Width / 4 - 100, 25);
-            btnModify.Anchor = AnchorStyles.None;
-            btnModify.Cursor = Cursors.Hand;
-            btnModify.FlatAppearance.BorderSize = 0;
-            btnModify.Enabled = false;
+            // Botón ROJO - "Finalizar" ← NUEVO BOTÓN
+            btnFinish.FlatStyle = FlatStyle.Flat;
+            btnFinish.BackColor = redColor;
+            btnFinish.ForeColor = whiteColor;
+            btnFinish.Font = new Font("Segoe UI", 12, FontStyle.Bold);
+            btnFinish.Text = "Finalizar";
+            btnFinish.Size = new Size(200, 50);
+            btnFinish.Location = new Point(3 * buttonContainerPanel.Width / 4 - 100, 25);
+            btnFinish.Anchor = AnchorStyles.None;
+            btnFinish.Cursor = Cursors.Hand;
+            btnFinish.FlatAppearance.BorderSize = 0;
+            btnFinish.Enabled = false; // Inicialmente deshabilitado hasta que se seleccione una cosecha
+            btnFinish.Click += btnFinish_Click;
 
             // Aplicar esquinas redondeadas a los botones
             ApplyRoundedCorners(btnAdd, 10);
-            ApplyRoundedCorners(btnModify, 10);
+            ApplyRoundedCorners(btnFinish, 10);
 
-            buttonContainerPanel.Controls.Add(btnModify);
+            buttonContainerPanel.Controls.Add(btnFinish);
             buttonContainerPanel.Controls.Add(btnAdd);
 
-            // 📊 PANEL PRINCIPAL DE CONTENIDO (DataGridView) - CON BORDE AZUL
+            // 📊 PANEL PRINCIPAL DE CONTENIDO (DataGridView)
             var mainContentPanel = new Panel
             {
                 Dock = DockStyle.Fill,
@@ -229,8 +229,8 @@ namespace CAFEPAY.Views.ViewCollector
             var dataGridContainerPanel = new Panel
             {
                 Dock = DockStyle.Fill,
-                BackColor = darkBlueColor, // Color azul del borde
-                Padding = new Padding(2), // Grosor del borde
+                BackColor = darkBlueColor,
+                Padding = new Padding(2),
                 Margin = new Padding(0, 10, 0, 0)
             };
 
@@ -238,7 +238,7 @@ namespace CAFEPAY.Views.ViewCollector
             ConfigureDataGridFigmaStyle();
 
             // Agregar DataGridView al panel con borde azul
-            dataGridContainerPanel.Controls.Add(dgCollector);
+            dataGridContainerPanel.Controls.Add(dgHarvest);
 
             // Agregar el panel con borde al panel principal
             mainContentPanel.Controls.Add(dataGridContainerPanel);
@@ -254,7 +254,7 @@ namespace CAFEPAY.Views.ViewCollector
 
             var breadcrumbLabel = new Label
             {
-                Text = "inicio / recolector",
+                Text = "inicio / cosechas",
                 Font = new Font("Segoe UI", 9, FontStyle.Regular),
                 ForeColor = darkGrayColor,
                 Dock = DockStyle.Left,
@@ -265,7 +265,7 @@ namespace CAFEPAY.Views.ViewCollector
 
             // 🔄 AGREGAR TODOS LOS CONTROLES AL FORMULARIO EN ORDEN CORRECTO
             this.Controls.Add(mainContentPanel);
-            this.Controls.Add(buttonContainerPanel); // Botones ARRIBA del DataGridView
+            this.Controls.Add(buttonContainerPanel);
             this.Controls.Add(titleContainerPanel);
             this.Controls.Add(topHeaderPanel);
             this.Controls.Add(breadcrumbPanel);
@@ -274,7 +274,7 @@ namespace CAFEPAY.Views.ViewCollector
             this.Resize += (s, e) => {
                 blueOuterPanel.Location = new Point((titleContainerPanel.Width - blueOuterPanel.Width) / 2, 0);
                 btnAdd.Location = new Point(buttonContainerPanel.Width / 4 - 100, 25);
-                btnModify.Location = new Point(3 * buttonContainerPanel.Width / 4 - 100, 25);
+                btnFinish.Location = new Point(3 * buttonContainerPanel.Width / 4 - 100, 25);
             };
         }
 
@@ -282,24 +282,23 @@ namespace CAFEPAY.Views.ViewCollector
         {
             var simulatedLogoPanel = new Panel
             {
-                Size = new Size(320, 70), // MÁS GRANDE
-                Location = new Point(5, 5), // MÁS PEGADO A LA ESQUINA
+                Size = new Size(320, 70),
+                Location = new Point(5, 5),
                 BackColor = Color.Transparent,
                 BorderStyle = BorderStyle.FixedSingle
             };
 
             var logoText = new Label
             {
-                Text = "CAFICAUCA\nCOOPERATIVA DE CAFICULTORES DEL CAUCA\nRECOLECTORES", // AGREGADO "RECOLECTORES"
-                Font = new Font("Segoe UI", 9, FontStyle.Bold), // Fuente un poco más grande
+                Text = "CAFICAUCA\nCOOPERATIVA DE CAFICULTORES DEL CAUCA\nCOSECHAS",
+                Font = new Font("Segoe UI", 9, FontStyle.Bold),
                 ForeColor = darkBlueColor,
-                Location = new Point(15, 8), // Ajustado para tamaño más grande
+                Location = new Point(15, 8),
                 AutoSize = false,
-                Size = new Size(290, 55), // Más grande
+                Size = new Size(290, 55),
                 TextAlign = ContentAlignment.MiddleLeft
             };
 
-            // Línea decorativa roja MÁS GRANDE
             var redLine = new Panel
             {
                 Size = new Size(4, 40),
@@ -325,84 +324,98 @@ namespace CAFEPAY.Views.ViewCollector
 
         private void ConfigureDataGridFigmaStyle()
         {
-            dgCollector.BorderStyle = BorderStyle.None;
-            dgCollector.BackgroundColor = whiteColor;
-            dgCollector.DefaultCellStyle.SelectionBackColor = Color.FromArgb(230, 240, 250);
-            dgCollector.DefaultCellStyle.SelectionForeColor = Color.Black;
-            dgCollector.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 248, 248);
-            dgCollector.RowHeadersVisible = false;
-            dgCollector.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgCollector.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dgCollector.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dgCollector.EnableHeadersVisualStyles = false;
-            dgCollector.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgCollector.MultiSelect = false;
-            dgCollector.ReadOnly = true;
-            dgCollector.Dock = DockStyle.Fill;
+            dgHarvest.BorderStyle = BorderStyle.None;
+            dgHarvest.BackgroundColor = whiteColor;
+            dgHarvest.DefaultCellStyle.SelectionBackColor = Color.FromArgb(230, 240, 250);
+            dgHarvest.DefaultCellStyle.SelectionForeColor = Color.Black;
+            dgHarvest.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 248, 248);
+            dgHarvest.RowHeadersVisible = false;
+            dgHarvest.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgHarvest.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgHarvest.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgHarvest.EnableHeadersVisualStyles = false;
+            dgHarvest.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgHarvest.MultiSelect = false;
+            dgHarvest.ReadOnly = true;
+            dgHarvest.Dock = DockStyle.Fill;
 
             // Estilo de encabezados
-            dgCollector.ColumnHeadersDefaultCellStyle.BackColor = darkBlueColor;
-            dgCollector.ColumnHeadersDefaultCellStyle.ForeColor = whiteColor;
-            dgCollector.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
-            dgCollector.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dgCollector.ColumnHeadersDefaultCellStyle.Padding = new Padding(15, 0, 0, 0);
-            dgCollector.ColumnHeadersHeight = 45;
+            dgHarvest.ColumnHeadersDefaultCellStyle.BackColor = darkBlueColor;
+            dgHarvest.ColumnHeadersDefaultCellStyle.ForeColor = whiteColor;
+            dgHarvest.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
+            dgHarvest.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dgHarvest.ColumnHeadersDefaultCellStyle.Padding = new Padding(15, 0, 0, 0);
+            dgHarvest.ColumnHeadersHeight = 45;
 
             // Estilo de celdas
-            dgCollector.DefaultCellStyle.Font = new Font("Segoe UI", 10);
-            dgCollector.DefaultCellStyle.BackColor = whiteColor;
-            dgCollector.DefaultCellStyle.ForeColor = Color.FromArgb(60, 60, 60);
-            dgCollector.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dgCollector.DefaultCellStyle.Padding = new Padding(15, 10, 15, 10);
-            dgCollector.RowTemplate.Height = 45;
+            dgHarvest.DefaultCellStyle.Font = new Font("Segoe UI", 10);
+            dgHarvest.DefaultCellStyle.BackColor = whiteColor;
+            dgHarvest.DefaultCellStyle.ForeColor = Color.FromArgb(60, 60, 60);
+            dgHarvest.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dgHarvest.DefaultCellStyle.Padding = new Padding(15, 10, 15, 10);
+            dgHarvest.RowTemplate.Height = 45;
         }
 
-        public void loadCollectors()
+        private void ViewHarvest_Load(object sender, EventArgs e) { }
+
+        private void dgHarvest_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            var col = dgHarvest.Columns[e.ColumnIndex];
+            var prop = col.DataPropertyName;
+            if (string.IsNullOrWhiteSpace(prop)) return;
+
+            _sortAsc = (_lastSortProp == prop) ? !_sortAsc : true;
+            _lastSortProp = prop;
+
+            Func<HarvestDTO, object> key = x => x?.GetType().GetProperty(prop)?.GetValue(x, null);
+            var sorted = _sortAsc
+                ? listHarvestDTO.OrderBy(key).ToList()
+                : listHarvestDTO.OrderByDescending(key).ToList();
+
+            dgHarvest.DataSource = null;
+            dgHarvest.DataSource = sorted;
+        }
+
+        public void loadHarvests()
         {
             try
             {
-                listCollector = AppServices.CollectorServices.query.execute();
-                listDTOCollector = CollectorMaper.ToDTOList(listCollector);
+                // 1) Traer cosechas
+                listHarvest = AppServices.HarvestServices.query.execute();
+                listHarvestDTO = HarvestMaper.ToDTOList(listHarvest);
 
-                listDTOCollector.Reverse(); //
+                // 2) Traer lotes y mapear a diccionario id->nombre
+                var plots = AppServices.PlotServices.query.execute();
+                var plotsDTO = PlotMapper.ToDTOList(plots);
+                var plotNameById = plotsDTO.ToDictionary(p => p.idPlot, p => p.name);
 
-                dgCollector.AutoGenerateColumns = false;
-                dgCollector.Columns.Clear();
+                // 3) Completar nombre de lote en cada DTO
+                foreach (var h in listHarvestDTO)
+                    h.plotName = plotNameById.TryGetValue(h.idPlot, out var name) ? name : "(desconocido)";
 
-                // Columnas según diseño
-                AddColumn("workerCode", "ID TRABAJADOR", 150);
-                AddColumn("id", "CÉDULA", 130);
-                AddColumn("firstName", "NOMBRES", 180);
-                AddColumn("lastName", "APELLIDOS", 180);
-                AddColumn("phone", "TELÉFONO", 150);
+                // 4) Orden: activas primero
+                listHarvestDTO = listHarvestDTO
+                    .OrderByDescending(h => h.status == 1 && h.endDate == null)
+                    .ThenByDescending(h => h.startDate)
+                    .ToList();
 
-                // Columna de estado
-                var statusItems = new[]
-                {
-                    new { Value = 1, Text = "Activo" },
-                    new { Value = 2, Text = "Inactivo" }
-                };
+                // 5) Bind al grid
+                dgHarvest.AutoGenerateColumns = false;
+                dgHarvest.Columns.Clear();
+                AddColumn("idPlot", "Parcela Id", 110);
+                AddColumn("plotName", "Nombre de lote", 180);
+                AddColumn("id", "Cosecha Id", 110);
+                AddColumn("startDate", "Fecha Inicio", 120);
+                AddColumn("endDate", "Fecha Fin", 120);
+                AddColumn("pricePerKilo", "Precio por Kilo", 130);
+                AddColumn("statusText", "Estado", 100);
 
-                var colStatus = new DataGridViewComboBoxColumn
-                {
-                    DataPropertyName = "status",
-                    HeaderText = "ESTADO",
-                    DataSource = statusItems,
-                    DisplayMember = "Text",
-                    ValueMember = "Value",
-                    DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing,
-                    FlatStyle = FlatStyle.Flat,
-                    Width = 120
-                };
-                dgCollector.Columns.Add(colStatus);
-
-                dgCollector.DataSource = listDTOCollector;
-
-                dgCollector.ClearSelection();
+                dgHarvest.DataSource = listHarvestDTO;
+                dgHarvest.ClearSelection();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al cargar los recolectores: {ex.Message}",
+                MessageBox.Show($"Error al cargar las cosechas: {ex.Message}",
                               "Error",
                               MessageBoxButtons.OK,
                               MessageBoxIcon.Error);
@@ -417,35 +430,34 @@ namespace CAFEPAY.Views.ViewCollector
                 HeaderText = headerText,
                 Width = width
             };
-            dgCollector.Columns.Add(column);
+            dgHarvest.Columns.Add(column);
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            if (dgCollector.CurrentCell != null)
-                dgCollector.ClearSelection();
+            if (dgHarvest.CurrentCell != null)
+                dgHarvest.ClearSelection();
 
-            ViewCollectorRegister viewCollectorRegister = new ViewCollectorRegister();
-            viewCollectorRegister.Owner = this;
-            viewCollectorRegister.Show();
+            ViewHarvestRegister viewHarvestRegister = new ViewHarvestRegister();
+            viewHarvestRegister.Owner = this;
+            viewHarvestRegister.Show();
             this.Hide();
         }
 
-        private void btnModify_Click(object sender, EventArgs e)
+        private void btnFinish_Click(object sender, EventArgs e)
         {
-            // VALIDACIONES COMPLETAS DEL CÓDIGO ORIGINAL
-            if (dgCollector.CurrentCell == null)
+            if (dgHarvest.CurrentCell == null)
             {
-                MessageBox.Show("Por favor, seleccione un recolector para modificar.",
+                MessageBox.Show("Por favor, seleccione una cosecha para finalizar.",
                               "Selección requerida",
                               MessageBoxButtons.OK,
                               MessageBoxIcon.Information);
                 return;
             }
 
-            int rowSelected = dgCollector.CurrentCell.RowIndex;
+            int rowSelected = dgHarvest.CurrentCell.RowIndex;
 
-            if (rowSelected < 0 || rowSelected >= listDTOCollector.Count)
+            if (rowSelected < 0 || rowSelected >= listHarvestDTO.Count)
             {
                 MessageBox.Show("La selección no es válida.",
                               "Error",
@@ -454,25 +466,26 @@ namespace CAFEPAY.Views.ViewCollector
                 return;
             }
 
-            var selectedCollector = listDTOCollector[rowSelected];
-            if (selectedCollector == null)
+            var selectedHarvest = listHarvestDTO[rowSelected];
+            if (selectedHarvest == null)
             {
-                MessageBox.Show("El recolector seleccionado no es válido.",
+                MessageBox.Show("La cosecha seleccionada no es válida.",
                               "Error",
                               MessageBoxButtons.OK,
                               MessageBoxIcon.Error);
                 return;
             }
 
-            ViewCollectorModify viewCollectorModify = new ViewCollectorModify(selectedCollector, this);
-            viewCollectorModify.Owner = this;
-            viewCollectorModify.Show();
-            this.Hide();
+            // Aquí puedes implementar la lógica para finalizar la cosecha
+            MessageBox.Show($"Finalizar cosecha ID: {selectedHarvest.id}\nLote: {selectedHarvest.plotName}",
+                          "Finalizar Cosecha",
+                          MessageBoxButtons.OK,
+                          MessageBoxIcon.Information);
         }
 
-        private void dgCollector_SelectionChanged(object sender, EventArgs e)
+        private void dgHarvest_SelectionChanged(object sender, EventArgs e)
         {
-            btnModify.Enabled = dgCollector.CurrentCell != null;
+            btnFinish.Enabled = dgHarvest.CurrentCell != null;
         }
 
         protected override void OnVisibleChanged(EventArgs e)
@@ -480,25 +493,10 @@ namespace CAFEPAY.Views.ViewCollector
             base.OnVisibleChanged(e);
             if (this.Visible)
             {
-                loadCollectors();
-                dgCollector.ClearSelection();
-                btnModify.Enabled = false;
+                loadHarvests();
+                dgHarvest.ClearSelection();
+                btnFinish.Enabled = false;
             }
-        }
-
-        private void dgCollector_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex < 0) return;
-        }
-
-        private void ViewCollector_Load(object sender, EventArgs e)
-        {
-            // -----
-        }
-
-        private void btnDelet_Click(object sender, EventArgs e)
-        {
-            // -----
         }
     }
 }

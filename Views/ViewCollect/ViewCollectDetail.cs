@@ -8,16 +8,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace CAFEPAY.Views.ViewPayment
+namespace CAFEPAY.Views.ViewCollect
 {
-    public partial class ViewPayment : Form
+    public partial class ViewCollectDetail : Form
     {
-        public ViewPayment()
+        public ViewCollectDetail()
         {
             InitializeComponent();
         }
 
-        private void ViewPayment_Load(object sender, EventArgs e)
+        private void ViewCollectDetail_Load(object sender, EventArgs e)
         {
 
         }

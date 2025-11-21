@@ -17,9 +17,9 @@ namespace CAFEPAY.ArqHex.Plots.Infrastructure
             this.connectionString = _connectionString;
         }
 
-        public List<Plot> queryAll()
+        public List<Domain.Plot> queryAll()
         {
-            var plots = new List<Plot>();
+            var plots = new List<Domain.Plot>();
 
             using (var connection = new OracleConnection(connectionString))
             {
@@ -31,7 +31,7 @@ namespace CAFEPAY.ArqHex.Plots.Infrastructure
                 {
                     while (reader.Read())
                     {
-                        var plot = new Plot(
+                        var plot = new Domain.Plot(
                             _idPlot: new PlotId(reader.GetInt64(0)),
                             _idOwner: new PlotOwnerId(reader.GetInt64(1)),
                             _name: new PlotName(reader.GetString(2)),
@@ -44,32 +44,6 @@ namespace CAFEPAY.ArqHex.Plots.Infrastructure
             }
 
             return plots;
-        }
-        public Plot queryById(long idPlot)
-        {
-            Plot plot = null;
-            using (var connection = new OracleConnection(connectionString))
-            {
-                connection.Open();
-                const string query = "SELECT IDPLOT, IDOWNER, PLOTNAME, STATUS_ID FROM PLOT WHERE IDPLOT = :idPlot";
-                using (var command = new OracleCommand(query, connection))
-                {
-                    command.Parameters.Add(new OracleParameter("idPlot", idPlot));
-                    using (var reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            plot = new Plot(
-                                _idPlot: new PlotId(reader.GetInt64(0)),
-                                _idOwner: new PlotOwnerId(reader.GetInt64(1)),
-                                _name: new PlotName(reader.GetString(2)),
-                                _status: new PlotStatus(reader.GetInt32(3))
-                            );
-                        }
-                    }
-                }
-            }
-            return plot;
         }
     }
 }

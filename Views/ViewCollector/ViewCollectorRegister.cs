@@ -31,17 +31,36 @@ namespace CAFEPAY.Views.ViewCollector
         // Variable para el botón home
         private Button homeButton;
         private bool isClosing = false;
-        private Form viewMain;
-        public ViewCollectorRegister(Form _viewMain)
+
+        public ViewCollectorRegister()
         {
             InitializeComponent();
             ApplyVisualDesign();
             LoadComboStatus();
             ConfigureRealTimeValidation();
+            ConfigureMaxLengthRestrictions(); // ← NUEVO: Configurar restricciones de longitud
 
             // Pantalla completa
             this.WindowState = FormWindowState.Maximized;
-            this.viewMain = _viewMain;
+        }
+
+        // ← NUEVO MÉTODO: Configurar restricciones de longitud máxima
+        private void ConfigureMaxLengthRestrictions()
+        {
+            // Worker Code: Longitud exacta 6 caracteres
+            txtBoxWorkerCode.MaxLength = 6;
+
+            // Cédula: Máximo 10 dígitos
+            txtBoxId.MaxLength = 10;
+
+            // Nombres: Máximo 30 caracteres
+            txtBoxFirstName.MaxLength = 30;
+
+            // Apellidos: Máximo 30 caracteres
+            txtBoxLastName.MaxLength = 30;
+
+            // Celular: Longitud exacta 10 dígitos
+            txtBoxPhone.MaxLength = 10;
         }
 
         // ← MÉTODO ACTUALIZADO: Configurar validación en tiempo real con BLOQUEO
@@ -535,9 +554,8 @@ namespace CAFEPAY.Views.ViewCollector
             homeButton.Region = new Region(homePath);
 
             homeButton.Click += (s, e) => {
-                isClosing = true;
-                MessageBox.Show("Volviendo al menú principal...", "Información",
-                   MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // Volver al menú principal
+                var viewMain = new ViewMain.ViewMain();
                 viewMain.Show();
                 this.Close();
             };
@@ -947,7 +965,7 @@ namespace CAFEPAY.Views.ViewCollector
                     status = _status
                 };
 
-                ViewCollectorRegisterConfirm viewCollectorRegisterConfirm = new ViewCollectorRegisterConfirm(collectorDTO, viewMain);
+                ViewCollectorRegisterConfirm viewCollectorRegisterConfirm = new ViewCollectorRegisterConfirm(collectorDTO);
                 viewCollectorRegisterConfirm.Owner = this.Owner;
                 this.Close();
                 viewCollectorRegisterConfirm.Show();
