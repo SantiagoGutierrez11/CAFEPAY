@@ -1,10 +1,12 @@
 ﻿using CAFEPAY.ArqHex.Collectors.domain;
+using CAFEPAY.ArqHex.Harvests.domain;
 using CAFEPAY.ArqHex.Harvests.Domain;
 using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 
 namespace CAFEPAY.ArqHex.Harvests.Infrastructure
 {
@@ -114,13 +116,15 @@ namespace CAFEPAY.ArqHex.Harvests.Infrastructure
                 }
                 catch (OracleException ex)
                 {
+                    string cleanMessage = CleanOracleErrorMessage(ex.Message);
                     throw new HarvestOperationException(
-                        "Error al consultar las cosechas: " + ex.Message, ex);
+                        "Error al consultar las cosechas: " + cleanMessage, ex);
                 }
             }
 
             return harvests;
         }
+
         public List<Harvest> queryByStatus(int status)
         {
             var harvests = new List<Harvest>();
@@ -160,13 +164,15 @@ namespace CAFEPAY.ArqHex.Harvests.Infrastructure
                         throw new InvalidOperationException(
                             "Estado inválido. Use 1 para cosechas en proceso o 2 para finalizadas", ex);
                     }
+                    string cleanMessage = CleanOracleErrorMessage(ex.Message);
                     throw new HarvestOperationException(
-                        "Error al consultar las cosechas: " + ex.Message, ex);
+                        "Error al consultar las cosechas: " + cleanMessage, ex);
                 }
             }
 
             return harvests;
         }
+
         public void update(Harvest harvest)
         {
             if (harvest == null)
@@ -262,16 +268,45 @@ namespace CAFEPAY.ArqHex.Harvests.Infrastructure
                 }
             }
         }
+
         //METODOS AUXILIARES
+
+        // Método para limpiar mensajes de error de Oracle
+        private string CleanOracleErrorMessage(string message)
+        {
+            if (string.IsNullOrWhiteSpace(message))
+                return message;
+
+            // Remover código ORA-XXXXX: del inicio
+            string cleaned = Regex.Replace(
+                message,
+                @"^ORA-\d+:\s*",
+                "",
+                RegexOptions.IgnoreCase
+            );
+
+            // Remover saltos de línea y texto adicional después del primer salto
+            int newLineIndex = cleaned.IndexOf('\n');
+            if (newLineIndex > 0)
+            {
+                cleaned = cleaned.Substring(0, newLineIndex);
+            }
+
+            return cleaned.Trim();
+        }
+
         private Exception MapUpdateOracleException(OracleException ex, long plotId, long harvestId)
         {
+            // Limpiar mensaje de Oracle
+            string cleanMessage = CleanOracleErrorMessage(ex.Message);
+
             switch (ex.Number)
             {
                 case 20203:
                     return new HarvestNotFoundException(plotId, harvestId, ex);
 
                 case 20061:
-                    return new InvalidHarvestDurationException(ex.Message, ex);
+                    return new InvalidHarvestDurationException(cleanMessage, ex);
 
                 case 20062:
                     return new HarvestHasPendingCollectsException(plotId, harvestId, ex);
@@ -280,24 +315,33 @@ namespace CAFEPAY.ArqHex.Harvests.Infrastructure
                     return new HarvestActiveExistsException(plotId, ex);
 
                 case 20213:
-                    return new HarvestOperationException("Estado inválido. Use 1 (EN_PROCESO) o 2 (FINALIZADO).", ex);
+                    return new HarvestOperationException(
+                        string.IsNullOrWhiteSpace(cleanMessage) ? "Estado inválido. Use 1 (EN_PROCESO) o 2 (FINALIZADO)." : cleanMessage,
+                        ex);
 
                 case 20214:
-                    return new HarvestOperationException("La fecha de finalización es requerida.", ex);
+                    return new HarvestOperationException(
+                        string.IsNullOrWhiteSpace(cleanMessage) ? "La fecha de finalización es requerida." : cleanMessage,
+                        ex);
 
                 case 20215:
-                    return new HarvestOperationException("No se pudo actualizar la cosecha. Verifique los datos.", ex);
+                    return new HarvestOperationException(
+                        string.IsNullOrWhiteSpace(cleanMessage) ? "No se pudo actualizar la cosecha. Verifique los datos." : cleanMessage,
+                        ex);
 
                 case 20216:
-                    return new HarvestOperationException("Transición de estado no permitida.", ex);
+                    return new HarvestOperationException(
+                        string.IsNullOrWhiteSpace(cleanMessage) ? "Transición de estado no permitida." : cleanMessage,
+                        ex);
 
                 case 1: // ORA-00001 unique constraint
                     return new HarvestOperationException("Ya existe un registro con estos datos.", ex);
 
                 default:
-                    return new HarvestOperationException($"Error al actualizar la cosecha: {ex.Message}", ex);
+                    return new HarvestOperationException($"Error al actualizar la cosecha: {cleanMessage}", ex);
             }
         }
+
         private Harvest MapReaderToHarvest(IDataReader reader)
         {
             HarvestId id = new HarvestId(reader.GetInt64(0));
@@ -312,8 +356,12 @@ namespace CAFEPAY.ArqHex.Harvests.Infrastructure
 
             return new Harvest(id, idPlot, startDate, price, status, endDate);
         }
+
         private Exception MapOracleException(OracleException ex, long plotId)
         {
+            // Limpiar mensaje de Oracle
+            string cleanMessage = CleanOracleErrorMessage(ex.Message);
+
             switch (ex.Number)
             {
                 case 20051:
@@ -321,16 +369,20 @@ namespace CAFEPAY.ArqHex.Harvests.Infrastructure
 
                 case 20073:
                 case 20074:
-                    return new InvalidPriceRangeException(ex.Message, ex);
+                    return new InvalidPriceRangeException(cleanMessage, ex);
 
                 case 20200:
                     return new PlotNotFoundException(plotId, ex);
 
                 case 20201:
-                    return new InvalidOperationException("La fecha de inicio es requerida", ex);
+                    return new InvalidOperationException(
+                        string.IsNullOrWhiteSpace(cleanMessage) ? "La fecha de inicio es requerida" : cleanMessage,
+                        ex);
 
                 case 20202:
-                    return new InvalidOperationException("Ya existe una cosecha con ese ID", ex);
+                    return new InvalidOperationException(
+                        string.IsNullOrWhiteSpace(cleanMessage) ? "Ya existe una cosecha con ese ID" : cleanMessage,
+                        ex);
 
                 case 1: // ORA-00001 unique constraint
                     if (ex.Message.IndexOf("UNQ_HARVEST_ONE_ACTIVE", StringComparison.OrdinalIgnoreCase) >= 0)
@@ -340,8 +392,7 @@ namespace CAFEPAY.ArqHex.Harvests.Infrastructure
                     return new InvalidOperationException("Ya existe un registro con estos datos", ex);
 
                 default:
-                    return new HarvestOperationException(
-                        "Error al guardar la cosecha: " + ex.Message, ex);
+                    return new HarvestOperationException("Error al guardar la cosecha: " + cleanMessage, ex);
             }
         }
     }
@@ -366,22 +417,11 @@ namespace CAFEPAY.ArqHex.Harvests.Infrastructure
             HarvestId = harvestId;
         }
     }
+
     public class HarvestOperationException : Exception
     {
         public HarvestOperationException(string message) : base(message) { }
         public HarvestOperationException(string message, Exception inner) : base(message, inner) { }
-    }
-
-    public class HarvestActiveExistsException : HarvestOperationException
-    {
-        public long PlotId { get; }
-
-        public HarvestActiveExistsException(long plotId, Exception inner = null)
-            : base($"Ya existe una cosecha activa para el lote {plotId}. " +
-                   "Debe finalizar la cosecha actual antes de crear una nueva.", inner)
-        {
-            PlotId = plotId;
-        }
     }
 
     public class InvalidPriceRangeException : HarvestOperationException
@@ -413,5 +453,4 @@ namespace CAFEPAY.ArqHex.Harvests.Infrastructure
             HarvestId = harvestId;
         }
     }
-
 }

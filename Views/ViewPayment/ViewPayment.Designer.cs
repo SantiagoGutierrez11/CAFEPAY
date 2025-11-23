@@ -36,6 +36,8 @@
             this.lbCollector = new System.Windows.Forms.Label();
             this.cmbCollectors = new System.Windows.Forms.ComboBox();
             this.btnBack = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.textBoxTotalAmounToPaid = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCollects)).BeginInit();
             this.SuspendLayout();
             // 
@@ -120,11 +122,30 @@
             this.btnBack.UseVisualStyleBackColor = true;
             this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(30, 432);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(166, 20);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "Monto total a pagar";
+            // 
+            // textBoxTotalAmounToPaid
+            // 
+            this.textBoxTotalAmounToPaid.Location = new System.Drawing.Point(202, 434);
+            this.textBoxTotalAmounToPaid.Name = "textBoxTotalAmounToPaid";
+            this.textBoxTotalAmounToPaid.Size = new System.Drawing.Size(261, 20);
+            this.textBoxTotalAmounToPaid.TabIndex = 10;
+            // 
             // ViewPayment
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(803, 496);
+            this.Controls.Add(this.textBoxTotalAmounToPaid);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.btnBack);
             this.Controls.Add(this.cmbCollectors);
             this.Controls.Add(this.lbCollector);
@@ -152,5 +173,7 @@
         private System.Windows.Forms.Label lbCollector;
         private System.Windows.Forms.ComboBox cmbCollectors;
         private System.Windows.Forms.Button btnBack;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox textBoxTotalAmounToPaid;
     }
 }

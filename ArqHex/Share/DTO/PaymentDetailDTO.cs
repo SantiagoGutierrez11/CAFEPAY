@@ -15,5 +15,6 @@ namespace CAFEPAY.ArqHex.Share.DTO
         public long? PaymentId { get; set; }
         public long PlotId { get; set; }
         public string WorkerCode { get; set; }
+        public string PlotName { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using CAFEPAY.ArqHex.PaymentDetails.domain;
+using CAFEPAY.ArqHex.Plots.Domain;
 using CAFEPAY.ArqHex.Share.DTO;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace CAFEPAY.ArqHex.Share.Serializers
         {
             if (PaymentDetails == null) return new List<PaymentDetailDTO>();
 
+            Plot plot = AppServices.PlotServices.queryById.execute(PaymentDetails[0].plotId.idPlotValue); // Dummy call to avoid unused variable warning
             return PaymentDetails.Select(p => new PaymentDetailDTO
             {
                 AmountToPay = p.amountToPay.amountToPayValue,
@@ -22,7 +24,8 @@ namespace CAFEPAY.ArqHex.Share.Serializers
                 HarvestId = p.harvestId.idHarvestValue,
                 PaymentId = p.paymentId.idPaymentValue,
                 PlotId = p.plotId.idPlotValue,
-                WorkerCode = p.workerCode.Value 
+                WorkerCode = p.workerCode.Value,
+                PlotName = plot.name.plotNameValue
             }).ToList();
         }
     }

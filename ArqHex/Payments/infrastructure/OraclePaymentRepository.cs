@@ -24,7 +24,7 @@ namespace CAFEPAY.ArqHex.Payments.infrastructure
             using (var cmd = new OracleCommand("PKG_PAYMENT_MANAGEMENT.create_payment", connection))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.BindByName = true;
+                cmd.BindByName = true; // Usar nombres de parámetros
 
                 // Parámetros de entrada
                 cmd.Parameters.Add("p_idpayment", OracleDbType.Int64).Value =

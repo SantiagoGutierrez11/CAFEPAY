@@ -151,7 +151,7 @@ namespace CAFEPAY.Views.ViewPayment
                 }
                 MessageBox.Show("Pago confirmado exitosamente.\n" +
                                 $"ID de Pago: {paymentID}\n" +
-                                $"Detalles de Pago creados: {string.Join(", ", paymentDetailIDS)}",
+                                $"Numero Detalles de pagos creados: { paymentDetailIDS.Count}",
                                 "Confirmación", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 if(this.Owner is ViewPayment viewPayment)
                 {

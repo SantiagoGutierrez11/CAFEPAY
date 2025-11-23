@@ -1,4 +1,5 @@
 ﻿using CAFEPAY.ArqHex.PaymentDetails.domain;
+using CAFEPAY.ArqHex.Plots.Domain;
 using CAFEPAY.ArqHex.Share;
 using CAFEPAY.ArqHex.Share.DTO;
 using CAFEPAY.ArqHex.Share.Serializers;
@@ -97,9 +98,12 @@ namespace CAFEPAY.Views.ViewPayment
 
             // Columna ID Lote
             AddColumn("PlotId", "ID LOTE", 100, DataGridViewContentAlignment.MiddleCenter);
+            // Columna ID Lote
+            AddColumn("PlotName", "NOMBRE DE LOTE", 100, DataGridViewContentAlignment.MiddleCenter);
 
             // Columna ID Recolección
             AddColumn("CollectId", "ID RECOLECCIÓN", 130, DataGridViewContentAlignment.MiddleCenter);
+
 
             // Columna ID Cosecha
             AddColumn("HarvestId", "ID COSECHA", 120, DataGridViewContentAlignment.MiddleCenter);
@@ -149,7 +153,8 @@ namespace CAFEPAY.Views.ViewPayment
                                   MessageBoxIcon.Information);
                     return;
                 }
- 
+                List<Plot> plots;
+
                 // Asignar los datos al DataGridView
                 dgPaymentDetails.DataSource = paymentDetailDTOs;
 

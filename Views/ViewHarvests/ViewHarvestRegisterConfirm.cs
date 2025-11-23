@@ -1,4 +1,5 @@
 ﻿using CAFEPAY.ArqHex.Collectors.domain;
+using CAFEPAY.ArqHex.Harvests.domain;
 using CAFEPAY.ArqHex.Share;
 using CAFEPAY.ArqHex.Share.DTO;
 using System;
@@ -8,6 +9,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -67,11 +69,36 @@ namespace CAFEPAY.Views.ViewHarvest
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al registrar la cosecha: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                string cleanedMessage = CleanOracleErrorMessage(ex.Message);
+                MessageBox.Show($"Error al registrar la cosecha: {cleanedMessage}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
 
 
             }
+        }
+        // Método para limpiar mensajes de error de Oracle
+        private string CleanOracleErrorMessage(string message)
+        {
+            if (string.IsNullOrWhiteSpace(message))
+                return message;
+
+            // Remover código ORA-XXXXX: del inicio
+            string cleaned = Regex.Replace(
+                message,
+                @"^ORA-\d+:\s*",
+                "",
+                RegexOptions.IgnoreCase
+            );
+
+            // Remover saltos de línea y texto adicional después del primer salto
+            int newLineIndex = cleaned.IndexOf('\n');
+            if (newLineIndex > 0)
+            {
+                cleaned = cleaned.Substring(0, newLineIndex);
+            }
+
+            return cleaned.Trim();
+
         }
     }
 }

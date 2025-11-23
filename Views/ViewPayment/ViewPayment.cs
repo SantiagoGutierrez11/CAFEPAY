@@ -33,6 +33,7 @@ namespace CAFEPAY.Views.ViewPayment
             loadHarvestComboBox(); // Carga el ComboBox de cosechas
             loadDgvCollects(); // Configura el DataGridView para mostrar las recolectas
             this.viewMenuPayment = _viewMenuPayment;
+            textBoxTotalAmounToPaid.Text = "No hay datos";
         }
         public void loadDgvCollects()
         {
@@ -227,6 +228,7 @@ namespace CAFEPAY.Views.ViewPayment
             {
                 // Si seleccionó "-- Seleccione una cosecha --", limpiar el combo de recolectores
                 cmbCollectors.DataSource = null;
+                textBoxTotalAmounToPaid.Text = "No hay datos";
             }
         }
 
@@ -279,6 +281,11 @@ namespace CAFEPAY.Views.ViewPayment
                 }
 
                 collectsDTO = CollectMaper.ToDTOList(collects);
+                decimal? totalAmountToPaid = 0;
+                foreach (CollectDTO collectSum in collectsDTO)
+                {
+                    totalAmountToPaid += collectSum.amountToPaid;
+                }
                 var sortableList = new BindingList<CollectDTO>(collectsDTO);
 
                 dgvCollects.DataSource = sortableList;
@@ -287,6 +294,8 @@ namespace CAFEPAY.Views.ViewPayment
                 dgvCollects.CurrentCell = null;
 
                 collectorPayment = selectedCollector;
+                textBoxTotalAmounToPaid.Text = totalAmountToPaid?.ToString("C2");
+
             }
             catch (Exception ex)
             {

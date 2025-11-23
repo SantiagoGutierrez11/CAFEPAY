@@ -45,8 +45,7 @@ namespace CAFEPAY.Views.ViewCollect
         {
             try
             {
-                // Usar el nuevo caso de uso que ya filtra por status
-                harvests = AppServices.HarvestServices.queryByStatus.execute(1); // 1 = ACTIVO
+                harvests = AppServices.HarvestServices.queryByStatus.execute(1);
                 if (harvests == null || harvests.Count == 0)
                 {
                     return;
@@ -61,7 +60,7 @@ namespace CAFEPAY.Views.ViewCollect
                     cmbHarvest.DataSource = null;
                     cmbHarvest.DataSource = harvestDTO;
                     cmbHarvest.DisplayMember = "harvestName";
-                    cmbHarvest.ValueMember = null; // No se usa ValueMember
+                    cmbHarvest.ValueMember = null;
                     cmbHarvest.SelectedIndex = 0;
                 }
             }
@@ -71,12 +70,10 @@ namespace CAFEPAY.Views.ViewCollect
             }
         }
 
-
         public void loadDgvCollects()
         {
             try
             {
-                // Limpiar configuración previa
                 dgvCollects.Columns.Clear();
                 dgvCollects.AutoGenerateColumns = false;
                 dgvCollects.AllowUserToAddRows = false;
@@ -84,7 +81,6 @@ namespace CAFEPAY.Views.ViewCollect
                 dgvCollects.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
                 dgvCollects.MultiSelect = false;
 
-                // === Configurar columnas manualmente ===
                 dgvCollects.Columns.Add(new DataGridViewTextBoxColumn
                 {
                     HeaderText = "Numero de recolecta",
@@ -129,6 +125,7 @@ namespace CAFEPAY.Views.ViewCollect
                                 "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         private void groupBox1_Enter(object sender, EventArgs e)
         {
 
@@ -141,7 +138,6 @@ namespace CAFEPAY.Views.ViewCollect
 
         private void button1_Click(object sender, EventArgs e)
         {
-            // Validar que se haya seleccionado una cosecha
             if (harvestRegister == null)
             {
                 MessageBox.Show("Debe seleccionar una cosecha antes de registrar una recolecta.",
@@ -151,7 +147,6 @@ namespace CAFEPAY.Views.ViewCollect
                 return;
             }
 
-            // Validar que se haya seleccionado un recolector
             if (collectorRegister == null)
             {
                 MessageBox.Show("Debe seleccionar un recolector antes de registrar una recolecta.",
@@ -179,12 +174,10 @@ namespace CAFEPAY.Views.ViewCollect
 
         private void cmbHarvest_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Verificar si hay una cosecha válida seleccionada
             if (!(cmbHarvest.SelectedItem is HarvestDTO selectedHarvest) ||
                 selectedHarvest.harvestName == "-- Seleccione una cosecha --" ||
                 selectedHarvest.id == null)
             {
-                // Limpiar todo cuando se selecciona la opción por defecto
                 cmbCollector.DataSource = null;
                 cmbCollector.Items.Clear();
                 cmbCollector.Text = string.Empty;
@@ -195,20 +188,18 @@ namespace CAFEPAY.Views.ViewCollect
                 return;
             }
 
-            // Cargar recolectores para la cosecha seleccionada
             loadCollectors(selectedHarvest.idPlot, selectedHarvest.id.Value);
             harvestRegister = selectedHarvest;
 
-            // Limpiar el DataGridView hasta que se seleccione un recolector
             dgvCollects.DataSource = null;
             dgvCollects.Refresh();
             collectorRegister = null;
         }
-        public void loadCollectors(long idPlot, long idHarvest) 
+
+        public void loadCollectors(long idPlot, long idHarvest)
         {
             try
             {
-                // 1. Obtener las recolectas zero (asociaciones primarias)
                 var collectsZero = AppServices.CollectServices.queryByStatus.execute(0, 0, idPlot, idHarvest);
 
                 if (collectsZero == null || collectsZero.Count == 0)
@@ -222,7 +213,6 @@ namespace CAFEPAY.Views.ViewCollect
                     return;
                 }
 
-                // 2. Extraer los workerCode de las recolectas
                 List<string> workerCodes = new List<string>();
                 foreach (var collect in collectsZero)
                 {
@@ -232,7 +222,6 @@ namespace CAFEPAY.Views.ViewCollect
                     }
                 }
 
-                // Verificar si hay códigos válidos
                 if (workerCodes.Count == 0)
                 {
                     cmbCollector.DataSource = null;
@@ -244,10 +233,8 @@ namespace CAFEPAY.Views.ViewCollect
                     return;
                 }
 
-                // 3. Crear string con los workerCodes
                 string workerCodesString = string.Join(",", workerCodes.Select(code => $"'{code}'"));
 
-                // 4. Consultar los recolectores
                 var collectors = AppServices.CollectorServices.queryByIn.execute(workerCodesString);
 
                 if (collectors == null || collectors.Count == 0)
@@ -261,16 +248,13 @@ namespace CAFEPAY.Views.ViewCollect
                     return;
                 }
 
-                // 5. Mapear a DTO
                 var collectorsDTO = CollectorMaper.ToDTOList(collectors);
 
-                // Agregar opción por defecto
                 collectorsDTO.Insert(0, new CollectorDTO
                 {
                     displayName = "-- Seleccione un recolector --"
                 });
 
-                // Configurar ComboBox
                 cmbCollector.DataSource = null;
                 cmbCollector.DataSource = collectorsDTO;
                 cmbCollector.DisplayMember = "displayName";
@@ -291,7 +275,6 @@ namespace CAFEPAY.Views.ViewCollect
 
         private void cmbCollector_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Limpiar listas previas
             if (collects != null)
             {
                 collects.Clear();
@@ -301,7 +284,6 @@ namespace CAFEPAY.Views.ViewCollect
                 collectsDTO.Clear();
             }
 
-            // Verificar que haya una cosecha válida seleccionada
             if (!(cmbHarvest.SelectedItem is HarvestDTO selectedHarvest) ||
                 selectedHarvest.harvestName == "-- Seleccione una cosecha --")
             {
@@ -311,11 +293,9 @@ namespace CAFEPAY.Views.ViewCollect
                 return;
             }
 
-            // Verificar que haya un recolector válido seleccionado
             if (!(cmbCollector.SelectedItem is CollectorDTO selectedCollector) ||
                 selectedCollector.displayName == "-- Seleccione un recolector --")
             {
-                // Limpiar el DataGridView cuando se selecciona la opción por defecto
                 dgvCollects.DataSource = null;
                 dgvCollects.Refresh();
                 collectorRegister = null;
@@ -324,12 +304,23 @@ namespace CAFEPAY.Views.ViewCollect
 
             try
             {
-                // Cargar las recolectas del recolector seleccionado
                 collects = AppServices.CollectServices.queryByWorkerCode.execute(
                     1,
                     selectedCollector.workerCode,
                     selectedHarvest.idPlot,
                     selectedHarvest.id);
+
+                if (collects == null || collects.Count == 0)
+                {
+                    dgvCollects.DataSource = null;
+                    dgvCollects.Refresh();
+                    collectorRegister = selectedCollector;
+                    MessageBox.Show($"El recolector {selectedCollector.displayName} aún no tiene recolectas registradas.",
+                                   "Información",
+                                   MessageBoxButtons.OK,
+                                   MessageBoxIcon.Information);
+                    return;
+                }
 
                 collectsDTO = CollectMaper.ToDTOList(collects);
                 dgvCollects.DataSource = collectsDTO;
@@ -346,6 +337,4 @@ namespace CAFEPAY.Views.ViewCollect
             }
         }
     }
-
 }
-    

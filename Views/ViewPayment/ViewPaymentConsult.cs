@@ -187,7 +187,6 @@ namespace CAFEPAY.Views.ViewPayment
             {
                 // Obtener el CollectorDTO de la fila seleccionada
                 DataGridViewRow selectedRow = dgCollectors.SelectedRows[0];
-
                 if (selectedRow.DataBoundItem is CollectorDTO collector)
                 {
                     // Validar que el workerCode no sea nulo
