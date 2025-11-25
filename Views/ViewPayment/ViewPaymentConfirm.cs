@@ -110,6 +110,13 @@ namespace CAFEPAY.Views.ViewPayment
             textBoxIdPlot.Text = harvestPayment.idPlot.ToString();
 
             decimal totalAmount = 0;
+            if (collectsPayment == null || collectsPayment.Count == 0)
+            {
+                MessageBox.Show("No hay recolectas para mostrar en el pago.",
+                                "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
             foreach (var collect in collectsPayment)
             {
                 totalAmount += collect.amountToPaid.Value;

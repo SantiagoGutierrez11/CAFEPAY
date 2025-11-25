@@ -276,7 +276,7 @@ namespace CAFEPAY.Views.ViewPayment
                     dgvCollects.DataSource = null;
                     MessageBox.Show("No hay recolectas a pagar para este recolector en la cosecha seleccionada.",
                                    "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    collectorPayment = null;
+                    collectorPayment = selectedCollector;
                     return;
                 }
 
@@ -357,6 +357,14 @@ namespace CAFEPAY.Views.ViewPayment
                 return;
             }
 
+            if (collectsDTO == null || collectsDTO.Count == 0)
+            {
+                MessageBox.Show("No hay recolectas para calcular el pago.",
+                                "Advertencia",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                return;
+            }
             ViewPaymentConfirm viewPaymentConfirm = new ViewPaymentConfirm(harvestPayment, collectorPayment, collectsDTO);
             viewPaymentConfirm.Owner = this;
             viewPaymentConfirm.Show();
@@ -381,7 +389,15 @@ namespace CAFEPAY.Views.ViewPayment
                                 MessageBoxIcon.Warning);
                 return;
             }
-            if(dgvCollects.SelectedRows.Count == 0)
+            if (collectsDTO == null || collectsDTO.Count == 0)
+            {
+                MessageBox.Show("No hay recolectas para calcular el pago.",
+                                "Advertencia",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                return;
+            }
+            if (dgvCollects.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Debe seleccionar al menos una recolecta para el pago parcial.",
                                 "Advertencia",
