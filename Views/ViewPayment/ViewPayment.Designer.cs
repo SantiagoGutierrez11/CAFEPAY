@@ -35,7 +35,15 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.lbHarvest = new System.Windows.Forms.Label();
             this.lbCollector = new System.Windows.Forms.Label();
+<<<<<<< HEAD
             ((System.ComponentModel.ISupportInitialize)(this.dgvPayment)).BeginInit();
+=======
+            this.cmbCollectors = new System.Windows.Forms.ComboBox();
+            this.btnBack = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.textBoxTotalAmounToPaid = new System.Windows.Forms.TextBox();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCollects)).BeginInit();
+>>>>>>> Santiago
             this.SuspendLayout();
             // 
             // dgvPayment
@@ -97,11 +105,58 @@
             this.lbCollector.TabIndex = 6;
             this.lbCollector.Text = "Recolector";
             // 
+<<<<<<< HEAD
+=======
+            // cmbCollectors
+            // 
+            this.cmbCollectors.FormattingEnabled = true;
+            this.cmbCollectors.Location = new System.Drawing.Point(563, 87);
+            this.cmbCollectors.Name = "cmbCollectors";
+            this.cmbCollectors.Size = new System.Drawing.Size(164, 21);
+            this.cmbCollectors.TabIndex = 7;
+            this.cmbCollectors.SelectedIndexChanged += new System.EventHandler(this.cmbCollectors_SelectedIndexChanged);
+            // 
+            // btnBack
+            // 
+            this.btnBack.Location = new System.Drawing.Point(34, 12);
+            this.btnBack.Name = "btnBack";
+            this.btnBack.Size = new System.Drawing.Size(146, 36);
+            this.btnBack.TabIndex = 8;
+            this.btnBack.Text = "Pagina Pricipal";
+            this.btnBack.UseVisualStyleBackColor = true;
+            this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(30, 432);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(166, 20);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "Monto total a pagar";
+            // 
+            // textBoxTotalAmounToPaid
+            // 
+            this.textBoxTotalAmounToPaid.Location = new System.Drawing.Point(202, 434);
+            this.textBoxTotalAmounToPaid.Name = "textBoxTotalAmounToPaid";
+            this.textBoxTotalAmounToPaid.Size = new System.Drawing.Size(261, 20);
+            this.textBoxTotalAmounToPaid.TabIndex = 10;
+            // 
+>>>>>>> Santiago
             // ViewPayment
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+<<<<<<< HEAD
             this.ClientSize = new System.Drawing.Size(800, 450);
+=======
+            this.ClientSize = new System.Drawing.Size(803, 496);
+            this.Controls.Add(this.textBoxTotalAmounToPaid);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.btnBack);
+            this.Controls.Add(this.cmbCollectors);
+>>>>>>> Santiago
             this.Controls.Add(this.lbCollector);
             this.Controls.Add(this.lbHarvest);
             this.Controls.Add(this.textBox1);
@@ -127,5 +182,12 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label lbHarvest;
         private System.Windows.Forms.Label lbCollector;
+<<<<<<< HEAD
+=======
+        private System.Windows.Forms.ComboBox cmbCollectors;
+        private System.Windows.Forms.Button btnBack;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox textBoxTotalAmounToPaid;
+>>>>>>> Santiago
     }
 }

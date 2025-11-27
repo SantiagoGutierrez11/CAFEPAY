@@ -95,7 +95,7 @@
     <Compile Include="ArqHex\Collectors\domain\CollectorStatus.cs" />
     <Compile Include="ArqHex\Collectors\domain\CollectorRepository.cs" />
     <Compile Include="ArqHex\Collectors\domain\CollectorWorkerCode.cs" />
-    <Compile Include="ArqHex\Collectors\domain\HarvestActiveExistsException.cs" />
+    <Compile Include="ArqHex\Harvests\Domain\HarvestActiveExistsException.cs" />
     <Compile Include="ArqHex\Collectors\infrastructure\CollectorController.cs" />
     <Compile Include="ArqHex\Collectors\infrastructure\OracleCollectorRepository.cs" />
     <Compile Include="ArqHex\Harvests\Application\HarvestUpdate\HarvestUpdate.cs" />
