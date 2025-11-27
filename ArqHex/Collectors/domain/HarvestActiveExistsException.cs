@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CAFEPAY.ArqHex.Harvests.domain
+namespace CAFEPAY.ArqHex.Collectors.domain
 {
     public class HarvestActiveExistsException : Exception
     {
