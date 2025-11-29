@@ -121,7 +121,7 @@
             this.btnBack.TabIndex = 9;
             this.btnBack.Text = "Regresar";
             this.btnBack.UseVisualStyleBackColor = true;
-            this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
+            this.btnBack.Click += new System.EventHandler(this.btnDecline_Click);
             // 
             // ViewHarvestRegister
             // 

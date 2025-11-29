@@ -18,7 +18,6 @@ namespace CAFEPAY.Views.ViewCollector
         private Form viewCollector;
         private CollectorDTO newCollector;
         private CollectorDTO oldCollector;
-        private Form viewMain;
 
         // Colores exactos del diseño
         private Color darkBlueColor = Color.FromArgb(13, 43, 97);  // #0D2B61 - Azul oscuro del formulario
@@ -29,13 +28,12 @@ namespace CAFEPAY.Views.ViewCollector
         private Color blackColor = Color.Black;
         private Color darkGrayColor = Color.FromArgb(64, 64, 64); // Gris oscuro para el botón Regresar
 
-        public ViewCollectorModifyId(CollectorDTO newCollector, CollectorDTO oldCollector, System.Windows.Forms.Form _viewCollector, Form _viewMain)
+        public ViewCollectorModifyId(CollectorDTO newCollector, CollectorDTO oldCollector, System.Windows.Forms.Form _viewCollector)
         {
             InitializeComponent();
             this.oldCollector = oldCollector;
             this.newCollector = newCollector;
             this.viewCollector = _viewCollector;
-            this.viewMain = _viewMain;
             ApplyVisualDesign();
             LoadData();
 
@@ -196,7 +194,7 @@ namespace CAFEPAY.Views.ViewCollector
             int fieldWidth = 420;
             int labelHeight = 25;
             int fieldHeight = 40;
-            
+
             // Label "Nueva Cédula"
             var newIdLabel = new Label
             {
@@ -383,7 +381,7 @@ namespace CAFEPAY.Views.ViewCollector
             //SOLO SI PASA TODAS LAS VALIDACIONES, comparar
             if (enteredId == newCollector.id)
             {
-                ViewCollectorModifyConfirm_ viewCollectorModifyConfirm_ = new ViewCollectorModifyConfirm_(newCollector, oldCollector, viewCollector, viewMain);
+                ViewCollectorModifyConfirm_ viewCollectorModifyConfirm_ = new ViewCollectorModifyConfirm_(newCollector, oldCollector, viewCollector);
                 viewCollectorModifyConfirm_.Owner = this.Owner;
                 viewCollectorModifyConfirm_.Show();
                 this.Close();

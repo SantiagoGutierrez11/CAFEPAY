@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CAFEPAY.Views.ViewOrigin;
 
 namespace CAFEPAY.Views.ViewCollector
 {
@@ -126,12 +127,10 @@ namespace CAFEPAY.Views.ViewCollector
             homeButton.Region = new Region(homePath);
 
             homeButton.Click += (s, e) => {
-                // Acción al hacer clic en el botón home
-                MessageBox.Show("Volviendo al menú principal...", "Información",
-                   MessageBoxButtons.OK, MessageBoxIcon.Information);
-                this.Owner.Show();            // volver al padre         
+                // Volver al menú principal
+                var viewMain = new ViewOrigin.ViewMain();
+                viewMain.Show();
                 this.Close();
-               
             };
 
             topHeaderPanel.Controls.Add(homeButton);
@@ -365,6 +364,8 @@ namespace CAFEPAY.Views.ViewCollector
                 listCollector = AppServices.CollectorServices.query.execute();
                 listDTOCollector = CollectorMaper.ToDTOList(listCollector);
 
+                listDTOCollector.Reverse(); //
+
                 dgCollector.AutoGenerateColumns = false;
                 dgCollector.Columns.Clear();
 
@@ -396,6 +397,8 @@ namespace CAFEPAY.Views.ViewCollector
                 dgCollector.Columns.Add(colStatus);
 
                 dgCollector.DataSource = listDTOCollector;
+
+                dgCollector.ClearSelection();
             }
             catch (Exception ex)
             {
@@ -422,7 +425,7 @@ namespace CAFEPAY.Views.ViewCollector
             if (dgCollector.CurrentCell != null)
                 dgCollector.ClearSelection();
 
-            ViewCollectorRegister viewCollectorRegister = new ViewCollectorRegister(this.Owner);
+            ViewCollectorRegister viewCollectorRegister = new ViewCollectorRegister();
             viewCollectorRegister.Owner = this;
             viewCollectorRegister.Show();
             this.Hide();
@@ -461,7 +464,7 @@ namespace CAFEPAY.Views.ViewCollector
                 return;
             }
 
-            ViewCollectorModify viewCollectorModify = new ViewCollectorModify(selectedCollector, this, this.Owner);
+            ViewCollectorModify viewCollectorModify = new ViewCollectorModify(selectedCollector, this);
             viewCollectorModify.Owner = this;
             viewCollectorModify.Show();
             this.Hide();

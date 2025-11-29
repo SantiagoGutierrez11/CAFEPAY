@@ -8,6 +8,8 @@ using CAFEPAY.ArqHex.Share.Serializers;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -21,50 +23,391 @@ namespace CAFEPAY.Views.ViewHarvests
         private List<Collector> listCollector;
         private List<CollectorDTO> listDTOCollector;
 
-        // Colores del diseño
-        private Color darkBlueColor = Color.FromArgb(13, 43, 97);
+        // Colores exactos del FIGMA
+        private Color redColor = Color.FromArgb(183, 32, 46);     // #B7202E
+        private Color darkBlueColor = Color.FromArgb(13, 43, 97); // #0D2B61
         private Color whiteColor = Color.White;
+        private Color darkGrayColor = Color.FromArgb(64, 64, 64);
+        private Color lightGrayColor = Color.FromArgb(240, 240, 240);
+        private Color greenColor = Color.FromArgb(34, 139, 34);   // Verde para el botón Asociar
 
-        // 🔹 Constructor que recibe el PlotDTO y HarvestDTO
+        // Controles
+        private DataGridView dgCollectors = new DataGridView();
+        private Button btnAssociate = new Button();
+        private Button btnBack = new Button();
+
+        // Campos de información (ahora son Labels)
+        private Label lblPlotName = new Label();
+        private Label lblPlotId = new Label();
+        private Label lblHarvestId = new Label();
+        private Label lblStartDate = new Label();
+        private Label lblPricePerKilo = new Label();
+
         public ViewHarvestAssociateCollector(PlotDTO plotDTO, HarvestDTO harvestDTO)
         {
-            InitializeComponent();
             this.plotDTO = plotDTO;
             this.harvestDTO = harvestDTO;
-            ConfigureDataGridView();
-        }
-
-        // 🔹 Constructor vacío (por compatibilidad con el diseñador)
-        public ViewHarvestAssociateCollector()
-        {
-            InitializeComponent();
-            ConfigureDataGridView();
-        }
-
-        private void ViewHarvestAssociateCollector_Load(object sender, EventArgs e)
-        {
-            loadComponents();
+            ApplyExactFigmaDesign();
             loadCollectors();
         }
 
-        private void loadComponents()
+        public ViewHarvestAssociateCollector()
+        {
+            ApplyExactFigmaDesign();
+        }
+
+        private void ApplyExactFigmaDesign()
+        {
+            // Configuración principal del formulario
+            this.BackColor = whiteColor;
+            this.Font = new Font("Segoe UI", 9, FontStyle.Regular);
+            this.Padding = new Padding(0);
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.MinimumSize = new Size(1200, 800);
+            this.Text = "CAFICAUCA - Asociar Recolectores a Cosecha";
+            this.WindowState = FormWindowState.Maximized;
+
+            // 🔝 ENCABEZADO SUPERIOR - Logo CAFICAUCA
+            var topHeaderPanel = new Panel
+            {
+                Dock = DockStyle.Top,
+                Height = 90,
+                BackColor = whiteColor,
+                Padding = new Padding(20, 10, 40, 10)
+            };
+
+            // Panel del logo
+            var logoPanel = new Panel
+            {
+                Dock = DockStyle.Left,
+                Width = 350,
+                BackColor = Color.Transparent,
+                Height = 70,
+                Padding = new Padding(10, 0, 0, 0)
+            };
+
+            // 🖼️ CARGAR IMAGEN DESDE CARPETA RESOURCES
+            try
+            {
+                string imagePath = Path.Combine(Application.StartupPath, "Resources", "LOGO-CAFICAUCA.png");
+                if (File.Exists(imagePath))
+                {
+                    PictureBox logoPicture = new PictureBox();
+                    logoPicture.Image = Image.FromFile(imagePath);
+                    logoPicture.SizeMode = PictureBoxSizeMode.Zoom;
+                    logoPicture.Size = new Size(320, 70);
+                    logoPicture.Location = new Point(5, 5);
+                    logoPicture.Cursor = Cursors.Hand;
+
+                    ToolTip toolTip = new ToolTip();
+                    toolTip.SetToolTip(logoPicture, "CAFICAUCA - Cooperativa de Caficultores del Cauca");
+                    logoPanel.Controls.Add(logoPicture);
+                }
+                else
+                {
+                    CreateSimulatedLogo(logoPanel);
+                }
+            }
+            catch (Exception)
+            {
+                CreateSimulatedLogo(logoPanel);
+            }
+
+            // 🏠 BOTÓN HOME (esquina superior derecha)
+            var homeButton = new Button
+            {
+                Size = new Size(40, 40),
+                Location = new Point(topHeaderPanel.Width - 60, 25),
+                Anchor = AnchorStyles.Top | AnchorStyles.Right,
+                FlatStyle = FlatStyle.Flat,
+                BackColor = darkGrayColor,
+                ForeColor = whiteColor,
+                Text = "🏠",
+                Font = new Font("Segoe UI", 14),
+                Cursor = Cursors.Hand
+            };
+            homeButton.FlatAppearance.BorderSize = 0;
+
+            // Hacer botón home con esquinas redondeadas
+            GraphicsPath homePath = new GraphicsPath();
+            homePath.AddRectangle(new Rectangle(0, 0, 40, 40));
+            homeButton.Region = new Region(homePath);
+
+            homeButton.Click += (s, e) => {
+                // Volver al menú principal
+                var viewMain = new ViewOrigin.ViewMain();
+                viewMain.Show();
+                this.Close();
+            };
+
+            topHeaderPanel.Controls.Add(homeButton);
+            topHeaderPanel.Controls.Add(logoPanel);
+
+            // 🏷️ TÍTULO PRINCIPAL
+            var titleContainerPanel = new Panel
+            {
+                Dock = DockStyle.Top,
+                Height = 120,
+                BackColor = lightGrayColor,
+                Padding = new Padding(0, 30, 0, 0)
+            };
+
+            var blueOuterPanel = new Panel
+            {
+                Size = new Size(700, 70),
+                Location = new Point((this.Width - 700) / 2, 0),
+                BackColor = darkBlueColor,
+                Anchor = AnchorStyles.None
+            };
+
+            var whiteInnerPanel = new Panel
+            {
+                Size = new Size(690, 60),
+                Location = new Point(5, 5),
+                BackColor = whiteColor
+            };
+
+            var mainTitleLabel = new Label
+            {
+                Text = "ASOCIAR RECOLECTORES A COSECHA ACTIVA",
+                Font = new Font("Segoe UI", 18, FontStyle.Bold),
+                ForeColor = Color.Black,
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleCenter
+            };
+
+            whiteInnerPanel.Controls.Add(mainTitleLabel);
+            blueOuterPanel.Controls.Add(whiteInnerPanel);
+            titleContainerPanel.Controls.Add(blueOuterPanel);
+
+            // 📋 PANEL DE INFORMACIÓN DE LA COSECHA
+            var infoPanel = new Panel
+            {
+                Dock = DockStyle.Top,
+                Height = 130, // Reducida porque ahora es más compacto
+                BackColor = whiteColor,
+                Padding = new Padding(40, 15, 40, 10) // Padding ajustado
+            };
+
+            // Crear tabla de información
+            CreateHarvestInfoTable(infoPanel);
+
+            // 🔘 PANEL DE BOTONES
+            var buttonPanel = new Panel
+            {
+                Dock = DockStyle.Top,
+                Height = 80,
+                BackColor = lightGrayColor,
+                Padding = new Padding(40, 15, 40, 15)
+            };
+
+            // Botón VOLVER (Azul)
+            btnBack.FlatStyle = FlatStyle.Flat;
+            btnBack.BackColor = darkBlueColor;
+            btnBack.ForeColor = whiteColor;
+            btnBack.Font = new Font("Segoe UI", 12, FontStyle.Bold);
+            btnBack.Text = "Volver";
+            btnBack.Size = new Size(150, 50);
+            btnBack.Location = new Point(buttonPanel.Width / 4 - 75, 15);
+            btnBack.Anchor = AnchorStyles.None;
+            btnBack.Cursor = Cursors.Hand;
+            btnBack.FlatAppearance.BorderSize = 0;
+            btnBack.Click += btnBack_Click;
+
+            // Botón ASOCIAR (Verde)
+            btnAssociate.FlatStyle = FlatStyle.Flat;
+            btnAssociate.BackColor = greenColor;
+            btnAssociate.ForeColor = whiteColor;
+            btnAssociate.Font = new Font("Segoe UI", 12, FontStyle.Bold);
+            btnAssociate.Text = "Asociar Recolectores";
+            btnAssociate.Size = new Size(200, 50);
+            btnAssociate.Location = new Point(3 * buttonPanel.Width / 4 - 100, 15);
+            btnAssociate.Anchor = AnchorStyles.None;
+            btnAssociate.Cursor = Cursors.Hand;
+            btnAssociate.FlatAppearance.BorderSize = 0;
+            btnAssociate.Click += btnAssociate_Click;
+
+            ApplyRoundedCorners(btnBack, 10);
+            ApplyRoundedCorners(btnAssociate, 10);
+
+            buttonPanel.Controls.Add(btnBack);
+            buttonPanel.Controls.Add(btnAssociate);
+
+            // 📊 PANEL PRINCIPAL DE CONTENIDO (DataGridView)
+            var mainContentPanel = new Panel
+            {
+                Dock = DockStyle.Fill,
+                BackColor = whiteColor,
+                Padding = new Padding(40, 20, 40, 60)
+            };
+
+            // Panel con borde azul para el DataGridView
+            var dataGridContainerPanel = new Panel
+            {
+                Dock = DockStyle.Fill,
+                BackColor = darkBlueColor,
+                Padding = new Padding(2),
+                Margin = new Padding(0, 10, 0, 0)
+            };
+
+            // Configurar DataGridView
+            ConfigureDataGridFigmaStyle();
+            dataGridContainerPanel.Controls.Add(dgCollectors);
+            mainContentPanel.Controls.Add(dataGridContainerPanel);
+
+            // 📋 BREADCRUMB
+            var breadcrumbPanel = new Panel
+            {
+                Dock = DockStyle.Bottom,
+                Height = 40,
+                BackColor = lightGrayColor,
+                Padding = new Padding(40, 10, 40, 10)
+            };
+
+            var breadcrumbLabel = new Label
+            {
+                Text = "inicio / cosechas / asociar recolectores",
+                Font = new Font("Segoe UI", 9, FontStyle.Regular),
+                ForeColor = darkGrayColor,
+                Dock = DockStyle.Left,
+                AutoSize = true
+            };
+            breadcrumbPanel.Controls.Add(breadcrumbLabel);
+
+            // 🔄 AGREGAR TODOS LOS CONTROLES
+            this.Controls.Add(mainContentPanel);
+            this.Controls.Add(buttonPanel);
+            this.Controls.Add(infoPanel);
+            this.Controls.Add(titleContainerPanel);
+            this.Controls.Add(topHeaderPanel);
+            this.Controls.Add(breadcrumbPanel);
+
+            // Ajustar redimensionamiento
+            // En el método ApplyExactFigmaDesign, actualiza el evento Resize:
+            this.Resize += (s, e) => {
+                blueOuterPanel.Location = new Point((titleContainerPanel.Width - blueOuterPanel.Width) / 2, 0);
+                btnBack.Location = new Point(buttonPanel.Width / 4 - 75, 15);
+                btnAssociate.Location = new Point(3 * buttonPanel.Width / 4 - 100, 15);
+
+                // 🔥 REDISTRIBUIR LA INFORMACIÓN AL REDIMENSIONAR
+                if (infoPanel != null)
+                {
+                    infoPanel.Controls.Clear();
+                    CreateHarvestInfoTable(infoPanel);
+                    LoadHarvestInfo();
+                }
+            };
+
+            // Cargar información de la cosecha
+            LoadHarvestInfo();
+        }
+
+        private void CreateHarvestInfoTable(Panel container)
+        {
+            int containerWidth = container.Width - 80; // 40px padding en cada lado
+
+            // Calcular anchos para dos columnas
+            int columnWidth = (containerWidth - 60) / 2; // 60px de separación entre columnas
+            int labelWidth = 160; // Un poco más ancho para etiquetas más largas
+            int valueWidth = columnWidth - labelWidth - 20; // Espacio para valores
+
+            int startY = 20;
+            int rowHeight = 35; // Más compacto
+
+            // COLUMNA IZQUIERDA - 3 campos
+            CreateInfoField(container, "Nombre del lote:", lblPlotName, 40, startY, labelWidth, valueWidth);
+            CreateInfoField(container, "Cosecha ID:", lblHarvestId, 40, startY + rowHeight, labelWidth, valueWidth);
+            CreateInfoField(container, "Precio por kilo:", lblPricePerKilo, 40, startY + (rowHeight * 2), labelWidth, valueWidth);
+
+            // COLUMNA DERECHA - 2 campos
+            int rightColumnX = 40 + columnWidth + 20; // 20px de separación entre columnas
+            CreateInfoField(container, "Parcela ID:", lblPlotId, rightColumnX, startY, labelWidth, valueWidth);
+            CreateInfoField(container, "Fecha de inicio:", lblStartDate, rightColumnX, startY + rowHeight, labelWidth, valueWidth);
+        }
+
+        private void CreateInfoField(Panel container, string labelText, Label valueLabel, int x, int y, int labelWidth, int valueWidth)
+        {
+            var label = new Label
+            {
+                Text = labelText,
+                Font = new Font("Segoe UI", 11, FontStyle.Bold), // Tamaño aumentado
+                ForeColor = darkBlueColor,
+                Location = new Point(x, y),
+                Size = new Size(labelWidth, 28), // Un poco más alto
+                TextAlign = ContentAlignment.MiddleLeft
+            };
+
+            valueLabel.Font = new Font("Segoe UI", 11, FontStyle.Regular); // Tamaño aumentado
+            valueLabel.Location = new Point(x + labelWidth + 8, y); // +8 para separación
+            valueLabel.Size = new Size(valueWidth, 28); // Un poco más alto
+            valueLabel.ForeColor = Color.FromArgb(60, 60, 60);
+            valueLabel.TextAlign = ContentAlignment.MiddleLeft;
+            valueLabel.BackColor = Color.Transparent;
+            valueLabel.Cursor = Cursors.Default;
+
+            container.Controls.Add(label);
+            container.Controls.Add(valueLabel);
+        }
+
+        private void LoadHarvestInfo()
         {
             if (plotDTO != null && harvestDTO != null)
             {
-                // Nombre del lote
-                textBoxPlotName.Text = plotDTO.name;
-                // Número de cosecha (ID)
-                textBoxIdHarvest.Text = harvestDTO.id.ToString();
-                // Precio por kilo
-                textBoxPricePerKilo.Text = harvestDTO.pricePerKilo.ToString("C2");
-                // Fecha de inicio
-                textBoxStartDate.Text = harvestDTO.startDate.ToString("dd/MM/yyyy");
-                textBoxIdPlot.Text = plotDTO.idPlot.ToString();
+                lblPlotName.Text = plotDTO.name;
+                lblPlotId.Text = plotDTO.idPlot.ToString();
+                lblHarvestId.Text = harvestDTO.id.ToString();
+                lblStartDate.Text = harvestDTO.startDate.ToString("dd/MM/yyyy");
+
+                // Formato mejorado para el precio con tamaño consistente
+                lblPricePerKilo.Text = string.Format("$ {0:#,##0.00}", harvestDTO.pricePerKilo);
             }
         }
 
-        // 🔹 CONFIGURAR EL DATAGRIDVIEW CON EL ESTILO
-        private void ConfigureDataGridView()
+        private void CreateSimulatedLogo(Panel logoPanel)
+        {
+            var simulatedLogoPanel = new Panel
+            {
+                Size = new Size(320, 70),
+                Location = new Point(5, 5),
+                BackColor = Color.Transparent,
+                BorderStyle = BorderStyle.FixedSingle
+            };
+
+            var logoText = new Label
+            {
+                Text = "CAFICAUCA\nCOOPERATIVA DE CAFICULTORES DEL CAUCA\nASOCIAR RECOLECTORES",
+                Font = new Font("Segoe UI", 9, FontStyle.Bold),
+                ForeColor = darkBlueColor,
+                Location = new Point(15, 8),
+                AutoSize = false,
+                Size = new Size(290, 55),
+                TextAlign = ContentAlignment.MiddleLeft
+            };
+
+            var redLine = new Panel
+            {
+                Size = new Size(4, 40),
+                Location = new Point(8, 15),
+                BackColor = redColor
+            };
+
+            simulatedLogoPanel.Controls.Add(logoText);
+            simulatedLogoPanel.Controls.Add(redLine);
+            logoPanel.Controls.Add(simulatedLogoPanel);
+        }
+
+        private void ApplyRoundedCorners(Control control, int radius)
+        {
+            GraphicsPath path = new GraphicsPath();
+            path.AddArc(0, 0, radius, radius, 180, 90);
+            path.AddArc(control.Width - radius, 0, radius, radius, 270, 90);
+            path.AddArc(control.Width - radius, control.Height - radius, radius, radius, 0, 90);
+            path.AddArc(0, control.Height - radius, radius, radius, 90, 90);
+            path.CloseFigure();
+            control.Region = new Region(path);
+        }
+
+        private void ConfigureDataGridFigmaStyle()
         {
             dgCollectors.BorderStyle = BorderStyle.None;
             dgCollectors.BackgroundColor = whiteColor;
@@ -77,47 +420,42 @@ namespace CAFEPAY.Views.ViewHarvests
             dgCollectors.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dgCollectors.EnableHeadersVisualStyles = false;
             dgCollectors.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgCollectors.MultiSelect = true; // Permitir selección múltiple
+            dgCollectors.MultiSelect = true;
             dgCollectors.ReadOnly = true;
+            dgCollectors.Dock = DockStyle.Fill;
 
             // Estilo de encabezados
             dgCollectors.ColumnHeadersDefaultCellStyle.BackColor = darkBlueColor;
             dgCollectors.ColumnHeadersDefaultCellStyle.ForeColor = whiteColor;
             dgCollectors.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
             dgCollectors.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dgCollectors.ColumnHeadersDefaultCellStyle.Padding = new Padding(10, 0, 0, 0);
-            dgCollectors.ColumnHeadersHeight = 40;
+            dgCollectors.ColumnHeadersDefaultCellStyle.Padding = new Padding(15, 0, 0, 0);
+            dgCollectors.ColumnHeadersHeight = 45;
 
             // Estilo de celdas
             dgCollectors.DefaultCellStyle.Font = new Font("Segoe UI", 10);
             dgCollectors.DefaultCellStyle.BackColor = whiteColor;
             dgCollectors.DefaultCellStyle.ForeColor = Color.FromArgb(60, 60, 60);
             dgCollectors.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dgCollectors.DefaultCellStyle.Padding = new Padding(10, 5, 10, 5);
-            dgCollectors.RowTemplate.Height = 40;
+            dgCollectors.DefaultCellStyle.Padding = new Padding(15, 10, 15, 10);
+            dgCollectors.RowTemplate.Height = 45;
         }
 
-        // 🔹 CARGAR LOS RECOLECTORES EN EL DATAGRIDVIEW
         public void loadCollectors()
         {
             try
             {
-                // 1️⃣ Obtener los recolectores desde el servicio
-                listCollector = AppServices.CollectorServices.queryByStatus.execute(1); // 1 = Activo
-
-                // 2️⃣ Convertir a DTOs
+                listCollector = AppServices.CollectorServices.queryByStatus.execute(1);
                 listDTOCollector = CollectorMaper.ToDTOList(listCollector);
 
-                // 3️⃣ Configurar columnas manualmente
                 dgCollectors.AutoGenerateColumns = false;
                 dgCollectors.Columns.Clear();
 
-                // 4️⃣ Agregar columnas
-                AddColumn("workerCode", "ID TRABAJADOR", 120);
-                AddColumn("id", "CÉDULA", 120);
-                AddColumn("firstName", "NOMBRES", 150);
-                AddColumn("lastName", "APELLIDOS", 150);
-                AddColumn("phone", "TELÉFONO", 120);
+                AddColumn("workerCode", "ID TRABAJADOR", 150);
+                AddColumn("id", "CÉDULA", 130);
+                AddColumn("firstName", "NOMBRES", 180);
+                AddColumn("lastName", "APELLIDOS", 180);
+                AddColumn("phone", "TELÉFONO", 150);
 
                 // Columna de estado
                 var statusItems = new[]
@@ -135,26 +473,20 @@ namespace CAFEPAY.Views.ViewHarvests
                     ValueMember = "Value",
                     DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing,
                     FlatStyle = FlatStyle.Flat,
-                    Width = 100
+                    Width = 120
                 };
                 dgCollectors.Columns.Add(colStatus);
 
-                // 5️⃣ ASIGNAR LOS DATOS AL DATAGRIDVIEW ✅
                 dgCollectors.DataSource = listDTOCollector;
-
-                // Limpiar selección inicial
                 dgCollectors.ClearSelection();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al cargar los recolectores: {ex.Message}",
-                              "Error",
-                              MessageBoxButtons.OK,
-                              MessageBoxIcon.Error);
+                MessageBox.Show($"Error al cargar los recolectores: {ex.Message}", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        // 🔹 MÉTODO AUXILIAR PARA AGREGAR COLUMNAS
         private void AddColumn(string dataProperty, string headerText, int width)
         {
             var column = new DataGridViewTextBoxColumn
@@ -166,73 +498,58 @@ namespace CAFEPAY.Views.ViewHarvests
             dgCollectors.Columns.Add(column);
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnAssociate_Click(object sender, EventArgs e)
         {
-            // VALIDAR QUE HAYA RECOLECTORES SELECCIONADOS
+            // 🔹 MANTENER TODA LA LÓGICA ORIGINAL DE ASOCIACIÓN
             if (dgCollectors.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Por favor, seleccione al menos un recolector para asociar.",
-                              "Selección requerida",
-                              MessageBoxButtons.OK,
-                              MessageBoxIcon.Information);
+                              "Selección requerida", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
-            // VALIDAR QUE EXISTA LA INFORMACIÓN DE LA COSECHA
             if (harvestDTO == null)
             {
                 MessageBox.Show("No se ha cargado la información de la cosecha.",
-                              "Error",
-                              MessageBoxButtons.OK,
-                              MessageBoxIcon.Error);
+                              "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
             try
             {
-                // Recuperar el worker code de los recolectores seleccionados usando DataBoundItem
                 List<CollectDTO> collectsZero = new List<CollectDTO>();
 
                 foreach (DataGridViewRow row in dgCollectors.SelectedRows)
                 {
-                    // Obtener el CollectorDTO directamente del item enlazado
-                    if (row.DataBoundItem is CollectorDTO collector)
+                    if (row.DataBoundItem is CollectorDTO collector && !string.IsNullOrWhiteSpace(collector.workerCode))
                     {
-                        if (!string.IsNullOrWhiteSpace(collector.workerCode))
+                        CollectDTO collect = new CollectDTO
                         {
-                            CollectDTO collect = new CollectDTO
-                            {
-                                collectId = null,
-                                plotId = plotDTO.idPlot,
-                                harvestId = harvestDTO.id,
-                                collectorWorkerCode = collector.workerCode,
-                                collectedKilos = 0,
-                                collectDate = DateTime.Today,
-                                amountToPaid = 0,
-                                isCountable = 0,
-                                status = 0,
-                                statusText = "ZERO"
-                            };
-                            collectsZero.Add(collect);
-                        }
+                            collectId = null,
+                            plotId = plotDTO.idPlot,
+                            harvestId = harvestDTO.id,
+                            collectorWorkerCode = collector.workerCode,
+                            collectedKilos = 0,
+                            collectDate = DateTime.Today,
+                            amountToPaid = 0,
+                            isCountable = 0,
+                            status = 0,
+                            statusText = "ZERO"
+                        };
+                        collectsZero.Add(collect);
                     }
                 }
 
-                // VALIDAR QUE SE HAYAN ENCONTRADO RECOLECTORES VÁLIDOS
                 if (collectsZero.Count == 0)
                 {
                     MessageBox.Show("No se encontraron recolectores válidos para asociar.",
-                                  "Advertencia",
-                                  MessageBoxButtons.OK,
-                                  MessageBoxIcon.Warning);
+                                  "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                // Listas para clasificar los resultados
                 List<string> exitosos = new List<string>();
                 List<string> fallidos = new List<string>();
 
-                // PROCESAR TODAS LAS ASOCIACIONES
                 foreach (CollectDTO collectFor in collectsZero)
                 {
                     try
@@ -248,19 +565,14 @@ namespace CAFEPAY.Views.ViewHarvests
                             collectFor.plotId,
                             collectFor.isCountable
                         );
-
-                        exitosos.Add($"✓ Recolector {collectFor.collectorWorkerCode} se asoció exitosamente");
+                        exitosos.Add($"✓ Recolector {collectFor.collectorWorkerCode} asociado exitosamente");
                     }
                     catch (InvalidOperationException ex)
                     {
-                        // Capturar el mensaje específico del error
                         string errorMsg = ex.Message;
-
-                        // Identificar si es un error de duplicado ZERO
-                        if (errorMsg.Contains("Ya existe un registro ZERO") ||
-                            errorMsg.Contains("ya está asociado a esta cosecha"))
+                        if (errorMsg.Contains("Ya existe un registro ZERO") || errorMsg.Contains("ya está asociado"))
                         {
-                            fallidos.Add($"✗ Recolector {collectFor.collectorWorkerCode} no se pudo asociar porque ya existe una asociación");
+                            fallidos.Add($"✗ Recolector {collectFor.collectorWorkerCode} ya está asociado");
                         }
                         else
                         {
@@ -273,93 +585,39 @@ namespace CAFEPAY.Views.ViewHarvests
                     }
                 }
 
-                // CONSTRUIR MENSAJE DETALLADO CON RESULTADOS INDIVIDUALES
                 StringBuilder mensaje = new StringBuilder();
                 mensaje.AppendLine("Resultado de la asociación de recolectores:");
                 mensaje.AppendLine();
 
-                // Agregar exitosos
                 if (exitosos.Count > 0)
                 {
                     mensaje.AppendLine("EXITOSOS:");
-                    foreach (string msg in exitosos)
-                    {
-                        mensaje.AppendLine(msg);
-                    }
+                    foreach (string msg in exitosos) mensaje.AppendLine(msg);
                     mensaje.AppendLine();
                 }
 
-                // Agregar fallidos
                 if (fallidos.Count > 0)
                 {
                     mensaje.AppendLine("FALLIDOS:");
-                    foreach (string msg in fallidos)
-                    {
-                        mensaje.AppendLine(msg);
-                    }
+                    foreach (string msg in fallidos) mensaje.AppendLine(msg);
                 }
 
-                // DETERMINAR ÍCONO Y TÍTULO SEGÚN RESULTADO
-                MessageBoxIcon icono;
-                string titulo;
+                MessageBoxIcon icono = fallidos.Count == 0 ? MessageBoxIcon.Information :
+                                     exitosos.Count == 0 ? MessageBoxIcon.Error : MessageBoxIcon.Warning;
+                string titulo = fallidos.Count == 0 ? "Éxito" : exitosos.Count == 0 ? "Error" : "Resultado Parcial";
 
-                if (fallidos.Count == 0)
-                {
-                    // Todos exitosos
-                    icono = MessageBoxIcon.Information;
-                    titulo = "Éxito";
-                }
-                else if (exitosos.Count == 0)
-                {
-                    // Todos fallaron
-                    icono = MessageBoxIcon.Error;
-                    titulo = "Error";
-                }
-                else
-                {
-                    // Resultado mixto
-                    icono = MessageBoxIcon.Warning;
-                    titulo = "Resultado Parcial";
-                }
-
-                MessageBox.Show(
-                    mensaje.ToString(),
-                    titulo,
-                    MessageBoxButtons.OK,
-                    icono
-                );
+                MessageBox.Show(mensaje.ToString(), titulo, MessageBoxButtons.OK, icono);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    $"Error al procesar los recolectores: {ex.Message}",
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
+                MessageBox.Show($"Error al procesar los recolectores: {ex.Message}", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-        private void label1_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-        }
-
-        private void textBoxNombreLote_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBoxNumeroCosecha_TextChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void btnBack_Click(object sender, EventArgs e)
         {
-            this.Owner.Show();
+            this.Owner?.Show();
             this.Close();
         }
     }
