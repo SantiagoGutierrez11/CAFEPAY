@@ -321,7 +321,7 @@ namespace CAFEPAY.Views.ViewHarvests
 
             // COLUMNA DERECHA - 2 campos
             int rightColumnX = 40 + columnWidth + 20; // 20px de separación entre columnas
-            CreateInfoField(container, "Parcela ID:", lblPlotId, rightColumnX, startY, labelWidth, valueWidth);
+            CreateInfoField(container, "Lote ID:", lblPlotId, rightColumnX, startY, labelWidth, valueWidth);
             CreateInfoField(container, "Fecha de inicio:", lblStartDate, rightColumnX, startY + rowHeight, labelWidth, valueWidth);
         }
 
