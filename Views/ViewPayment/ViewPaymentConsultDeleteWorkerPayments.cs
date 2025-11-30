@@ -15,7 +15,7 @@ using System.Windows.Forms;
 
 namespace CAFEPAY.Views.ViewPayment
 {
-    public partial class ViewPaymentConsultWorkerPayments : Form
+    public partial class ViewPaymentConsultDeleteWorkerPayments : Form
     {
         private Color darkBlueColor = Color.FromArgb(13, 43, 97);
         private Color whiteColor = Color.White;
@@ -24,7 +24,7 @@ namespace CAFEPAY.Views.ViewPayment
         private List<PaymentDetail> listPaymentDetails;
         private List<PaymentDetailDTO> listPaymentDetailsDTO;
 
-        public ViewPaymentConsultWorkerPayments(CollectorDTO _collectorDTO, List<PaymentDTO> _listPaymentDTOs)
+        public ViewPaymentConsultDeleteWorkerPayments(CollectorDTO _collectorDTO, List<PaymentDTO> _listPaymentDTOs)
         {
             InitializeComponent();
             this.listPaymentDTOs = _listPaymentDTOs;
@@ -258,6 +258,11 @@ namespace CAFEPAY.Views.ViewPayment
                               MessageBoxButtons.OK,
                               MessageBoxIcon.Error);
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

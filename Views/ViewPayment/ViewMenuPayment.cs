@@ -33,10 +33,15 @@ namespace CAFEPAY.Views.ViewPayment
 
         private void btnConsult_Click(object sender, EventArgs e)
         {
-            ViewPaymentConsult viewPaymentConsult = new ViewPaymentConsult();
+            ViewPaymentConsultDelete viewPaymentConsult = new ViewPaymentConsultDelete();
             viewPaymentConsult.Owner = this.Owner; // Obtener el formulario propietario original
             this.Hide();
             viewPaymentConsult.Show();
+
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
 
         }
     }
