@@ -30,5 +30,10 @@ namespace CAFEPAY.ArqHex.Payments.infrastructure
         {
             return AppServices.PaymentServices.getTotalAmountByWorkerCodeAndPaymentId.execute(workerCode, paymentID);
         }
+        public void deletePaymentById(long? paymentId, string reason)
+        {
+            AppServices.PaymentServices.deleteByPaymentId.execute(paymentId, reason);
+        }
+
     }
 }

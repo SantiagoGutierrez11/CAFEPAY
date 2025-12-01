@@ -1,6 +1,6 @@
 ﻿namespace CAFEPAY.Views.ViewPayment
 {
-    partial class ViewPaymentConsult
+    partial class ViewPaymentConsultDelete
     {
         /// <summary>
         /// Required designer variable.

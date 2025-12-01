@@ -35,17 +35,17 @@
             // 
             // btnConsult
             // 
-            this.btnConsult.Location = new System.Drawing.Point(348, 87);
+            this.btnConsult.Location = new System.Drawing.Point(288, 87);
             this.btnConsult.Name = "btnConsult";
             this.btnConsult.Size = new System.Drawing.Size(207, 53);
             this.btnConsult.TabIndex = 1;
-            this.btnConsult.Text = "Consultar";
+            this.btnConsult.Text = "Gestionar Pagos";
             this.btnConsult.UseVisualStyleBackColor = true;
             this.btnConsult.Click += new System.EventHandler(this.btnConsult_Click);
             // 
             // btnPayment
             // 
-            this.btnPayment.Location = new System.Drawing.Point(50, 87);
+            this.btnPayment.Location = new System.Drawing.Point(23, 87);
             this.btnPayment.Name = "btnPayment";
             this.btnPayment.Size = new System.Drawing.Size(207, 53);
             this.btnPayment.TabIndex = 2;
@@ -67,7 +67,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(617, 280);
+            this.ClientSize = new System.Drawing.Size(618, 280);
             this.Controls.Add(this.btnBack);
             this.Controls.Add(this.btnPayment);
             this.Controls.Add(this.btnConsult);

@@ -1,4 +1,5 @@
-﻿using CAFEPAY.ArqHex.PaymentDetails.domain;
+﻿using CAFEPAY.ArqHex.Collectors.domain;
+using CAFEPAY.ArqHex.PaymentDetails.domain;
 using CAFEPAY.ArqHex.Payments.domain;
 using CAFEPAY.ArqHex.Share;
 using CAFEPAY.ArqHex.Share.DTO;
@@ -15,22 +16,25 @@ using System.Windows.Forms;
 
 namespace CAFEPAY.Views.ViewPayment
 {
-    public partial class ViewPaymentConsultWorkerPayments : Form
+    public partial class ViewPaymentConsultDeleteWorkerPayments : Form
     {
         private Color darkBlueColor = Color.FromArgb(13, 43, 97);
         private Color whiteColor = Color.White;
         private CollectorDTO collectorDTO;
+        private List<Payment> listPayments;
         private List<PaymentDTO> listPaymentDTOs;
         private List<PaymentDetail> listPaymentDetails;
         private List<PaymentDetailDTO> listPaymentDetailsDTO;
+        private bool? canBeDeleted;
 
-        public ViewPaymentConsultWorkerPayments(CollectorDTO _collectorDTO, List<PaymentDTO> _listPaymentDTOs)
+        public ViewPaymentConsultDeleteWorkerPayments(CollectorDTO _collectorDTO, List<PaymentDTO> _listPaymentDTOs)
         {
             InitializeComponent();
             this.listPaymentDTOs = _listPaymentDTOs;
             this.collectorDTO = _collectorDTO;
             loadDataCollector();
             ConfigureDataGridView();
+            canBeDeleted = null;
         }
         public void loadDataCollector()
         {
@@ -133,10 +137,13 @@ namespace CAFEPAY.Views.ViewPayment
             dgPayments.Columns.Add(column);
         }
 
-        private void LoadPayments()
+        public void LoadPayments()
         {
             try
             {
+                // Consultar los pagos del recolector
+                listPayments = AppServices.PaymentServices.queryByWorkerCode.execute(collectorDTO.workerCode);
+                listPaymentDTOs = PaymentMaper.ToDTOList(listPayments);
                 if (listPaymentDTOs == null || listPaymentDTOs.Count == 0)
                 {
                     MessageBox.Show("No hay pagos para mostrar.",
@@ -253,10 +260,78 @@ namespace CAFEPAY.Views.ViewPayment
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al consultar los pagos: {ex.Message}\n\nDetalles: {ex.StackTrace}",
+                MessageBox.Show($"Error al consultar los pagos: {ex.Message}",
                               "Error",
                               MessageBoxButtons.OK,
                               MessageBoxIcon.Error);
+            }
+        }
+
+        // Ingresar al modulo de eliminación de pagos
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (dgPayments.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Por favor, seleccione un pago para eliminar.",
+                              "Selección requerida",
+                              MessageBoxButtons.OK,
+                              MessageBoxIcon.Warning);
+                return;
+            }
+            try
+            {
+                // Obtener el PaymentDTO seleccionado
+                DataGridViewRow selectedRow = dgPayments.SelectedRows[0];
+
+                if (selectedRow.DataBoundItem is PaymentDTO selectedPayment)
+                {          
+                    canBeDeleted = AppServices.PaymentServices.checkIfPaymentCanBeDeleted.execute(selectedPayment.Id);
+                    if (!canBeDeleted != null && canBeDeleted == false)
+                    {
+                        MessageBox.Show("El pago seleccionado no puede ser eliminado porque está asociado a otros registros.",
+                                      "Eliminación no permitida",
+                                      MessageBoxButtons.OK,
+                                      MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    // Consultar los detalles de pago del pago
+                    listPaymentDetails = AppServices.PaymentDetailServices.queryByPaymentId.execute(selectedPayment.Id ?? 0);
+
+                    listPaymentDetailsDTO = PaymentDetailMaper.ToDTOList(listPaymentDetails);
+
+                    // Validar si hay pagos
+                    if (listPaymentDetailsDTO == null || listPaymentDetailsDTO.Count == 0)
+                    {
+                        MessageBox.Show($"No se encontraron pagos para el recolector {collectorDTO.firstName} {collectorDTO.lastName}.",
+                                      "Sin resultados",
+                                      MessageBoxButtons.OK,
+                                      MessageBoxIcon.Information);
+                        return;
+                    }
+                    else
+                    {
+                        ViewPaymentDelete viewPaymentDelete = new ViewPaymentDelete(collectorDTO, selectedPayment, listPaymentDetailsDTO);
+                        viewPaymentDelete.Owner = this;
+                        this.Hide();
+                        viewPaymentDelete.Show();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("No se pudo obtener la información del recolector seleccionado.",
+                                  "Error de datos",
+                                  MessageBoxButtons.OK,
+                                  MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            { 
+                MessageBox.Show($"Error al intentar eliminar el pago: {ex.Message}",
+                              "Error",
+                              MessageBoxButtons.OK,
+                              MessageBoxIcon.Error);
+                return;
             }
         }
     }

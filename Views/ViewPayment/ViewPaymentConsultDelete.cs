@@ -15,7 +15,7 @@ using System.Windows.Forms;
 
 namespace CAFEPAY.Views.ViewPayment
 {
-    public partial class ViewPaymentConsult : Form
+    public partial class ViewPaymentConsultDelete : Form
     {
         private Color darkBlueColor = Color.FromArgb(13, 43, 97);
         private Color whiteColor = Color.White;
@@ -23,7 +23,7 @@ namespace CAFEPAY.Views.ViewPayment
         private List<CollectorDTO> listDTOCollector;
         private List<Payment> listPayments;
         private List<PaymentDTO> listPaymentsDTO;
-        public ViewPaymentConsult()
+        public ViewPaymentConsultDelete()
         {
             InitializeComponent();
             ConfigureDataGridView();
@@ -214,7 +214,7 @@ namespace CAFEPAY.Views.ViewPayment
                     }
                     else
                     {
-                        ViewPaymentConsultWorkerPayments viewPaymentConsultWorkerPayments = new ViewPaymentConsultWorkerPayments(collector, listPaymentsDTO);
+                        ViewPaymentConsultDeleteWorkerPayments viewPaymentConsultWorkerPayments = new ViewPaymentConsultDeleteWorkerPayments(collector, listPaymentsDTO);
                         viewPaymentConsultWorkerPayments.Owner = this;
                         this.Hide();
                         viewPaymentConsultWorkerPayments.Show();
@@ -230,7 +230,7 @@ namespace CAFEPAY.Views.ViewPayment
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al consultar los pagos: {ex.Message}\n\nDetalles: {ex.StackTrace}",
+                MessageBox.Show($"Error al consultar los pagos: {ex.Message}",
                               "Error",
                               MessageBoxButtons.OK,
                               MessageBoxIcon.Error);

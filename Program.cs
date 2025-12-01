@@ -2,6 +2,7 @@
 using CAFEPAY.Views.ViewCollector;
 using CAFEPAY.Views.ViewHarvest;
 using CAFEPAY.Views.ViewOrigin;
+using CAFEPAY.Views.ViewPayment;
 using System;
 using System.Collections.Generic;
 using System.Linq;

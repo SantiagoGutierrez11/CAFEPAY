@@ -620,5 +620,11 @@ namespace CAFEPAY.Views.ViewHarvests
             this.Owner?.Show();
             this.Close();
         }
+
+        private void ViewHarvestAssociateCollector_Load(object sender, EventArgs e)
+        {
+
+        }
+        //
     }
 }

@@ -41,6 +41,9 @@ using CAFEPAY.ArqHex.Collects.application.CollectQueryByWorkerCode;
 using CAFEPAY.ArqHex.Collects.application.CollectQueryByStatusAndWorkerCode;
 using CAFEPAY.ArqHex.Payments.application.PaymentGetTotalAmountByWorkerCodeAndPaymentId;
 using CAFEPAY.ArqHex.PaymentDetails.application.PaymentDetailQueryByPaymentId;
+using CAFEPAY.ArqHex.PaymentDetails.application.deleteByPaymentId;
+using CAFEPAY.ArqHex.Payments.application.checkIfPaymentCanBeDeleted;
+using CAFEPAY.ArqHex.Payments.application.delete;
 
 
 namespace CAFEPAY.ArqHex.Share
@@ -94,6 +97,7 @@ namespace CAFEPAY.ArqHex.Share
             public static PaymentDetailQueryAll query = new PaymentDetailQueryAll(PaymentDetailRepository);
             public static PaymentDetailUpdate update = new PaymentDetailUpdate(PaymentDetailRepository);
             public static QueryByPaymentId queryByPaymentId = new QueryByPaymentId(PaymentDetailRepository);
+            public static deleteByPaymentDetailId deleteByPaymentDetailId = new deleteByPaymentDetailId(PaymentDetailRepository);
         }
 
         public static class PaymentServices
@@ -103,6 +107,8 @@ namespace CAFEPAY.ArqHex.Share
             public static PaymentUpdate update = new PaymentUpdate(paymentRepository);
             public static QueryByWorkerCode queryByWorkerCode = new QueryByWorkerCode(paymentRepository);
             public static GetTotalAmountByWorkerCodeAndPaymentId getTotalAmountByWorkerCodeAndPaymentId = new GetTotalAmountByWorkerCodeAndPaymentId(paymentRepository);
+            public static checkIfPaymentCanBeDeleted checkIfPaymentCanBeDeleted = new checkIfPaymentCanBeDeleted(paymentRepository);
+            public static deleteByPaymentId deleteByPaymentId = new deleteByPaymentId(paymentRepository);
         }
     }
 }

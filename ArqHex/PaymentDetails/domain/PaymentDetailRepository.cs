@@ -12,5 +12,7 @@ namespace CAFEPAY.ArqHex.PaymentDetails.domain
         void update(PaymentDetail PaymentDetail); // Update an existing payment detail
         List<PaymentDetail> queryAll(); // List all payment
         List<PaymentDetail> queryByPaymentId(long? paymentId);
+
+        void deleteByPaymentDetailId(long? paymentDetailId, string reason); // Delete payment details by payment ID
     }
 }
