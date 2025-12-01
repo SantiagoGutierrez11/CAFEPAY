@@ -19,6 +19,9 @@ namespace CAFEPAY.ArqHex.PaymentDetails.infrastructure
             this.connectionString = _connectionstring;
         }
 
+        // ============================================================
+        // MÉTODO: save
+        // ============================================================
         public long save(domain.PaymentDetail paymentDetail)
         {
             if (paymentDetail == null)
@@ -95,6 +98,9 @@ namespace CAFEPAY.ArqHex.PaymentDetails.infrastructure
             }
         }
 
+        // ============================================================
+        // MÉTODO: update
+        // ============================================================
         public void update(domain.PaymentDetail paymentDetail)
         {
             if (paymentDetail == null)
@@ -176,6 +182,9 @@ namespace CAFEPAY.ArqHex.PaymentDetails.infrastructure
             }
         }
 
+        // ============================================================
+        // MÉTODO: queryByPaymentId
+        // ============================================================
         public List<domain.PaymentDetail> queryByPaymentId(long? paymentId)
         {
             var paymentDetails = new List<domain.PaymentDetail>();
@@ -193,10 +202,8 @@ namespace CAFEPAY.ArqHex.PaymentDetails.infrastructure
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.BindByName = true;
 
-                // Parámetro de entrada
                 cmd.Parameters.Add("p_idpayment", OracleDbType.Int64).Value = paymentId.Value;
 
-                // Parámetro de salida (cursor)
                 var outCursor = new OracleParameter("p_result", OracleDbType.RefCursor)
                 {
                     Direction = ParameterDirection.Output
@@ -224,6 +231,9 @@ namespace CAFEPAY.ArqHex.PaymentDetails.infrastructure
             return paymentDetails;
         }
 
+        // ============================================================
+        // MÉTODO: queryAll
+        // ============================================================
         public List<domain.PaymentDetail> queryAll()
         {
             var paymentDetails = new List<domain.PaymentDetail>();
@@ -234,7 +244,6 @@ namespace CAFEPAY.ArqHex.PaymentDetails.infrastructure
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.BindByName = true;
 
-                // Parámetro de salida (cursor)
                 var outCursor = new OracleParameter("p_result", OracleDbType.RefCursor)
                 {
                     Direction = ParameterDirection.Output
@@ -263,7 +272,74 @@ namespace CAFEPAY.ArqHex.PaymentDetails.infrastructure
             return paymentDetails;
         }
 
-        // Mapeo del DataReader a PaymentDetail
+        // ============================================================
+        // MÉTODO: deleteByPaymentDetailId
+        // ============================================================
+        public void deleteByPaymentDetailId(long? paymentDetailId, string reason)
+        {
+            if (!paymentDetailId.HasValue || paymentDetailId.Value <= 0)
+                throw new ArgumentException(
+                    "El ID del detalle de pago debe ser un valor válido mayor a cero",
+                    nameof(paymentDetailId));
+
+            if (string.IsNullOrWhiteSpace(reason))
+                throw new ArgumentException(
+                    "La razón de eliminación es requerida",
+                    nameof(reason));
+
+            using (var connection = new OracleConnection(connectionString))
+            using (var cmd = new OracleCommand("PKG_PAYMENT_MANAGEMENT.delete_payment_detail", connection))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.BindByName = true;
+
+                // Parámetros de entrada
+                cmd.Parameters.Add("p_idpaymentdetail", OracleDbType.Int64).Value = paymentDetailId.Value;
+                cmd.Parameters.Add("p_reason", OracleDbType.Varchar2, 1000).Value = reason;
+                cmd.Parameters.Add("p_deleted_by", OracleDbType.Varchar2, 50).Value =
+                    Environment.UserName; // O usar el usuario de tu sistema de autenticación
+
+                // Parámetro de salida
+                var outResultParam = new OracleParameter("p_result", OracleDbType.Varchar2, 500)
+                {
+                    Direction = ParameterDirection.Output
+                };
+                cmd.Parameters.Add(outResultParam);
+
+                connection.Open();
+
+                try
+                {
+                    cmd.ExecuteNonQuery();
+
+                    string result = outResultParam.Value?.ToString() ?? "";
+
+                    if (result.StartsWith("ERROR:"))
+                    {
+                        string errorMessage = result.Substring(7).Trim();
+                        throw new PaymentDetailOperationException(errorMessage);
+                    }
+                }
+                catch (PaymentDetailOperationException)
+                {
+                    throw;
+                }
+                catch (OracleException ex)
+                {
+                    throw MapDeletePaymentDetailOracleException(ex, paymentDetailId.Value);
+                }
+                catch (Exception ex)
+                {
+                    throw new PaymentDetailOperationException(
+                        $"Error inesperado al eliminar el detalle de pago: {ex.Message}", ex);
+                }
+            }
+        }
+        
+
+        // ============================================================
+        // MÉTODOS AUXILIARES - MAPEO
+        // ============================================================
 
         private domain.PaymentDetail MapReaderToPaymentDetail(IDataReader reader)
         {
@@ -278,22 +354,29 @@ namespace CAFEPAY.ArqHex.PaymentDetails.infrastructure
             );
         }
 
+        // ============================================================
+        // MÉTODOS AUXILIARES - MAPEO DE EXCEPCIONES
+        // ============================================================
+
         private Exception MapSaveOracleException(OracleException ex)
         {
             switch (ex.Number)
             {
                 case 20206:
-                    return new PaymentNotFoundException(ex.Message, ex);
+                    return new PaymentNotFoundException(
+                        "No existe el pago especificado", ex);
 
                 case 20207:
-                    return new PaymentDetailDuplicateException(ex.Message, ex);
+                    return new PaymentDetailDuplicateException(
+                        "Ya existe un detalle de pago con ese ID", ex);
 
                 case 20208:
-                    return new CollectNotFoundException(ex.Message, ex);
+                    return new CollectNotFoundException(
+                        "No existe la recolecta especificada", ex);
 
                 case 20209:
                     return new InvalidCollectStatusException(
-                        "La recolecta debe estar pendiente de pago", ex);
+                        "La recolecta debe estar pendiente de pago (estado REGISTRADO)", ex);
 
                 case 20210:
                     return new CollectAlreadyPaidException(
@@ -305,11 +388,11 @@ namespace CAFEPAY.ArqHex.PaymentDetails.infrastructure
 
                 case 20212:
                     return new PaymentDetailOperationException(
-                        "No se pudo actualizar el estado de la recolecta", ex);
+                        "No se pudo actualizar el estado de la recolecta a PAGADO", ex);
 
                 case 20069:
                     return new InvalidAmountException(
-                        "El pago excede el monto permitido", ex);
+                        "El pago excede el monto permitido para la recolecta", ex);
 
                 default:
                     return new PaymentDetailOperationException(
@@ -322,23 +405,28 @@ namespace CAFEPAY.ArqHex.PaymentDetails.infrastructure
             switch (ex.Number)
             {
                 case 20223:
-                    return new ArgumentException("El ID del detalle es requerido", ex);
+                    return new ArgumentException(
+                        "El ID del detalle de pago es requerido", ex);
 
                 case 20224:
-                    return new PaymentDetailNotFoundException(ex.Message, ex);
+                    return new PaymentDetailNotFoundException(
+                        "No existe el detalle de pago especificado", ex);
 
                 case 20225:
-                    return new PaymentNotFoundException(ex.Message, ex);
+                    return new PaymentNotFoundException(
+                        "No existe el pago especificado", ex);
 
                 case 20226:
-                    return new CollectNotFoundException(ex.Message, ex);
+                    return new CollectNotFoundException(
+                        "No existe la recolecta especificada", ex);
 
                 case 20227:
-                    return new InvalidAmountException(ex.Message, ex);
+                    return new InvalidAmountException(
+                        "El monto del detalle no es válido", ex);
 
                 case 20228:
                     return new PaymentDetailOperationException(
-                        "No se pudo completar la actualización", ex);
+                        "No se pudo completar la actualización del detalle", ex);
 
                 case 1: // ORA-00001 unique constraint
                     if (ex.Message.IndexOf("UNQ_PAYMENTDETAIL_COLLECT",
@@ -352,7 +440,7 @@ namespace CAFEPAY.ArqHex.PaymentDetails.infrastructure
 
                 default:
                     return new PaymentDetailOperationException(
-                        "Error al actualizar: " + ex.Message, ex);
+                        "Error al actualizar el detalle: " + ex.Message, ex);
             }
         }
 
@@ -361,7 +449,8 @@ namespace CAFEPAY.ArqHex.PaymentDetails.infrastructure
             switch (ex.Number)
             {
                 case 20220:
-                    return new ArgumentException("El ID del pago es requerido", ex);
+                    return new ArgumentException(
+                        "El ID del pago es requerido", ex);
 
                 case 20221:
                     return new PaymentNotFoundException(
@@ -373,12 +462,40 @@ namespace CAFEPAY.ArqHex.PaymentDetails.infrastructure
 
                 default:
                     return new PaymentDetailOperationException(
-                        "Error en la consulta: " + ex.Message, ex);
+                        "Error en la consulta de detalles: " + ex.Message, ex);
+            }
+        }
+
+        private Exception MapDeletePaymentDetailOracleException(OracleException ex, long paymentDetailId)
+        {
+            switch (ex.Number)
+            {
+                case 20248:
+                    return new CollectorInactiveException(
+                        "No se puede eliminar el detalle de pago porque el recolector está inactivo", ex);
+
+                case 20249:
+                    return new HarvestFinalizedException(
+                        "No se puede eliminar el detalle de pago porque la cosecha está finalizada", ex);
+
+                case 20250:
+                    return new PaymentDetailOperationException(
+                        "Error al restaurar el estado de la recolecta a REGISTRADO", ex);
+
+                case 20253:
+                    return new PaymentDetailNotFoundException(
+                        $"No existe el detalle de pago con ID {paymentDetailId}", ex);
+
+                default:
+                    return new PaymentDetailOperationException(
+                        "Error al eliminar el detalle de pago: " + ex.Message, ex);
             }
         }
     }
 
-    // expeciones específicas
+    // ============================================================
+    // EXCEPCIONES PERSONALIZADAS
+    // ============================================================
 
     public class PaymentDetailOperationException : Exception
     {
@@ -426,6 +543,18 @@ namespace CAFEPAY.ArqHex.PaymentDetails.infrastructure
     public class InvalidAmountException : PaymentDetailOperationException
     {
         public InvalidAmountException(string message, Exception inner = null)
+            : base(message, inner) { }
+    }
+
+    public class CollectorInactiveException : PaymentDetailOperationException
+    {
+        public CollectorInactiveException(string message, Exception inner = null)
+            : base(message, inner) { }
+    }
+
+    public class HarvestFinalizedException : PaymentDetailOperationException
+    {
+        public HarvestFinalizedException(string message, Exception inner = null)
             : base(message, inner) { }
     }
 }

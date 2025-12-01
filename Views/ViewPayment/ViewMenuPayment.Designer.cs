@@ -31,16 +31,15 @@
             this.btnConsult = new System.Windows.Forms.Button();
             this.btnPayment = new System.Windows.Forms.Button();
             this.btnBack = new System.Windows.Forms.Button();
-            this.btnDelete = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnConsult
             // 
-            this.btnConsult.Location = new System.Drawing.Point(530, 87);
+            this.btnConsult.Location = new System.Drawing.Point(288, 87);
             this.btnConsult.Name = "btnConsult";
             this.btnConsult.Size = new System.Drawing.Size(207, 53);
             this.btnConsult.TabIndex = 1;
-            this.btnConsult.Text = "Consultar";
+            this.btnConsult.Text = "Gestionar Pagos";
             this.btnConsult.UseVisualStyleBackColor = true;
             this.btnConsult.Click += new System.EventHandler(this.btnConsult_Click);
             // 
@@ -64,22 +63,11 @@
             this.btnBack.UseVisualStyleBackColor = true;
             this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
             // 
-            // btnDelete
-            // 
-            this.btnDelete.Location = new System.Drawing.Point(269, 87);
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(207, 53);
-            this.btnDelete.TabIndex = 4;
-            this.btnDelete.Text = "Eliminar";
-            this.btnDelete.UseVisualStyleBackColor = true;
-            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
-            // 
             // ViewMenuPayment
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(760, 280);
-            this.Controls.Add(this.btnDelete);
+            this.ClientSize = new System.Drawing.Size(618, 280);
             this.Controls.Add(this.btnBack);
             this.Controls.Add(this.btnPayment);
             this.Controls.Add(this.btnConsult);
@@ -94,6 +82,5 @@
         private System.Windows.Forms.Button btnConsult;
         private System.Windows.Forms.Button btnPayment;
         private System.Windows.Forms.Button btnBack;
-        private System.Windows.Forms.Button btnDelete;
     }
 }

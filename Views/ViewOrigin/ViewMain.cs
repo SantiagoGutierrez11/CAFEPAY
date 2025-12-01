@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CAFEPAY.Views.ViewPayment;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -469,8 +470,15 @@ namespace CAFEPAY.Views.ViewOrigin
 
         private void OpenPagosModule()
         {
-            MessageBox.Show("Módulo PAGOS - En desarrollo", "Información",
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
+            var viewPayment = new ViewMenuPayment();
+            viewPayment.Owner = this;
+            viewPayment.Show();
+            this.Hide();
+        }
+
+        private void ViewMain_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

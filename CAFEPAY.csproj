@@ -122,10 +122,13 @@
     <Compile Include="ArqHex\Harvests\Application\HarvestQueryByStatus\HarvestQueryByStatus.cs" />
     <Compile Include="ArqHex\Harvests\Application\HarvestUpdate\HarvestUpdate.cs" />
     <Compile Include="ArqHex\Harvests\Domain\HarvestStatus.cs" />
+    <Compile Include="ArqHex\PaymentDetails\application\deleteByPaymentDetailId\deleteByPaymentDetailId.cs" />
     <Compile Include="ArqHex\PaymentDetails\application\PaymentDetailQueryAll\PaymentDetailQueryAll.cs" />
     <Compile Include="ArqHex\PaymentDetails\application\PaymentDetailQueryByPaymentId\QueryByPaymentId.cs" />
     <Compile Include="ArqHex\PaymentDetails\application\PaymentDetailSave\PaymentDetailSave.cs" />
     <Compile Include="ArqHex\PaymentDetails\application\PaymentDetailUpdate\PaymentDetailUpdate.cs" />
+    <Compile Include="ArqHex\Payments\application\checkIfPaymentCanBeDeleted\checkIfPaymentCanBeDeleted.cs" />
+    <Compile Include="ArqHex\Payments\application\deleteByPaymentId\deleteByPaymentId.cs" />
     <Compile Include="ArqHex\Payments\application\PaymentGetTotalAmountByWorkerCodeAndPaymentId\GetTotalAmountByWorkerCodeAndPaymentId.cs" />
     <Compile Include="ArqHex\Payments\application\PaymentQueryByWorkerCode\QueryByWorkerCode.cs" />
     <Compile Include="ArqHex\PaymentDetails\domain\PaymentDetail.cs" />

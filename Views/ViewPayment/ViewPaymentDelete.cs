@@ -1,6 +1,7 @@
 ﻿using CAFEPAY.ArqHex.Collectors.domain;
 using CAFEPAY.ArqHex.Payments.domain;
 using CAFEPAY.ArqHex.Plots.Domain;
+using CAFEPAY.ArqHex.Share;
 using CAFEPAY.ArqHex.Share.DTO;
 using System;
 using System.Collections.Generic;
@@ -61,6 +62,10 @@ namespace CAFEPAY.Views.ViewPayment
             dgPaymentDetails.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 248, 248);
             dgPaymentDetails.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgPaymentDetails.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgPaymentDetails.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgPaymentDetails.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgPaymentDetails.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgPaymentDetails.EnableHeadersVisualStyles = false;
             dgPaymentDetails.MultiSelect = true;
             dgPaymentDetails.ReadOnly = true;
 
@@ -174,6 +179,161 @@ namespace CAFEPAY.Views.ViewPayment
         }
 
         private void btnBack_Click_1(object sender, EventArgs e)
+        {
+            this.Owner.Show();
+            this.Close();
+        }
+
+        // eliminar pago
+        private void button1_Click(object sender, EventArgs e)
+        {
+            // 1. Obtener y normalizar
+            var reason = (textBoxReason.Text ?? string.Empty).Trim();
+
+            // 2. Validar vacío
+            if (string.IsNullOrWhiteSpace(reason))
+            {
+                MessageBox.Show("Debe ingresar una razón para eliminar el pago.",
+                                "Validación",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                return;
+            }
+
+            // 3. Validar longitud máxima
+            const int maxReasonLength = 1000;
+            if (reason.Length > maxReasonLength)
+            {
+                MessageBox.Show($"La razón no puede superar {maxReasonLength} caracteres. " +
+                                $"Actualmente tiene {reason.Length} caracteres.",
+                                "Validación",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                return;
+            }
+
+            // 4. Confirmación del usuario
+            var confirm = MessageBox.Show("¿Está seguro que desea eliminar este pago? Esta acción no se puede deshacer.",
+                                          "Confirmar eliminación",
+                                          MessageBoxButtons.YesNo,
+                                          MessageBoxIcon.Question);
+
+            if (confirm != DialogResult.Yes)
+            {
+                // 6. Usuario canceló
+                return;
+            }
+
+            try
+            {
+               foreach (var detail in paymentDetailDTOs)
+                {
+                    AppServices.PaymentDetailServices.deleteByPaymentDetailId.execute(detail.Id, reason);
+                }
+                AppServices.PaymentServices.deleteByPaymentId.execute(payment.Id, reason);
+                string joinedIds = string.Join(",", paymentDetailDTOs.Select(d => d.Id.ToString()));
+
+                // Aquí notificamos qué pago se eliminó y cuántos detalles se eliminaron
+                MessageBox.Show($"Pago eliminado correctamente. ID del pago: {payment.Id}. \n Numero de detalles de pago eliminados: {paymentDetailDTOs.Count}. \n Con IDs: {joinedIds}.",
+                                "Operación exitosa",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
+
+                // Volver a la ventana padre y cerrar
+                // Volver a la ventana padre y cerrar
+                if (this.Owner is ViewPaymentConsultDeleteWorkerPayments viewOwner)
+                {
+                    viewOwner.LoadPayments();
+                    viewOwner.Show();
+                }
+
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al eliminar el pago: {ex.Message}",
+                                "Error",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnDeleteDetailPayment_Click(object sender, EventArgs e)
+        {
+            // 1. Obtener y normalizar
+            var reason = (textBoxReason.Text ?? string.Empty).Trim();
+
+            // 2. Validar vacío
+            if (string.IsNullOrWhiteSpace(reason))
+            {
+                MessageBox.Show("Debe ingresar una razón para eliminar el pago.",
+                                "Validación",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                return;
+            }
+
+            // 3. Validar longitud máxima
+            const int maxReasonLength = 1000;
+            if (reason.Length > maxReasonLength)
+            {
+                MessageBox.Show($"La razón no puede superar {maxReasonLength} caracteres. " +
+                                $"Actualmente tiene {reason.Length} caracteres.",
+                                "Validación",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                return;
+            }
+
+            // 4. Confirmación del usuario
+            var confirm = MessageBox.Show("¿Está seguro que desea eliminar este pago? Esta acción no se puede deshacer.",
+                                          "Confirmar eliminación",
+                                          MessageBoxButtons.YesNo,
+                                          MessageBoxIcon.Question);
+
+            if (confirm != DialogResult.Yes)
+            {
+                // 6. Usuario canceló
+                return;
+            }
+
+            try
+            {
+                List<string> iDsPaymentDetail = new List<string>();
+                foreach (DataGridViewRow row in dgPaymentDetails.SelectedRows)
+                {
+                    if (row.DataBoundItem is PaymentDetailDTO paymentDetail)
+                    {
+                       AppServices.PaymentDetailServices.deleteByPaymentDetailId.execute(paymentDetail.Id, reason);
+                          iDsPaymentDetail.Add(paymentDetail.Id.ToString());
+                    }
+                }
+                string joinedIds = string.Join(",", iDsPaymentDetail);
+                // Aquí notificamos qué pago se eliminó y cuántos detalles se eliminaron
+                MessageBox.Show($"Numero de detalles de pago eliminados: {iDsPaymentDetail.Count}. \n Con IDs: {joinedIds}",
+                                "Operación exitosa",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
+
+                // Volver a la ventana padre y cerrar
+                if (this.Owner is ViewPaymentConsultDeleteWorkerPayments viewOwner)
+                {
+                    viewOwner.LoadPayments();
+                    viewOwner.Show();
+                }
+                   
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al eliminar el pago: {ex.Message}",
+                                "Error",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnBack_Click_2(object sender, EventArgs e)
         {
             this.Owner.Show();
             this.Close();

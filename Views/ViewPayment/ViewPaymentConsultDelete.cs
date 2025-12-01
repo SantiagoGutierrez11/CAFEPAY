@@ -230,7 +230,7 @@ namespace CAFEPAY.Views.ViewPayment
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al consultar los pagos: {ex.Message}\n\nDetalles: {ex.StackTrace}",
+                MessageBox.Show($"Error al consultar los pagos: {ex.Message}",
                               "Error",
                               MessageBoxButtons.OK,
                               MessageBoxIcon.Error);

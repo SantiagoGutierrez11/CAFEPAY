@@ -13,5 +13,7 @@ namespace CAFEPAY.ArqHex.Payments.domain
         List<Payment> queryAll(); // List all payments
         List<Payment> queryByWorkerCode(string workerCode);
         decimal getTotalAmountByWorkerCodeAndPaymentId(string workerCode, long? paymentID);
+        bool checkIfPaymentCanBeDeleted(long? paymentId);
+        void deleteByPaymentId(long? paymentId, string reason); // Delete a payment by its ID
     }
 }
