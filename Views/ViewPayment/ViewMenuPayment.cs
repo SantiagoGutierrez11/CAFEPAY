@@ -439,8 +439,8 @@ namespace CAFEPAY.Views.ViewPayment
 
         private void btnManagePayments_Click(object sender, EventArgs e)
         {
-            ViewPaymentConsultDelete viewPaymentConsult = new ViewPaymentConsultDelete();
-            viewPaymentConsult.Owner = this.Owner;
+            ViewPaymentConsultDelete viewPaymentConsult = new ViewPaymentConsultDelete(this);
+            viewPaymentConsult.Owner = this;
             this.Hide();
             viewPaymentConsult.Show();
         }
