@@ -1,1 +1,155 @@
+// ============================================================
+// SISTEMA CAFEPAY - MODELO RELACIONAL
+// ============================================================
 
+Table COLLECTOR_STATUS_DOMAIN {
+  STATUS_ID NUMBER [pk, not null]
+  STATUS_NAME VARCHAR2(10) [not null]
+}
+
+Table COLLECTOR {
+  WORKER_CODE VARCHAR2(6) [pk, not null]
+  ID NUMBER(10,0) [not null, unique]
+  FIRST_NAME VARCHAR2(30) [not null]
+  LAST_NAME VARCHAR2(30) [not null]
+  PHONE NUMBER(10,0) [not null]
+  STATUS_ID NUMBER [not null, ref: > COLLECTOR_STATUS_DOMAIN.STATUS_ID]
+  
+  Note: 'STATUS_ID debe ser 1 o 2'
+}
+
+Table OWNER_PLOT {
+  IDOWNER NUMBER(10,0) [pk, not null]
+  FIRSTNAME VARCHAR2(30) [not null]
+  LASTNAME VARCHAR2(30) [not null]
+}
+
+Table PLOT_STATUS_DOMAIN {
+  STATUS_ID NUMBER [pk, not null]
+  STATUS_NAME VARCHAR2(15) [not null]
+}
+
+Table PLOT {
+  IDPLOT NUMBER(10,0) [pk, not null]
+  IDOWNER NUMBER(10,0) [not null, ref: > OWNER_PLOT.IDOWNER]
+  PLOTNAME VARCHAR2(30) [not null]
+  STATUS_ID NUMBER [not null, ref: > PLOT_STATUS_DOMAIN.STATUS_ID]
+}
+
+Table PRICE_RANGE_CONFIG {
+  RANGE_ID NUMBER [pk, not null]
+  MIN_PRICE NUMBER(10,2) [not null]
+  MAX_PRICE NUMBER(10,2) [not null]
+  DESCRIPTION VARCHAR2(100)
+  START_DATE DATE [not null]
+  END_DATE DATE
+  IS_ACTIVE NUMBER(1,0) [not null, default: 1]
+  CREATED_DATE DATE [not null, default: `SYSDATE`]
+  
+  Note: 'MIN_PRICE < MAX_PRICE, IS_ACTIVE in (0,1)'
+}
+
+Table HARVEST_STATUS_DOMAIN {
+  STATUS_ID NUMBER [pk, not null]
+  STATUS_NAME VARCHAR2(15) [not null]
+}
+
+Table PLOT_HARVEST_SEQ {
+  IDPLOT NUMBER(10,0) [pk, not null, ref: > PLOT.IDPLOT]
+  NEXT_ID NUMBER(10,0) [not null]
+  
+  Note: 'Secuencia para IDs de cosecha por lote'
+}
+
+Table HARVEST {
+  IDPLOT NUMBER(10,0) [pk, not null]
+  IDHARVEST NUMBER(10,0) [pk, not null]
+  STARTDATE DATE [not null]
+  ENDDATE DATE
+  PRICEPERKILO NUMBER(10,2) [not null]
+  STATUS_ID NUMBER [not null, ref: > HARVEST_STATUS_DOMAIN.STATUS_ID]
+  
+  Note: 'Solo una cosecha activa por lote (STATUS_ID=1, ENDDATE=NULL)'
+}
+
+Ref: HARVEST.IDPLOT > PLOT.IDPLOT
+
+Table COLLECT_STATUS_DOMAIN {
+  STATUS_ID NUMBER [pk, not null]
+  STATUS_NAME VARCHAR2(15) [not null]
+}
+
+Table COLLECTOR_HARVEST_SEQ {
+  WORKER_CODE VARCHAR2(6) [pk, not null]
+  IDPLOT NUMBER(10,0) [pk, not null]
+  IDHARVEST NUMBER(10,0) [pk, not null]
+  NEXT_ID NUMBER(10,0) [not null]
+  
+  Note: 'Secuencia para IDs de recolección'
+}
+
+Table COLLECT {
+  WORKER_CODE VARCHAR2(6) [pk, not null, ref: > COLLECTOR.WORKER_CODE]
+  IDPLOT NUMBER(10,0) [pk, not null]
+  IDHARVEST NUMBER(10,0) [pk, not null]
+  IDCOLLECT NUMBER(10,0) [pk, not null]
+  COLLECTDATE DATE [not null]
+  KILOS NUMBER(10,2) [not null]
+  STATUS_ID NUMBER [not null, ref: > COLLECT_STATUS_DOMAIN.STATUS_ID]
+  IS_COUNTABLE NUMBER(1,0) [not null]
+  AMOUNT_TO_PAY NUMBER(12,2) [not null]
+  
+  Note: 'STATUS_ID: 0=ZERO, 1=PENDING, 2=PAID. Solo un registro ZERO por recolector-cosecha'
+}
+
+Ref: COLLECT.(IDPLOT, IDHARVEST) > HARVEST.(IDPLOT, IDHARVEST)
+
+Table PAYMENT {
+  IDPAYMENT NUMBER(10,0) [pk, not null]
+  WORKER_CODE VARCHAR2(6) [not null, ref: > COLLECTOR.WORKER_CODE]
+  DATEPAYMENT DATE [not null]
+}
+
+Table PAYMENT_AUDIT {
+  AUDIT_ID NUMBER [pk, increment]
+  IDPAYMENT NUMBER(10,0) [not null]
+  WORKER_CODE VARCHAR2(6) [not null]
+  DATEPAYMENT DATE [not null]
+  DELETED_BY VARCHAR2(50) [not null]
+  DELETED_DATE TIMESTAMP [not null, default: `SYSTIMESTAMP`]
+  DELETION_REASON VARCHAR2(500)
+  IS_DELETED NUMBER(1,0) [not null, default: 1]
+  
+  Note: 'Auditoría de pagos eliminados'
+}
+
+Table PAYMENTDETAIL {
+  IDPAYMENTDETAIL NUMBER(10,0) [pk, not null]
+  IDPAYMENT NUMBER(10,0) [not null, ref: > PAYMENT.IDPAYMENT]
+  WORKER_CODE VARCHAR2(6) [not null]
+  IDPLOT NUMBER(10,0) [not null]
+  IDHARVEST NUMBER(10,0) [not null]
+  IDCOLLECT NUMBER(10,0) [not null]
+  AMOUNT_TO_PAY NUMBER(12,2) [not null]
+  
+  Note: 'Una recolecta solo puede estar en un pago (unique index)'
+}
+
+Ref: PAYMENTDETAIL.(WORKER_CODE, IDPLOT, IDHARVEST, IDCOLLECT) > COLLECT.(WORKER_CODE, IDPLOT, IDHARVEST, IDCOLLECT)
+
+Table PAYMENTDETAIL_AUDIT {
+  AUDIT_ID NUMBER [pk, increment]
+  IDPAYMENTDETAIL NUMBER(10,0) [not null]
+  IDPAYMENT NUMBER(10,0) [not null]
+  WORKER_CODE VARCHAR2(6) [not null]
+  IDPLOT NUMBER(10,0) [not null]
+  IDHARVEST NUMBER(10,0) [not null]
+  IDCOLLECT NUMBER(10,0) [not null]
+  AMOUNT_TO_PAY NUMBER(12,2) [not null]
+  DELETED_BY VARCHAR2(50) [not null]
+  DELETED_DATE TIMESTAMP [not null, default: `SYSTIMESTAMP`]
+  DELETION_REASON VARCHAR2(1000)
+  IS_DELETED NUMBER(1,0) [not null, default: 1]
+  
+  Note: 'Auditoría de detalles de pago eliminados'
+}
