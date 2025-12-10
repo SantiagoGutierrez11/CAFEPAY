@@ -85,7 +85,7 @@ namespace CAFEPAY.Views.ViewPayment
             int card2X = card1X + cardWidth + spacing;
 
             // Tarjeta 1: Pagar (más a la derecha)
-            var cardPagar = CreateMenuCard("Pagar", "Registrar un nuevo pago individual a un recolector");
+            var cardPagar = CreateMenuCard("Pagar", "Calcular pagos disponibles para cada recolector");
             cardPagar.Size = new Size(cardWidth, cardHeight);
             cardPagar.Location = new Point(card1X, 0);
             cardPagar.Click += (s, e) => btnPayment.PerformClick();
@@ -431,7 +431,7 @@ namespace CAFEPAY.Views.ViewPayment
         // MÉTODOS DE EVENTOS
         private void btnPayment_Click(object sender, EventArgs e)
         {
-            ViewPayment viewPayment = new ViewPayment(this.Owner);
+            ViewPayment viewPayment = new ViewPayment(this);
             viewPayment.Owner = this;
             viewPayment.Show();
             this.Hide();
@@ -465,6 +465,42 @@ namespace CAFEPAY.Views.ViewPayment
             if (this.Visible)
             {
                 this.WindowState = FormWindowState.Maximized;
+
+                // 🔥 SOLUCIÓN: Recrear la interfaz cuando se hace visible
+                if (this.Controls.Count > 0)
+                {
+                    this.SuspendLayout();
+
+                    // Guardar estado actual
+                    FormWindowState savedState = this.WindowState;
+
+                    // Forzar redibujado de todos los controles
+                    this.Invalidate(true);
+
+                    // Recorrer y refrescar todos los controles
+                    RefreshAllControls(this);
+
+                    this.ResumeLayout(true);
+                    this.PerformLayout();
+                    this.Refresh();
+
+                    this.WindowState = savedState;
+                }
+            }
+        }
+
+        private void RefreshAllControls(Control parent)
+        {
+            foreach (Control control in parent.Controls)
+            {
+                control.Invalidate();
+                control.Update();
+                control.Refresh();
+
+                if (control.HasChildren)
+                {
+                    RefreshAllControls(control);
+                }
             }
         }
     }
