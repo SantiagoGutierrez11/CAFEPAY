@@ -855,6 +855,12 @@ namespace CAFEPAY.Views.ViewPayment
 
                 ReEnableSorting();
                 dgvCollectsDynamic.CurrentCell = null;
+                decimal? totalAmountToPaid = 0;
+                foreach (CollectDTO collect in collectsDTO)
+                {
+                    totalAmountToPaid += collect.amountToPaid;
+                }
+                txtTotalAmountDynamic.Text = totalAmountToPaid?.ToString("C2") ?? "No hay datos";
             }
             catch (Exception ex)
             {
@@ -878,6 +884,11 @@ namespace CAFEPAY.Views.ViewPayment
         private void ViewPayment_Load(object sender, EventArgs e)
         {
             // Método vacío para compatibilidad con el diseñador
+        }
+
+        private void ViewPayment_Load_1(object sender, EventArgs e)
+        {
+
         }
     }
 }
