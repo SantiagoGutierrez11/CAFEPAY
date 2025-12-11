@@ -323,7 +323,7 @@ namespace CAFEPAY.Views.ViewPayment
 
             // 🔥 CORRECCIÓN: Aumentar ancho de las etiquetas para que quepa "Número de cédula:"
             CreateInfoField(collectorSection, "Código trabajador:", lblWorkerCode, col1X, 40, 165, fieldWidth - 15);
-            CreateInfoField(collectorSection, "Cédula:", lblWorkerId, col2X, 40, 165, fieldWidth - 15);
+            CreateInfoField(collectorSection, "        Número de Cédula:", lblWorkerId, col2X, 40, 200, fieldWidth - 15);
             CreateInfoField(collectorSection, "Nombre:", lblWorkerName, col1X, 75, 150, (fieldWidth * 2) + 20);
 
             container.Controls.Add(collectorSection);
