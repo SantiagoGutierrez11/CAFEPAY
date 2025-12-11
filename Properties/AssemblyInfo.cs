@@ -6,12 +6,12 @@ using System.Runtime.InteropServices;
 // conjunto de atributos. Cambie estos valores de atributo para modificar la información
 // asociada con un ensamblado.
 [assembly: AssemblyTitle("CAFEPAY")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Sistema de Gestion de Pagos de Nomina para trabajadores de Cafi Cauca.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("HP")]
+[assembly: AssemblyCompany("OMCGG")]
 [assembly: AssemblyProduct("CAFEPAY")]
 [assembly: AssemblyCopyright("Copyright © HP 2025")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyTrademark("OMCGG")]
 [assembly: AssemblyCulture("")]
 
 // Si establece ComVisible en false, los tipos de este ensamblado no estarán visibles 
@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 //      Número de compilación
 //      Revisión
 //
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.0.0.1")]
+[assembly: AssemblyFileVersion("1.0.0.1")]
